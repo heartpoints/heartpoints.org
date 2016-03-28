@@ -6,7 +6,7 @@ var path = require('path');
 var EXPRESS_PORT_CONFIG_KEY = 'port';
 var EXPRESS_VIEW_PATH_CONFIG_KEY = 'views';
 var VIEWS_PATH = 'views';
-var STARTUP_MESSAGE = 'Express server listening on port ';
+var STARTUP_MESSAGE = 'Express server listening on http://localhost:';
 
 var expressApplication = expressModule();
 
