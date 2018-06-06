@@ -1,1 +1,1 @@
-start: npm run legacy-start
+start: npm run legacy-server
