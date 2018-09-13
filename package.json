@@ -4,9 +4,7 @@
   "description": "A platform for electronic 1 on 1 philanthropy",
   "main": "index.js",
   "scripts": {
-    "legacy-server": "node app.js",
-    "test": "gulp test:local",
-    "start": "gulp serve"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
