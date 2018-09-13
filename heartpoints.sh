@@ -39,7 +39,7 @@ heartpoints_deploy() {
         (brew install heroku/brew/heroku)
         heroku login
         heroku git:remote --app heartpoints-org
-        git push heroku master
+        git push heroku head
     else
         echo "Cannot deploy, working directory not clean"
         exit 1
