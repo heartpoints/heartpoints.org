@@ -34,14 +34,26 @@ heartpoints_dev() {
     yarn start
 }
 
+git_current_branch() {
+    echo "$(git rev-parse --abbrev-ref HEAD)"
+}
+
+git_current_branch_is_master() {
+    strings_are_equal "$(git_current_branch)" "master"
+}
+
+strings_are_equal() { local string1=$1; local string2=$2
+    [ "${string1}" = "${string2}" ]
+}
+
 heartpoints_deploy() {
-    if git_working_directory_is_clean; then
+    if git_working_directory_is_clean && git_current_branch_is_master; then
         (brew install heroku/brew/heroku)
         heroku login
         heroku git:remote --app heartpoints-org
         git push heroku head
     else
-        echo "Cannot deploy, working directory not clean"
+        echo "Cannot deploy, working directory must ber clean and current branch must be master"
         exit 1
     fi
 }
