@@ -13,8 +13,8 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "dev"
-    echo "deploy"
+    echo "dev     - run dev web server locally and pop open browser (may require refresh)"
+    echo "deploy  - interactive interview to deploy to production, requires heroku credentials"
     echo ""
 }
 
