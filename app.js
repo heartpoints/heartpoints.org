@@ -1,14 +1,14 @@
-var expressModule = require('express');
-var httpPort = process.env.PORT ? process.env.PORT : 5001;
-var http = require('http');
-var path = require('path');
+const expressModule = require('express');
+const http = require('http');
+const path = require('path');
 
-var EXPRESS_PORT_CONFIG_KEY = 'port';
-var EXPRESS_VIEW_PATH_CONFIG_KEY = 'views';
-var VIEWS_PATH = 'views';
-var STARTUP_MESSAGE = 'Express server listening on http://localhost:';
+const EXPRESS_PORT_CONFIG_KEY = 'port';
+const EXPRESS_VIEW_PATH_CONFIG_KEY = 'views';
+const VIEWS_PATH = 'views';
+const STARTUP_MESSAGE = 'Express server listening on http://localhost:';
 
-var expressApplication = expressModule();
+const httpPort = process.env.PORT ? process.env.PORT : 5001;
+const expressApplication = expressModule();
 
 function setUpCoreServer(expressApplication) {
     expressApplication.set(EXPRESS_PORT_CONFIG_KEY, httpPort);
