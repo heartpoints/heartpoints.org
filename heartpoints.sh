@@ -23,15 +23,19 @@ string_is_empty() { local possiblyEmptyString=$1
 }
 
 heartpoints_dev() {
-    nvm_load
-    nvm install
-    nvm use
+    heartpoints_yarn install
+    open http://localhost:5001
+    heartpoints_yarn start
+}
+
+heartpoints_yarn() { local args=$@
     if command_does_not_exist "yarn"; then
+        nvm_load
+        nvm install
+        nvm use
         npm install yarn -g
     fi
-    yarn
-    open http://localhost:5001
-    yarn start
+    yarn ${args}
 }
 
 git_current_branch() {
@@ -56,6 +60,11 @@ heartpoints_deploy() {
         echo "Cannot deploy, working directory must ber clean and current branch must be master"
         exit 1
     fi
+}
+
+heartpoints_economy_model() {
+    heartpoints_yarn install
+    heartpoints_yarn ts-node economy-model.ts
 }
 
 git_working_directory_is_clean() {
