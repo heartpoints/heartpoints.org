@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-heartpoints() { local command=$1
+heartpoints() { local command=$1; local remainingArgs=${@:2}
     if string_is_empty "${command}"; then
         heartpoints_help
     else
-        heartpoints_${command}
+        heartpoints_${command} $remainingArgs
     fi
 }
 
@@ -28,10 +28,12 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "dev                   - run dev web server locally and pop open browser (may require refresh)"
+    echo "dev                   - run dev web server locally"
     echo "manual_deploy         - interactive interview to deploy to production, requires heroku credentials"
     echo "onPullRequest         - validates that a pull request is ready for production"
     echo "tailProductionLogs    - tail the logs from production to see how server is performing"
+    echo "model                 - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
+    echo "yarn                  - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
     echo ""
 }
 
@@ -41,19 +43,24 @@ string_is_empty() { local possiblyEmptyString=$1
 
 heartpoints_dev() {
     heartpoints_prepareForRun
-    yarn start
+    heartpoints_yarn start
 }
 
 heartpoints_prepareForRun() {
-    nvm_load
-    set +e
-    nvm install 
-    set -e
-    nvm use
+    heartpoints_yarn install
+    heartpoints_yarn webpack
+}
+
+heartpoints_yarn() { local args=$@
     if command_does_not_exist "yarn"; then
+        nvm_load
+        set +e
+        nvm install 
+        set -e
+        nvm use
         npm install yarn -g
     fi
-    yarn
+    yarn ${args}
 }
 
 heartpoints_dev_url() {
@@ -126,6 +133,11 @@ heartpoints_manual_deploy_details() {
     heroku_login
     heroku_cli git:remote --app $(heroku_applicationName)
     git push heroku head --force
+}
+
+heartpoints_model() {
+    heartpoints_yarn install
+    heartpoints_yarn ts-node src/heartpoints-cli.ts
 }
 
 git_working_directory_is_clean() {

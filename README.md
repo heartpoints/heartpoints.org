@@ -33,3 +33,11 @@ manual deploy script: `./heartpoints.sh manual_deploy`
 
 Note: only deploys from "master"
 are allowed.
+
+## Next Steps
+
+accounts, accounting equation checks for validity
+way for one person to give hp to another person
+add expirations to transactions
+change how transactions get generated
+plot data visually
