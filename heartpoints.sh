@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-heartpoints() { local command=$1
+heartpoints() { local command=$1; local remainingArgs=${@:2}
     if string_is_empty "${command}"; then
         heartpoints_help
     else
-        heartpoints_${command}
+        heartpoints_${command} $remainingArgs
     fi
 }
 
@@ -15,6 +15,7 @@ heartpoints_help() {
     echo ""
     echo "dev     - run dev web server locally and pop open browser (may require refresh)"
     echo "deploy  - interactive interview to deploy to production, requires heroku credentials"
+    echo "model   - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
     echo ""
 }
 
@@ -62,7 +63,7 @@ heartpoints_deploy() {
     fi
 }
 
-heartpoints_economy_model() {
+heartpoints_model() {
     heartpoints_yarn install
     heartpoints_yarn ts-node economy-model.ts
 }
