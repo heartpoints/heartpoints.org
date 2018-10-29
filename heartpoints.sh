@@ -65,7 +65,7 @@ heartpoints_deploy() {
 
 heartpoints_model() {
     heartpoints_yarn install
-    heartpoints_yarn ts-node economy-model.ts
+    heartpoints_yarn ts-node src/heartpoints-cli.ts
 }
 
 git_working_directory_is_clean() {
