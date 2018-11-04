@@ -16,6 +16,7 @@ heartpoints_help() {
     echo "dev     - run dev web server locally and pop open browser (may require refresh)"
     echo "deploy  - interactive interview to deploy to production, requires heroku credentials"
     echo "model   - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
+    echo "yarn    - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
     echo ""
 }
 
@@ -25,7 +26,7 @@ string_is_empty() { local possiblyEmptyString=$1
 
 heartpoints_dev() {
     heartpoints_yarn install
-    open http://localhost:5001
+    heartpoints_yarn webpack
     heartpoints_yarn start
 }
 

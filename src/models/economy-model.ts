@@ -29,7 +29,8 @@ export const allStates = timesteps.map(
         people: people.map(p => ({
             name: p,
             balance: balance(p, timestep)
-        }))
+        })),
+        message: "HI"
     })
 );
 
