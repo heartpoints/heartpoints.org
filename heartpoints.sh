@@ -27,7 +27,7 @@ string_is_empty() { local possiblyEmptyString=$1
 heartpoints_dev() {
     heartpoints_yarn install
     heartpoints_yarn webpack
-    heartpoints_yarn start
+    heartpoints_yarn ts-node src/app.ts
 }
 
 heartpoints_yarn() { local args=$@
