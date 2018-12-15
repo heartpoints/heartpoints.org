@@ -1,1 +1,1 @@
-start: ./heartpoints.sh production
+web: ./heartpoints.sh production
