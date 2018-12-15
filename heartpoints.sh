@@ -13,8 +13,9 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "dev     - run dev web server locally and pop open browser (may require refresh)"
-    echo "deploy  - interactive interview to deploy to production, requires heroku credentials"
+    echo "dev            - run dev web server locally and pop open browser (may require refresh)"
+    echo "deploy         - interactive interview to deploy to production, requires heroku credentials"
+    echo "onPullRequest  - validates that a pull request is ready for production"
     echo ""
 }
 
@@ -23,6 +24,11 @@ string_is_empty() { local possiblyEmptyString=$1
 }
 
 heartpoints_dev() {
+    heartpoints_prepareForRun
+    yarn start
+}
+
+heartpoints_prepareForRun() {
     nvm_load
     nvm install
     nvm use
@@ -30,8 +36,23 @@ heartpoints_dev() {
         npm install yarn -g
     fi
     yarn
-    open http://localhost:5001
-    yarn start
+}
+
+heartpoints_dev_url() {
+    echo "http://localhost:5001"
+}
+
+heartpoints_onPullRequest() {
+    set -e
+    heartpoints_prepareForRun
+    local logLocation="heartpoints_dev.log"
+    echo "starting web server, logging to ${logLocation}"
+    node app.js &
+    local heartpointsPID=$!
+    sleep 5
+    curl "$(heartpoints_dev_url)" --fail
+    kill $heartpointsPID
+    echo "Success!"
 }
 
 git_current_branch() {
