@@ -13,8 +13,9 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "dev     - run dev web server locally and pop open browser (may require refresh)"
-    echo "deploy  - interactive interview to deploy to production, requires heroku credentials"
+    echo "dev            - run dev web server locally and pop open browser (may require refresh)"
+    echo "deploy         - interactive interview to deploy to production, requires heroku credentials"
+    echo "onPullRequest  - validates that a pull request is ready for production"
     echo ""
 }
 
@@ -32,6 +33,10 @@ heartpoints_dev() {
     yarn
     open http://localhost:5001
     yarn start
+}
+
+heartpoints_onPullRequest() {
+    echo "hi tomtom"; exit 1
 }
 
 git_current_branch() {
