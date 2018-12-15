@@ -24,6 +24,11 @@ string_is_empty() { local possiblyEmptyString=$1
 }
 
 heartpoints_dev() {
+    heartpoints_prepareForRun
+    yarn start
+}
+
+heartpoints_prepareForRun() {
     nvm_load
     nvm install
     nvm use
@@ -31,8 +36,6 @@ heartpoints_dev() {
         npm install yarn -g
     fi
     yarn
-    open "$(heartpoints_dev_url)"
-    yarn start
 }
 
 heartpoints_dev_url() {
@@ -40,12 +43,16 @@ heartpoints_dev_url() {
 }
 
 heartpoints_onPullRequest() {
-    set -ex
-    heartpoints_dev &
+    set -e
+    heartpoints_prepareForRun
+    local logLocation="heartpoints_dev.log"
+    echo "starting web server, logging to ${logLocation}"
+    node app.js &
     local heartpointsPID=$!
-    sleep 5000
+    sleep 5
     curl "$(heartpoints_dev_url)"
     kill $heartpointsPID
+    echo "Success!"
 }
 
 git_current_branch() {
