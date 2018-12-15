@@ -1,8 +1,8 @@
 version: 2
 jobs:
-  build:
+  onPullRequest:
     docker:
-      - image: circleci/ruby:2.4.1
+      - image: circleci/node:10
     steps:
       - checkout
-      - run: echo "A first hello"
+      - run: ./heartpoints.sh onPullRequest
