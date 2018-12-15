@@ -57,7 +57,7 @@ heartpoints_onPullRequest() {
 
 heartpoints_production() {
     heartpoints_prepareForRun
-    export PORT
+    export PORT=80
     yarn start
 }
 
