@@ -1,1 +1,1 @@
-start: npm start
+start: ./heartpoints.sh production

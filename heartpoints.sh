@@ -76,11 +76,12 @@ strings_are_equal() { local string1=$1; local string2=$2
 heartpoints_deploy() {
     if git_working_directory_is_clean && git_current_branch_is_master; then
         (brew install heroku/brew/heroku)
+        brew upgrade heroku
         heroku login
         heroku git:remote --app heartpoints-org
         git push heroku head
     else
-        echo "Cannot deploy, working directory must ber clean and current branch must be master"
+        echo "Cannot deploy, working directory must be clean and current branch must be master"
         exit 1
     fi
 }
