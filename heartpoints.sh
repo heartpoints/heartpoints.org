@@ -50,7 +50,7 @@ heartpoints_onPullRequest() {
     node app.js &
     local heartpointsPID=$!
     sleep 5
-    curl "$(heartpoints_dev_url)"
+    curl "$(heartpoints_dev_url)" --fail
     kill $heartpointsPID
     echo "Success!"
 }
