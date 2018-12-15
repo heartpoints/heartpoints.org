@@ -41,7 +41,7 @@ heartpoints_dev_url() {
 
 heartpoints_onPullRequest() {
     set -ex
-    heartpoints_dev() &
+    heartpoints_dev &
     local heartpointsPID=$!
     curl "$(heartpoints_dev_url)"
     kill $heartpointsPID
