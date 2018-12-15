@@ -43,6 +43,7 @@ heartpoints_onPullRequest() {
     set -ex
     heartpoints_dev &
     local heartpointsPID=$!
+    sleep 5000
     curl "$(heartpoints_dev_url)"
     kill $heartpointsPID
 }
