@@ -55,6 +55,12 @@ heartpoints_onPullRequest() {
     echo "Success!"
 }
 
+heartpoints_production() {
+    heartpoints_prepareForRun
+    export PORT
+    yarn start
+}
+
 git_current_branch() {
     echo "$(git rev-parse --abbrev-ref HEAD)"
 }
