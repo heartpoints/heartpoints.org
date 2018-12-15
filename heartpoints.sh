@@ -31,12 +31,20 @@ heartpoints_dev() {
         npm install yarn -g
     fi
     yarn
-    open http://localhost:5001
+    open "$(heartpoints_dev_url)"
     yarn start
 }
 
+heartpoints_dev_url() {
+    echo "http://localhost:5001"
+}
+
 heartpoints_onPullRequest() {
-    echo "hi tomtom"; exit 1
+    set -ex
+    heartpoints_dev() &
+    local heartpointsPID=$!
+    curl "$(heartpoints_dev_url)"
+    kill $heartpointsPID
 }
 
 git_current_branch() {
