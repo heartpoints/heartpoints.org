@@ -3,23 +3,19 @@ heartpoints.org website
 
 # Developing this website:
 
-## Clone the repository using Git
+## Clone the repository to your development environment
 
-First, install the "git" program on your computer. Next use it to
-pull down a clone of the shared github workspace. This is a place where 
-we keep the shared code for the website:
+Follow [these instructions](https://help.github.com/articles/fork-a-repo/)
+to get a local version of this repository.
 
-    git clone https://github.com/heartpoints-org/heartpoints.org.git
-    
 ## Use the CLI
 
-Use the `./heartpoints.sh` CLI to run various commands that are useful
+On a machine with bash shall, use the `./heartpoints.sh` CLI to run various commands that are useful
 in the development of heartpoints.org
 
 ### Run Dev Server
 
-To run a local web server and then pop up a browser window showing the homepage 
-for that server, run:
+To prepare and run the web server, run:
 
     ./heartpoints.sh dev
 
@@ -28,7 +24,7 @@ for that server, run:
 At the moment heartpoints.org is hosted on heroku. To deploy, make sure you have
 a sufficiently privileged user credential handy, and run:
 
-    ,/heartpoints.sh deploy
+    ./heartpoints.sh deploy
 
 This brief interactive script will deploy. Note: only deploys from "master"
 are allowed.
