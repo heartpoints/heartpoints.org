@@ -70,7 +70,7 @@ heartpoints_dev_url() {
 heartpoints_onPullRequest() {
     set -e
     heartpoints_prepareForRun
-    node src/app.js &
+    heartpoints_yarn start &
     local heartpointsPID=$!
     sleep 5
     curl "$(heartpoints_dev_url)" --fail
@@ -85,7 +85,7 @@ heartpoints_onMasterMerge() {
 heartpoints_production() {
     heartpoints_prepareForRun
     export PORT
-    yarn start
+    heartpoints_yarn start
 }
 
 git_current_branch() {
