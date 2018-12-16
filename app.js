@@ -24,8 +24,7 @@ function setUpMiddleWare(expressApplication) {
     expressApplication.use(expressModule.urlencoded());
     expressApplication.use(expressModule.methodOverride());
     expressApplication.use((request, response, next) => {
-        console.log('adding x-comm');
-        response.set('X-commit-sha', sha1);
+        response.set('X-Commit-Sha', sha1);
         next();
     });
     expressApplication.use(expressApplication.router);
