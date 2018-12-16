@@ -92,7 +92,7 @@ heartpoints_circleci_deploy() {
 }
 
 heartpoints_circleci_deploy_details() {
-    git push "https://heroku:${herokuApiKey}@git.heroku.com/heartpoints-org.git" master
+    git push "https://heroku:${herokuApiKey}@git.heroku.com/heartpoints-org.git" master --force-with-lease
 }
 
 heroku_cli() { local args=$@
