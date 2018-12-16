@@ -14,7 +14,7 @@ heartpoints_help() {
     echo "Commands:"
     echo ""
     echo "dev            - run dev web server locally and pop open browser (may require refresh)"
-    echo "deploy         - interactive interview to deploy to production, requires heroku credentials"
+    echo "manual_deploy  - interactive interview to deploy to production, requires heroku credentials"
     echo "onPullRequest  - validates that a pull request is ready for production"
     echo ""
 }
@@ -53,6 +53,10 @@ heartpoints_onPullRequest() {
     echo "Success!"
 }
 
+heartpoints_onMasterMerge() {
+    heartpoints_circleci_deploy
+}
+
 heartpoints_production() {
     heartpoints_prepareForRun
     export PORT
@@ -71,18 +75,34 @@ strings_are_equal() { local string1=$1; local string2=$2
     [ "${string1}" = "${string2}" ]
 }
 
-heartpoints_deploy() {
+heartpoints_circleci_deploy() {
+    heartpoints_general_deploy heartpoints_circleci_deploy_details
+}
+
+heartpoints_circleci_deploy_details() {
+    git push "https://heroku:${herokuApiKey}@git.heroku.com/heartpoints-org.git" master
+}
+
+heartpoints_general_deploy() { local detailedDeployCommand=$1
     if git_working_directory_is_clean && git_current_branch_is_master; then
         (brew install heroku/brew/heroku)
         brew upgrade heroku
-        heroku login
-        heroku git:remote --app heartpoints-org
         heroku config:set commitSha="$(git rev-parse HEAD)" --app heartpoints-org
-        git push heroku head
+        $detailedDeployCommand
     else
         echo "Cannot deploy, working directory must be clean and current branch must be master"
         exit 1
     fi
+}
+
+heartpoints_manual_deploy() {
+    heartpoints_general_deploy heartpoints_manual_deploy_details
+}
+
+heartpoints_manual_deploy_details() {
+    heroku login
+    heroku git:remote --app heartpoints-org
+    git push heroku head
 }
 
 git_working_directory_is_clean() {

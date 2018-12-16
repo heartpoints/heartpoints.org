@@ -1,8 +1,20 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - checkout
-      - run: ./heartpoints.sh onPullRequest
+  - onPullRequest:
+      filters:
+        branches:
+          not: /^master$/
+      docker:
+        - image: circleci/node:10
+      steps:
+        - checkout
+        - run: ./heartpoints.sh onPullRequest
+  - onMasterMerge:
+      filters:
+        branches:
+          only: /^master$/
+        docker:
+          - image: circleci/node:10
+        steps:
+          - checkout
+          - run: ./heartpoints.sh onMasterMerge
