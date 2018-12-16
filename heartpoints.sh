@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -e
+
 heartpoints() { local command=$1
     if string_is_empty "${command}"; then
         heartpoints_help
@@ -84,11 +86,14 @@ heartpoints_circleci_deploy_details() {
 }
 
 heartpoints_general_deploy() { local detailedDeployCommand=$1
+    set -e
     if git_working_directory_is_clean && git_current_branch_is_master; then
-        (brew install heroku/brew/heroku)
-        brew upgrade heroku
-        heroku config:set commitSha="$(git rev-parse HEAD)" --app heartpoints-org
+        if command_does_not_exist heroku; then
+            (brew install heroku/brew/heroku)
+        fi
         $detailedDeployCommand
+        heroku config:set shaOfMostRecentSuccessfulDeployment="$(git rev-parse HEAD)" --app heartpoints-org
+
     else
         echo "Cannot deploy, working directory must be clean and current branch must be master"
         exit 1
@@ -100,9 +105,9 @@ heartpoints_manual_deploy() {
 }
 
 heartpoints_manual_deploy_details() {
-    heroku login
+    heroku login --interactive
     heroku git:remote --app heartpoints-org
-    git push heroku head
+    git push heroku head --force-with-lease
 }
 
 git_working_directory_is_clean() {
