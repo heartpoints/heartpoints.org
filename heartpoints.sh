@@ -100,9 +100,10 @@ heartpoints_onPullRequest() {
 }
 
 heartpoints_test() { local baseUrl=$1
-    set -e
+    set -ex
     curl "${baseUrl}" --fail
     curl "${baseUrl}/bundle.js" --fail
+    set +x
 }
 
 heartpoints_onMasterMerge() {
