@@ -92,7 +92,7 @@ heartpoints_circleci_deploy() {
 }
 
 heartpoints_circleci_deploy_details() {
-    git push "https://heroku:${herokuApiKey}@git.heroku.com/heartpoints-org.git" master --force-with-lease
+    git push "https://heroku:${herokuApiKey}@git.heroku.com/heartpoints-org.git" master --force
 }
 
 heroku_cli() { local args=$@
@@ -104,8 +104,6 @@ heroku_cli() { local args=$@
 
 heartpoints_general_deploy() { local detailedDeployCommand=$1
     set -e
-    git fetch --all
-    git status
     if git_working_directory_is_clean && git_current_branch_is_master; then
         $detailedDeployCommand
         heroku_cli config:set shaOfMostRecentSuccessfulDeployment="$(git rev-parse HEAD)" --app heartpoints-org
