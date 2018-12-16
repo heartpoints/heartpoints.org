@@ -7,7 +7,9 @@ const EXPRESS_VIEW_PATH_CONFIG_KEY = 'views';
 const VIEWS_PATH = 'views';
 const STARTUP_MESSAGE = 'Express server listening on http://localhost:';
 const { env } = process;
-const sha1 = env.commitSha || 'unknown sha';
+const shaHeaders = {
+    shaOfMostRecentSuccessfulDeployment: env.shaOfMostRecentSuccessfulDeployment || 'unknown sha'
+}
 
 const httpPort = env.PORT ? env.PORT : 5001;
 const expressApplication = expressModule();
@@ -24,7 +26,7 @@ function setUpMiddleWare(expressApplication) {
     expressApplication.use(expressModule.urlencoded());
     expressApplication.use(expressModule.methodOverride());
     expressApplication.use((request, response, next) => {
-        response.set('X-Commit-Sha', sha1);
+        response.set(shaHeaders);
         next();
     });
     expressApplication.use(expressApplication.router);

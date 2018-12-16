@@ -21,10 +21,15 @@ To prepare and run the web server, run:
 
 ### Deploy to Production
 
-At the moment heartpoints.org is hosted on heroku. To deploy, make sure you have
-a sufficiently privileged user credential handy, and run:
+#### Continuous Deployment Automation
 
-    ./heartpoints.sh deploy
+Deploys to production shall happen automatically upon merge via CircleCI
+(see ./circleci/config.yml).
 
-This brief interactive script will deploy. Note: only deploys from "master"
+#### Manual Deployment
+
+Make sure you have Heroku deployment credentials, then launch the interactive
+manual deploy script: `./heartpoints.sh manual_deploy`
+
+Note: only deploys from "master"
 are allowed.

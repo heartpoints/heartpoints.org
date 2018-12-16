@@ -1,8 +1,26 @@
 version: 2
 jobs:
-  build:
+  onPullRequest:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: ./heartpoints.sh onPullRequest
+  onMasterMerge:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run: ./heartpoints.sh onMasterMerge
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - onPullRequest:
+          filters:
+            branches:
+              ignore: master
+      - onMasterMerge:
+          filters:
+            branches:
+              only: master

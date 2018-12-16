@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -e
+
 heartpoints() { local command=$1
     if string_is_empty "${command}"; then
         heartpoints_help
@@ -7,15 +9,25 @@ heartpoints() { local command=$1
     fi
 }
 
+heroku_login() {
+    heroku_cli login --interactive
+}
+
+heartpoints_tailProductionLogs() {
+    heroku_login
+    heroku_cli logs --tail
+}
+
 heartpoints_help() {
     echo ""
     echo "Usage: heartpoints.sh [command]"
     echo ""
     echo "Commands:"
     echo ""
-    echo "dev            - run dev web server locally and pop open browser (may require refresh)"
-    echo "deploy         - interactive interview to deploy to production, requires heroku credentials"
-    echo "onPullRequest  - validates that a pull request is ready for production"
+    echo "dev                   - run dev web server locally and pop open browser (may require refresh)"
+    echo "manual_deploy         - interactive interview to deploy to production, requires heroku credentials"
+    echo "onPullRequest         - validates that a pull request is ready for production"
+    echo "tailProductionLogs    - tail the logs from production to see how server is performing"
     echo ""
 }
 
@@ -53,6 +65,10 @@ heartpoints_onPullRequest() {
     echo "Success!"
 }
 
+heartpoints_onMasterMerge() {
+    heartpoints_circleci_deploy
+}
+
 heartpoints_production() {
     heartpoints_prepareForRun
     export PORT
@@ -71,18 +87,40 @@ strings_are_equal() { local string1=$1; local string2=$2
     [ "${string1}" = "${string2}" ]
 }
 
-heartpoints_deploy() {
-    if git_working_directory_is_clean && git_current_branch_is_master; then
+heartpoints_circleci_deploy() {
+    heartpoints_general_deploy heartpoints_circleci_deploy_details
+}
+
+heartpoints_circleci_deploy_details() {
+    git push "https://heroku:${herokuApiKey}@git.heroku.com/heartpoints-org.git" master --force-with-lease
+}
+
+heroku_cli() { local args=$@
+    if command_does_not_exist heroku; then
         (brew install heroku/brew/heroku)
-        brew upgrade heroku
-        heroku login
-        heroku git:remote --app heartpoints-org
-        heroku config:set commitSha="$(git rev-parse HEAD)" --app heartpoints-org
-        git push heroku head
+    fi
+    heroku $args
+}
+
+heartpoints_general_deploy() { local detailedDeployCommand=$1
+    set -e
+    if git_working_directory_is_clean && git_current_branch_is_master; then
+        $detailedDeployCommand
+        heroku_cli config:set shaOfMostRecentSuccessfulDeployment="$(git rev-parse HEAD)" --app heartpoints-org
     else
         echo "Cannot deploy, working directory must be clean and current branch must be master"
         exit 1
     fi
+}
+
+heartpoints_manual_deploy() {
+    heartpoints_general_deploy heartpoints_manual_deploy_details
+}
+
+heartpoints_manual_deploy_details() {
+    heroku_login
+    heroku_cli git:remote --app heartpoints-org
+    git push heroku head --force-with-lease
 }
 
 git_working_directory_is_clean() {
@@ -111,6 +149,7 @@ file_does_not_exist() { local possibleFilePath=$1
 }
 
 nvm_download_and_install() {
+    touch ~/.bash_profile
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 }
 
