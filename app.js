@@ -7,7 +7,7 @@ const EXPRESS_VIEW_PATH_CONFIG_KEY = 'views';
 const VIEWS_PATH = 'views';
 const STARTUP_MESSAGE = 'Express server listening on http://localhost:';
 const { env } = process;
-const sha1 = env.SOURCE_VERSION || 'unknown sha';
+const sha1 = env.commitSha || 'unknown sha';
 
 const httpPort = env.PORT ? env.PORT : 5001;
 const expressApplication = expressModule();

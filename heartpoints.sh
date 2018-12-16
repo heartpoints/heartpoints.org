@@ -79,6 +79,7 @@ heartpoints_deploy() {
         brew upgrade heroku
         heroku login
         heroku git:remote --app heartpoints-org
+        heroku config:set commitSha="$(git rev-parse HEAD)" --app heartpoints-org
         git push heroku head
     else
         echo "Cannot deploy, working directory must be clean and current branch must be master"
