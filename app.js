@@ -8,7 +8,6 @@ const VIEWS_PATH = 'views';
 const STARTUP_MESSAGE = 'Express server listening on http://localhost:';
 const { env } = process;
 const shaHeaders = {
-    shaOfMostRecentlyAttemptedDeployment: env.shaOfMostRecentlyAttemptedDeployment || 'unknown sha',
     shaOfMostRecentSuccessfulDeployment: env.shaOfMostRecentSuccessfulDeployment || 'unknown sha'
 }
 

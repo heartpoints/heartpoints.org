@@ -23,12 +23,12 @@ To prepare and run the web server, run:
 
 #### Continuous Deployment Automation
 
-Deploys to production shall happen automatically upon merge via circleci
+Deploys to production shall happen automatically upon merge via CircleCI
 (see ./circleci/config.yml).
 
 #### Manual Deployment
 
-Make sure you have heroku deployment credentials, then launch the interactive
+Make sure you have Heroku deployment credentials, then launch the interactive
 manual deploy script: `./heartpoints.sh manual_deploy`
 
 Note: only deploys from "master"
