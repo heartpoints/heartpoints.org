@@ -2,13 +2,13 @@ version: 2
 jobs:
   onPullRequest:
     docker:
-      - image: circleci/node:10
+      - image: heroku/nodejs:latest
     steps:
       - checkout
       - run: ./heartpoints.sh onPullRequest
   onMasterMerge:
     docker:
-      - image: circleci/node:10
+      - image: heroku/nodejs:latest
     steps:
       - checkout
       - run: ./heartpoints.sh onMasterMerge
