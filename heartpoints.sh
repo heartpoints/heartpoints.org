@@ -45,8 +45,6 @@ heartpoints_dev_url() {
 heartpoints_onPullRequest() {
     set -e
     heartpoints_prepareForRun
-    local logLocation="heartpoints_dev.log"
-    echo "starting web server, logging to ${logLocation}"
     node app.js &
     local heartpointsPID=$!
     sleep 5
