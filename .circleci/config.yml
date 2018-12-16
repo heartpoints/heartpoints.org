@@ -1,20 +1,20 @@
 version: 2
 jobs:
-  - onPullRequest:
-      filters:
-        branches:
-          not: /^master$/
+  onPullRequest:
+    filters:
+      branches:
+        not: /^master$/
+    docker:
+      image: circleci/node:10
+    steps:
+      - checkout
+      - run: ./heartpoints.sh onPullRequest
+  onMasterMerge:
+    filters:
+      branches:
+        only: /^master$/
       docker:
-        - image: circleci/node:10
+        image: circleci/node:10
       steps:
         - checkout
-        - run: ./heartpoints.sh onPullRequest
-  - onMasterMerge:
-      filters:
-        branches:
-          only: /^master$/
-        docker:
-          - image: circleci/node:10
-        steps:
-          - checkout
-          - run: ./heartpoints.sh onMasterMerge
+        - run: ./heartpoints.sh onMasterMerge
