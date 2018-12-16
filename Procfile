@@ -1,1 +1,1 @@
-web: ./heartpoints.sh production
+web: export SOURCE_VERSION; ./heartpoints.sh production
