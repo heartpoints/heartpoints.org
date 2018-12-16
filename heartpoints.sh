@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 heartpoints() { local command=$1
     if string_is_empty "${command}"; then
@@ -87,17 +86,17 @@ heartpoints_circleci_deploy_details() {
 
 heartpoints_general_deploy() { local detailedDeployCommand=$1
     set -e
-    if git_working_directory_is_clean && git_current_branch_is_master; then
+    # if git_working_directory_is_clean && git_current_branch_is_master; then
         if command_does_not_exist heroku; then
             (brew install heroku/brew/heroku)
         fi
         $detailedDeployCommand
         heroku config:set shaOfMostRecentSuccessfulDeployment="$(git rev-parse HEAD)" --app heartpoints-org
 
-    else
-        echo "Cannot deploy, working directory must be clean and current branch must be master"
-        exit 1
-    fi
+    # else
+    #     echo "Cannot deploy, working directory must be clean and current branch must be master"
+    #     exit 1
+    # fi
 }
 
 heartpoints_manual_deploy() {
@@ -136,6 +135,7 @@ file_does_not_exist() { local possibleFilePath=$1
 }
 
 nvm_download_and_install() {
+    touch ~/.bash_profile
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 }
 
