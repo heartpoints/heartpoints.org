@@ -106,7 +106,6 @@ heartpoints_general_deploy() { local detailedDeployCommand=$1
     set -e
     if git_working_directory_is_clean && git_current_branch_is_master; then
         $detailedDeployCommand
-        heroku_cli config:set shaOfMostRecentSuccessfulDeployment="$(git rev-parse HEAD)" --app heartpoints-org
     else
         echo "Cannot deploy, working directory must be clean and current branch must be master"
         exit 1
