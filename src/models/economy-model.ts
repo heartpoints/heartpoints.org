@@ -33,6 +33,3 @@ export const allStates = timesteps.map(
         message: "HI"
     })
 );
-
-// const printPerson = person => console.log(`${person}: ${timesteps.map(t => balance(person, t)).join(", ")}`);
-// people.forEach(printPerson);
