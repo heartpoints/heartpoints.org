@@ -1,5 +1,5 @@
 const people = ["EMT", "Tommy", "Mike"];
-const range = (n:number):number[] => Array.apply(null, {length: n}).map(Number.call, Number)
+const range = (n:number):number[] => n == 0 ? [0] : [n, ...range(n - 1)];
 
 interface Transaction {
     amount:number,
