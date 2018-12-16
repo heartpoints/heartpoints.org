@@ -48,7 +48,11 @@ heartpoints_dev() {
 
 heartpoints_prepareForRun() {
     heartpoints_yarn install
-    heartpoints_yarn webpack
+    heartpoints_yarn webpack --verbose
+    if file_does_not_exist "dist/bundle.js"; then
+        echo "dist/bundle.js not found. was webpack successful?"
+        exit 1
+    fi
 }
 
 heartpoints_yarn() { local args=$@
@@ -73,18 +77,22 @@ heartpoints_onPullRequest() {
     heartpoints_yarn start &
     local heartpointsPID=$!
     sleep 5
-    heartpoints_test
+    heartpoints_test "$(heartpoints_dev_url)"
     kill $heartpointsPID
     echo "Success!"
 }
 
-heartpoints_test() {
-    curl "$(heartpoints_dev_url)" --fail
-    curl "$(heartpoints_dev_url)/bundle.js" --fail
+heartpoints_test() { local baseUrl=$1
+    curl "${baseUrl}" --fail
+    curl "${baseUrl}/bundle.js" --fail
 }
 
 heartpoints_onMasterMerge() {
     heartpoints_circleci_deploy
+    local secondsToWait=45
+    echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
+    sleep ${secondsToWait}
+    heartpoints_test "http://heartpoints.org"
 }
 
 heartpoints_production() {
