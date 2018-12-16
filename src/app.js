@@ -3,8 +3,6 @@ const http = require('http');
 const path = require('path');
 
 const EXPRESS_PORT_CONFIG_KEY = 'port';
-const EXPRESS_VIEW_PATH_CONFIG_KEY = 'views';
-const VIEWS_PATH = 'views';
 const STARTUP_MESSAGE = 'Express server listening on http://localhost:';
 const { env } = process;
 
@@ -13,17 +11,12 @@ const expressApplication = expressModule();
 
 function setUpCoreServer(expressApplication) {
     expressApplication.set(EXPRESS_PORT_CONFIG_KEY, httpPort);
-    expressApplication.set(EXPRESS_VIEW_PATH_CONFIG_KEY, path.join(__dirname, VIEWS_PATH));
 }
 
 function setUpMiddleWare(expressApplication) {
-    expressApplication.use(expressModule.favicon());
-    expressApplication.use(expressModule.compress());
-    expressApplication.use(expressModule.logger('dev'));
-    expressApplication.use(expressModule.urlencoded());
-    expressApplication.use(expressModule.methodOverride());
-    expressApplication.use(expressApplication.router);
-    expressApplication.use(expressModule.static(process.cwd() + '/public'));
+    expressApplication.use(expressModule.static(path.join(__dirname, "./public")));
+    expressApplication.use(expressModule.static(path.join(__dirname, "../node_modules")));
+    expressApplication.use(expressModule.static(path.join(__dirname, "../dist")));
 }
 
 function startServer(expressApplication) {
