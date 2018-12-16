@@ -57,14 +57,31 @@ heartpoints_prepareForRun() {
 
 heartpoints_yarn() { local args=$@
     if command_does_not_exist "yarn"; then
-        nvm_load
-        set +e
-        nvm install 
-        set -e
-        nvm use
-        npm install yarn -g
+        npm_cli install yarn -g
     fi
     yarn ${args}
+}
+heartpoints_nodejs_ensureCorrectVersion() {
+    nodejs_ensureCorrectVersion
+}
+
+nodejs_ensureCorrectVersion() {
+    if command_does_not_exist "node" || ! strings_are_equal "$(node -v)" "$(cat .nvmrc)"; then
+        nvm_installAndUseVersionInNvmRC
+    fi
+}
+
+nvm_installAndUseVersionInNvmRC() {
+    nvm_load
+    set +e
+    nvm install 
+    set -e
+    nvm use
+}
+
+npm_cli() { local args=$@
+    nodejs_ensureCorrectVersion   
+    npm ${args}
 }
 
 heartpoints_dev_url() {
