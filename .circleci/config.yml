@@ -17,10 +17,10 @@ workflows:
   pipeline:
     jobs:
       - onPullRequest:
-        filters:
-          branches:
-            ignore: master
+          filters:
+            branches:
+              ignore: master
       - onMasterMerge:
-        filters:
-          branches:
-            only: master
+          filters:
+            branches:
+              only: master
