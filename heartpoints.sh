@@ -100,6 +100,7 @@ heartpoints_onPullRequest() {
 }
 
 heartpoints_test() { local baseUrl=$1
+    set -e
     curl "${baseUrl}" --fail
     curl "${baseUrl}/bundle.js" --fail
 }
@@ -109,7 +110,9 @@ heartpoints_onMasterMerge() {
     local secondsToWait=45
     echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
     sleep ${secondsToWait}
+    echo "Testing..."
     heartpoints_test "http://heartpoints.org"
+    echo "Done testing!"
 }
 
 heartpoints_production() {
