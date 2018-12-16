@@ -104,6 +104,7 @@ heroku_cli() { local args=$@
 
 heartpoints_general_deploy() { local detailedDeployCommand=$1
     set -e
+    git fetch --all
     git status
     if git_working_directory_is_clean && git_current_branch_is_master; then
         $detailedDeployCommand
