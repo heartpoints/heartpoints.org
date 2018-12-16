@@ -13,9 +13,13 @@ heroku_login() {
     heroku_cli login --interactive
 }
 
+heroku_applicationName() {
+    echo "heartpoints-org"
+}
+
 heartpoints_tailProductionLogs() {
     heroku_login
-    heroku_cli logs --tail
+    heroku_cli logs --app $(heroku_applicationName) --tail
 }
 
 heartpoints_help() {
@@ -42,7 +46,9 @@ heartpoints_dev() {
 
 heartpoints_prepareForRun() {
     nvm_load
-    nvm install
+    set +e
+    nvm install 
+    set -e
     nvm use
     if command_does_not_exist "yarn"; then
         npm install yarn -g
@@ -92,7 +98,7 @@ heartpoints_circleci_deploy() {
 }
 
 heartpoints_circleci_deploy_details() {
-    git push "https://heroku:${herokuApiKey}@git.heroku.com/heartpoints-org.git" master --force
+    git push "https://heroku:${herokuApiKey}@git.heroku.com/$(heroku_applicationName).git" master --force
 }
 
 heroku_cli() { local args=$@
@@ -118,8 +124,8 @@ heartpoints_manual_deploy() {
 
 heartpoints_manual_deploy_details() {
     heroku_login
-    heroku_cli git:remote --app heartpoints-org
-    git push heroku head --force-with-lease
+    heroku_cli git:remote --app $(heroku_applicationName)
+    git push heroku head --force
 }
 
 git_working_directory_is_clean() {
@@ -157,7 +163,9 @@ nvm_load() {
         if file_does_not_exist "$(nvm_script_path)"; then
             nvm_download_and_install
         fi
+        set +e
         nvm_load_existing_nvm
+        set -e
     fi
 }
 
