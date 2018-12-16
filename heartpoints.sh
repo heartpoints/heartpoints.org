@@ -70,7 +70,7 @@ heartpoints_dev_url() {
 heartpoints_onPullRequest() {
     set -e
     heartpoints_prepareForRun
-    node app.js &
+    node src/app.js &
     local heartpointsPID=$!
     sleep 5
     curl "$(heartpoints_dev_url)" --fail
