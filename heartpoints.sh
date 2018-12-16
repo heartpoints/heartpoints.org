@@ -73,9 +73,14 @@ heartpoints_onPullRequest() {
     heartpoints_yarn start &
     local heartpointsPID=$!
     sleep 5
-    curl "$(heartpoints_dev_url)" --fail
+    heartpoints_test
     kill $heartpointsPID
     echo "Success!"
+}
+
+heartpoints_test() {
+    curl "$(heartpoints_dev_url)" --fail
+    curl "$(heartpoints_dev_url)/bundle.js" --fail
 }
 
 heartpoints_onMasterMerge() {
