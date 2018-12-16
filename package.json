@@ -17,10 +17,9 @@
   },
   "homepage": "https://github.com/in-need-org/hrtz.io#readme",
   "dependencies": {
-    "express": "3.4.4"
+    "express": "~3.11"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "engines": {
     "node": ">=0.10.0"
   }
