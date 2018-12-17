@@ -43,7 +43,7 @@ string_is_empty() { local possiblyEmptyString=$1
 
 heartpoints_dev() {
     heartpoints_prepareForRun
-    heartpoints_yarn start
+    heartpoints_runServer
 }
 
 heartpoints_prepareForRun() {
@@ -88,14 +88,20 @@ heartpoints_dev_url() {
     echo "http://localhost:5001"
 }
 
-heartpoints_onPullRequest() {
-    set -e
-    heartpoints_prepareForRun
-    heartpoints_yarn start &
-    local heartpointsPID=$!
+heartpoints_onPullRequest() { export herokuApiKey
+    local testName="heartpointsTest"
+    trap "docker stop ${testName}" EXIT
+
+    local imageName="heartpoints"
+    local nameAndShaTag="${imageName}:$(git_currentSha)"
+    docker build -t ${nameAndShaTag} .
+
+    docker run --detach --name "${testName}" --rm "${nameAndShaTag}"
     sleep 5
-    heartpoints_test "$(heartpoints_dev_url)"
-    kill $heartpointsPID
+    docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
+
+    docker login --username=tom@cleveweb.com --password=${herokuApiKey} registry.heroku.com
+    docker push registry.heroku.com/$(heroku_applicationName)/${nameAndShaTag}
     echo "Success!"
 }
 
@@ -112,18 +118,25 @@ heartpoints_onMasterMerge() {
     echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
     sleep ${secondsToWait}
     echo "Testing..."
-    heartpoints_test "http://heartpoints.org"
+    heartpoints_test "http://www.heartpoints.org"
     echo "Done testing!"
+}
+
+heartpoints_runServer() {
+    heartpoints_yarn start
 }
 
 heartpoints_production() {
     heartpoints_prepareForRun
     export PORT
-    heartpoints_yarn start
 }
 
 git_current_branch() {
     echo "$(git rev-parse --abbrev-ref HEAD)"
+}
+
+git_currentSha() {
+    echo "$(git rev-parse HEAD)"
 }
 
 git_current_branch_is_master() {
@@ -138,7 +151,7 @@ heartpoints_circleci_deploy() {
     heartpoints_general_deploy heartpoints_circleci_deploy_details
 }
 
-heartpoints_circleci_deploy_details() {
+heartpoints_circleci_deploy_details() { export herokuApiKey
     git push "https://heroku:${herokuApiKey}@git.heroku.com/$(heroku_applicationName).git" master --force
 }
 

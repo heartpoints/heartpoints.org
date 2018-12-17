@@ -5,6 +5,7 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
+      - setup_remote_docker
       - run: ./heartpoints.sh onPullRequest
   onMasterMerge:
     docker:

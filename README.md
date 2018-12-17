@@ -41,3 +41,6 @@ way for one person to give hp to another person
 add expirations to transactions
 change how transactions get generated
 plot data visually
+
+find way to run docker build from within circleci job
+publish docker image to heroku using their api stuff
