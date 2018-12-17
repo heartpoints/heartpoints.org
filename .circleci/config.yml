@@ -7,7 +7,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: export herokuApiKey; ./heartpoints.sh onPullRequest
+      - run: env; export herokuApiKey; ./heartpoints.sh onPullRequest
   onMasterMerge:
     docker:
       - image: circleci/node:10

@@ -89,6 +89,7 @@ heartpoints_dev_url() {
 }
 
 heartpoints_onPullRequest() { export herokuApiKey
+    env
     local testName="heartpointsTest"
     trap "docker stop ${testName}" EXIT
 
