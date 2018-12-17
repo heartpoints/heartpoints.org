@@ -7,11 +7,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: 
-          name: onPullRequest
-          command: |
-            echo 'export HEROKU_API_KEY=$HEROKU_API_KEY'
-            ./heartpoints.sh onPullRequest
+      - run: ./heartpoints.sh onPullRequest
   onMasterMerge:
     docker:
       - image: circleci/node:10
@@ -23,6 +19,7 @@ workflows:
   pipeline:
     jobs:
       - onPullRequest:
+          context: heroku
           filters:
             branches:
               ignore: master
