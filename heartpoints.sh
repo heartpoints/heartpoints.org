@@ -88,22 +88,21 @@ heartpoints_dev_url() {
     echo "http://localhost:5001"
 }
 
+heartpoints_dockerImageURI() {
+    local imageName="heartpoints.org"
+    echo "registry.heroku.com/$(heroku_applicationName)/$imageName:$(git_currentSha)"
+}
+
 heartpoints_onPullRequest() { export herokuApiKey
     local testName="heartpointsTest"
     trap "docker stop ${testName}" EXIT
+    
+    docker build -t $(heartpoints_dockerImageURI) .
 
-    local imageName="heartpoints"
-    local nameAndShaTag="registry.heroku.com/$(heroku_applicationName)/${imageName}:$(git_currentSha)"
-    docker build -t ${nameAndShaTag} .
-
-    docker run --detach --name "${testName}" --rm "${nameAndShaTag}"
+    docker run --detach --name "${testName}" --rm "$(heartpoints_dockerImageURI)"
     sleep 5
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
 
-echo "nameAndSha: $nameAndShaTag"
-set -x
-    docker login --username=tom@cleveweb.com --password="${herokuApiKey}" registry.heroku.com
-    docker push ${nameAndShaTag}
     echo "Success!"
 }
 
@@ -149,8 +148,18 @@ strings_are_equal() { local string1=$1; local string2=$2
     [ "${string1}" = "${string2}" ]
 }
 
-heartpoints_circleci_deploy() {
-    heartpoints_general_deploy heartpoints_circleci_deploy_details
+heartpoints_circleci_deploy() { export herokuApiKey
+    local imageURI="registry.heroku.com/heartpoints-org/web"
+    docker build -t "${imageURI}" .
+    docker login --username=tom@cleveweb.com --password="${herokuApiKey}" registry.heroku.com
+    docker push "${imageURI}"
+    local imageId=$(docker inspect registry.heroku.com/$(heroku_applicationName)/web --format={{.Id}})
+    local payload='{"updates":[{"type":"web","docker_image":"'"$imageId"'"}]}'
+    curl -n -X PATCH https://api.heroku.com/apps/$(heroku_applicationName)/formation \
+        -d "$payload" \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
+        -H "Authorization: Bearer $herokuApiKey"
 }
 
 heartpoints_circleci_deploy_details() { export herokuApiKey
