@@ -10,7 +10,8 @@ jobs:
       - run: 
           name: onPullRequest
           command: |
-            herokuApiKey=$herokuApiKey ./heartpoints.sh onPullRequest
+            ./heartpoints.sh onPullRequest
+          environment:
   onMasterMerge:
     docker:
       - image: circleci/node:10

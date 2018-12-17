@@ -88,7 +88,7 @@ heartpoints_dev_url() {
     echo "http://localhost:5001"
 }
 
-heartpoints_onPullRequest() { export herokuApiKey
+heartpoints_onPullRequest() { export HEROKU_API_KEY
     env
     local testName="heartpointsTest"
     trap "docker stop ${testName}" EXIT
@@ -102,8 +102,8 @@ heartpoints_onPullRequest() { export herokuApiKey
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
 
     echo "nameAndShaTag: ${nameAndShaTag}"
-    echo "herokuApiKey: ${herokuApiKey}"
-    docker login --username=tom@cleveweb.com --password=${herokuApiKey} registry.heroku.com
+    echo "HEROKU_API_KEY: ${HEROKU_API_KEY}"
+    docker login --username=tom@cleveweb.com --password=${HEROKU_API_KEY} registry.heroku.com
     docker push ${nameAndShaTag}
     echo "Success!"
 }
