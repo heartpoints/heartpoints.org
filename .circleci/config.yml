@@ -5,9 +5,13 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run: A=$herokuApiKey ./heartpoints.sh onPullRequest
+      # - setup_remote_docker:
+      #     docker_layer_caching: true
+      - run:
+          name: myes
+          command: |
+            echo $herokuApiKey
+            ./heartpoints.sh onPullRequest
   onMasterMerge:
     docker:
       - image: circleci/node:10
@@ -19,7 +23,7 @@ workflows:
   pipeline:
     jobs:
       - onPullRequest:
-          context: heroku
+          # context: heroku
           filters:
             branches:
               ignore: master
