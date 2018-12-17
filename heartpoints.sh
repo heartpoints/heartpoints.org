@@ -93,15 +93,17 @@ heartpoints_onPullRequest() { export herokuApiKey
     trap "docker stop ${testName}" EXIT
 
     local imageName="heartpoints"
-    local nameAndShaTag="${imageName}:$(git_currentSha)"
+    local nameAndShaTag="registry.heroku.com/$(heroku_applicationName)/${imageName}:$(git_currentSha)"
     docker build -t ${nameAndShaTag} .
 
     docker run --detach --name "${testName}" --rm "${nameAndShaTag}"
     sleep 5
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
 
+    echo "nameAndShaTag: ${nameAndShaTag}"
+    echo "herokuApiKey: ${herokuApiKey}"
     docker login --username=tom@cleveweb.com --password=${herokuApiKey} registry.heroku.com
-    docker push registry.heroku.com/$(heroku_applicationName)/${nameAndShaTag}
+    docker push ${nameAndShaTag}
     echo "Success!"
 }
 
