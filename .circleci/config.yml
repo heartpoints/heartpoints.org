@@ -10,8 +10,8 @@ jobs:
       - run: 
           name: onPullRequest
           command: |
+            echo 'export HEROKU_API_KEY=$HEROKU_API_KEY'
             ./heartpoints.sh onPullRequest
-          environment:
   onMasterMerge:
     docker:
       - image: circleci/node:10
