@@ -11,7 +11,9 @@ to get a local version of this repository.
 ## Use the CLI
 
 On a machine with bash shell, use the `./heartpoints.sh` CLI to run various commands that are useful
-in the development of heartpoints.org
+in the development of heartpoints.org.
+
+To get a list of commands available, just run without arguments: `./heartpoints.sh`
 
 ### Run Dev Server
 

@@ -29,8 +29,8 @@ heartpoints_help() {
     echo "Commands:"
     echo ""
     echo "dev                   - run dev web server locally"
-    echo "manual_deploy         - interactive interview to deploy to production, requires heroku credentials"
-    echo "onPullRequest         - validates that a pull request is ready for production"
+    echo "manualDeploy <gitSha> - interactive interview to deploy to production (will prompt for heroku credentials)"
+    echo "prePushVerification   - validates that local code is ready for pull request"
     echo "tailProductionLogs    - tail the logs from production to see how server is performing"
     echo "model                 - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
     echo "yarn                  - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
@@ -88,40 +88,50 @@ heartpoints_dev_url() {
     echo "http://localhost:5001"
 }
 
-heartpoints_onPullRequest() { export herokuApiKey
+heartpoints_buildAndTagImage() { local imageURI=$1
+    docker build -t ${imageURI} .
+}
+
+heartpoints_testImage() { local imageURI=$1
     local testName="heartpointsTest"
-    trap "docker stop ${testName}" EXIT
-
-    local imageName="heartpoints"
-    local nameAndShaTag="registry.heroku.com/$(heroku_applicationName)/${imageName}:$(git_currentSha)"
-    docker build -t ${nameAndShaTag} .
-
-    docker run --detach --name "${testName}" --rm "${nameAndShaTag}"
+    trap "docker stop ${testName} > /dev/null" EXIT
+    docker run --detach --name "${testName}" --rm "${imageURI}"
     sleep 5
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
+}
 
-echo "nameAndSha: $nameAndShaTag"
-set -x
-    docker login --username=tom@cleveweb.com --password="${herokuApiKey}" registry.heroku.com
-    docker push ${nameAndShaTag}
-    echo "Success!"
+heartpoints_prePushVerification() {
+    heartpoints_buildTagAndTest
+}
+
+heartpoints_onPullRequest() {
+    heartpoints_buildTagAndTest
+}
+
+heartpoints_buildTagAndTest() {
+    local imageURI="heartpoints.org:$(git_currentSha)"
+    heartpoints_buildAndTagImage "${imageURI}"
+    heartpoints_testImage "${imageURI}"
 }
 
 heartpoints_test() { local baseUrl=$1
+    echo "Testing..."
     set -ex
     curl "${baseUrl}" --fail
     curl "${baseUrl}/bundle.js" --fail
     set +x
+    echo "Test successful!"
 }
 
-heartpoints_onMasterMerge() {
-    heartpoints_circleci_deploy
+heartpoints_onMasterMerge() { export herokuApiKey
+    local imageURI="registry.heroku.com/$(heroku_applicationName)/web:$(git_currentSha)"
+    heartpoints_buildAndTagImage "${imageURI}"
+    heartpoints_pushImage "${imageURI}" "${herokuApiKey}"
+    heartpoints_deploy $(git_currentSha) "${herokuApiKey}"
     local secondsToWait=45
     echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
     sleep ${secondsToWait}
-    echo "Testing..."
     heartpoints_test "http://www.heartpoints.org"
-    echo "Done testing!"
 }
 
 heartpoints_runServer() {
@@ -149,12 +159,28 @@ strings_are_equal() { local string1=$1; local string2=$2
     [ "${string1}" = "${string2}" ]
 }
 
-heartpoints_circleci_deploy() {
-    heartpoints_general_deploy heartpoints_circleci_deploy_details
+heartpoints_pushImage() { local imageURI=$1; local herokuApiKey=$2
+    docker login --username=tom@cleveweb.com --password="${herokuApiKey}" registry.heroku.com
+    docker push "${imageURI}"
 }
 
-heartpoints_circleci_deploy_details() { export herokuApiKey
-    git push "https://heroku:${herokuApiKey}@git.heroku.com/$(heroku_applicationName).git" master --force
+heartpoints_manualDeploy() { local gitSha=$1
+    heroku_login
+    heartpoints_deploy "${gitSha}" "$(heroku_authTokenForAlreadyLoggedInSession)"
+}
+
+heroku_authTokenForAlreadyLoggedInSession() {
+    heroku auth:token
+}
+
+heartpoints_deploy() { local gitSha=$1; local herokuApiKey=$2
+    local imageURI="registry.heroku.com/$(heroku_applicationName)/web:${gitSha}"
+    local imageId=$(docker inspect ${imageURI} --format={{.Id}})
+    curl -n -X PATCH https://api.heroku.com/apps/$(heroku_applicationName)/formation \
+        -d '{"updates":[{"type":"web","docker_image":"'"${imageId}"'"}]}' \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
+        -H "Authorization: Bearer ${herokuApiKey}"
 }
 
 heroku_cli() { local args=$@
@@ -162,26 +188,6 @@ heroku_cli() { local args=$@
         (brew install heroku/brew/heroku)
     fi
     heroku $args
-}
-
-heartpoints_general_deploy() { local detailedDeployCommand=$1
-    set -e
-    if git_working_directory_is_clean && git_current_branch_is_master; then
-        $detailedDeployCommand
-    else
-        echo "Cannot deploy, working directory must be clean and current branch must be master"
-        exit 1
-    fi
-}
-
-heartpoints_manual_deploy() {
-    heartpoints_general_deploy heartpoints_manual_deploy_details
-}
-
-heartpoints_manual_deploy_details() {
-    heroku_login
-    heroku_cli git:remote --app $(heroku_applicationName)
-    git push heroku head --force
 }
 
 heartpoints_model() {
