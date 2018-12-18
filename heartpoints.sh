@@ -29,8 +29,8 @@ heartpoints_help() {
     echo "Commands:"
     echo ""
     echo "dev                   - run dev web server locally"
-    echo "manualDeploy <gitSha> - interactive interview to deploy to production, requires `herokuApiKey` environment variable set"
-    echo "onPullRequest         - validates that a pull request is ready for production"
+    echo "manualDeploy <gitSha> - interactive interview to deploy to production (will prompt for heroku credentials)"
+    echo "prePushVerification   - validates that local code is ready for pull request"
     echo "tailProductionLogs    - tail the logs from production to see how server is performing"
     echo "model                 - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
     echo "yarn                  - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
@@ -94,17 +94,24 @@ heartpoints_buildAndTagImage() { local imageURI=$1
 
 heartpoints_testImage() { local imageURI=$1
     local testName="heartpointsTest"
-    trap "docker stop ${testName}" EXIT
+    trap "docker stop ${testName} > /dev/null" EXIT
     docker run --detach --name "${testName}" --rm "${imageURI}"
     sleep 5
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
 }
 
-heartpoints_onPullRequest() { export herokuApiKey
+heartpoints_prePushVerification() {
+    heartpoints_buildTagAndTest
+}
+
+heartpoints_onPullRequest() {
+    heartpoints_buildTagAndTest
+}
+
+heartpoints_buildTagAndTest() {
     local imageURI="heartpoints.org:$(git_currentSha)"
     heartpoints_buildAndTagImage "${imageURI}"
     heartpoints_testImage "${imageURI}"
-    echo "Success!"
 }
 
 heartpoints_test() { local baseUrl=$1
@@ -159,7 +166,11 @@ heartpoints_pushImage() { local imageURI=$1; local herokuApiKey=$2
 
 heartpoints_manualDeploy() { local gitSha=$1
     heroku_login
-    heartpoints_deploy "${gitSha}" "$(heroku auth:token)"
+    heartpoints_deploy "${gitSha}" "$(heroku_authTokenForAlreadyLoggedInSession)"
+}
+
+heroku_authTokenForAlreadyLoggedInSession() {
+    heroku auth:token
 }
 
 heartpoints_deploy() { local gitSha=$1; local herokuApiKey=$2
