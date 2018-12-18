@@ -29,7 +29,7 @@ heartpoints_help() {
     echo "Commands:"
     echo ""
     echo "dev                   - run dev web server locally"
-    echo "deploy                - interactive interview to deploy to production, requires `herokuApiKey` environment variable set"
+    echo "manualDeploy <gitSha> - interactive interview to deploy to production, requires `herokuApiKey` environment variable set"
     echo "onPullRequest         - validates that a pull request is ready for production"
     echo "tailProductionLogs    - tail the logs from production to see how server is performing"
     echo "model                 - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
@@ -119,8 +119,8 @@ heartpoints_test() { local baseUrl=$1
 heartpoints_onMasterMerge() { export herokuApiKey
     local imageURI="registry.heroku.com/$(heroku_applicationName)/web:$(git_currentSha)"
     heartpoints_buildAndTagImage "${imageURI}"
-    heartpoints_pushImage "${imageURI}"
-    heartpoints_deploy $(git_currentSha)
+    heartpoints_pushImage "${imageURI}" "${herokuApiKey}"
+    heartpoints_deploy $(git_currentSha) "${herokuApiKey}"
     local secondsToWait=45
     echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
     sleep ${secondsToWait}
@@ -152,12 +152,17 @@ strings_are_equal() { local string1=$1; local string2=$2
     [ "${string1}" = "${string2}" ]
 }
 
-heartpoints_pushImage() { export herokuApiKey; local imageURI=$1
+heartpoints_pushImage() { local imageURI=$1; local herokuApiKey=$2
     docker login --username=tom@cleveweb.com --password="${herokuApiKey}" registry.heroku.com
     docker push "${imageURI}"
 }
 
-heartpoints_deploy() { export herokuApiKey; local gitSha=$1
+heartpoints_manualDeploy() { local gitSha=$1
+    heroku_login
+    heartpoints_deploy "${gitSha}" "$(heroku auth:token)"
+}
+
+heartpoints_deploy() { local gitSha=$1; local herokuApiKey=$2
     local imageURI="registry.heroku.com/$(heroku_applicationName)/web:${gitSha}"
     local imageId=$(docker inspect ${imageURI} --format={{.Id}})
     curl -n -X PATCH https://api.heroku.com/apps/$(heroku_applicationName)/formation \
