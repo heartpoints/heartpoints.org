@@ -196,11 +196,6 @@ heartpoints_model() {
     heartpoints_yarn ts-node src/heartpoints-cli.ts
 }
 
-heartpoints_model() {
-    heartpoints_yarn install
-    heartpoints_yarn ts-node src/heartpoints-cli.ts
-}
-
 git_working_directory_is_clean() {
     [ -z "$(git status --porcelain)" ]
 }
