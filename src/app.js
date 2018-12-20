@@ -5,6 +5,7 @@ const path = require('path');
 const EXPRESS_PORT_CONFIG_KEY = 'port';
 const STARTUP_MESSAGE = 'Express server listening on http://localhost:';
 const { env } = process;
+const { commitSha } = env
 
 const httpPort = env.PORT ? env.PORT : 5001;
 const expressApplication = expressModule();
@@ -14,6 +15,10 @@ function setUpCoreServer(expressApplication) {
 }
 
 function setUpMiddleWare(expressApplication) {
+    expressApplication.use((req, response, next) => {
+        response.set({ commitSha });	
+        next();
+    });
     expressApplication.use(expressModule.static(path.join(__dirname, "./public")));
     expressApplication.use(expressModule.static(path.join(__dirname, "../node_modules")));
     expressApplication.use(expressModule.static(path.join(__dirname, "../dist")));

@@ -13,6 +13,8 @@ jobs:
       - image: circleci/node:10
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run: ./heartpoints.sh onMasterMerge
 workflows:
   version: 2
