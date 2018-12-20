@@ -89,7 +89,7 @@ heartpoints_dev_url() {
 }
 
 heartpoints_buildAndTagImage() { local imageURI=$1
-    docker build -t ${imageURI} .
+    docker build --build-arg commitSha="$(git_commitSha)" -t ${imageURI} .
 }
 
 heartpoints_testImage() { local imageURI=$1
@@ -109,7 +109,7 @@ heartpoints_onPullRequest() {
 }
 
 heartpoints_buildTagAndTest() {
-    local imageURI="heartpoints.org:$(git_currentSha)"
+    local imageURI="heartpoints.org:$(git_commitSha)"
     heartpoints_buildAndTagImage "${imageURI}"
     heartpoints_testImage "${imageURI}"
 }
@@ -119,15 +119,16 @@ heartpoints_test() { local baseUrl=$1
     set -ex
     curl "${baseUrl}" --fail
     curl "${baseUrl}/bundle.js" --fail
+    curl -I "${baseUrl}" | grep "commitSha: $(git_commitSha)"
     set +x
     echo "Test successful!"
 }
 
 heartpoints_onMasterMerge() { export herokuApiKey
-    local imageURI="registry.heroku.com/$(heroku_applicationName)/web:$(git_currentSha)"
+    local imageURI="registry.heroku.com/$(heroku_applicationName)/web:$(git_commitSha)"
     heartpoints_buildAndTagImage "${imageURI}"
     heartpoints_pushImage "${imageURI}" "${herokuApiKey}"
-    heartpoints_deploy $(git_currentSha) "${herokuApiKey}"
+    heartpoints_deploy $(git_commitSha) "${herokuApiKey}"
     local secondsToWait=45
     echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
     sleep ${secondsToWait}
@@ -147,7 +148,7 @@ git_current_branch() {
     echo "$(git rev-parse --abbrev-ref HEAD)"
 }
 
-git_currentSha() {
+git_commitSha() {
     echo "$(git rev-parse HEAD)"
 }
 
