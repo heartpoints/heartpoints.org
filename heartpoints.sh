@@ -144,16 +144,8 @@ heartpoints_production() {
     export PORT
 }
 
-git_current_branch() {
-    echo "$(git rev-parse --abbrev-ref HEAD)"
-}
-
 git_commitSha() {
     echo "$(git rev-parse HEAD)"
-}
-
-git_current_branch_is_master() {
-    strings_are_equal "$(git_current_branch)" "master"
 }
 
 strings_are_equal() { local string1=$1; local string2=$2
