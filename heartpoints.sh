@@ -119,7 +119,7 @@ heartpoints_test() { local baseUrl=$1
     set -ex
     curl "${baseUrl}" --fail
     curl "${baseUrl}/bundle.js" --fail
-    curl -I "${baseUrl}" | grep "commitSha: $(git_commitSha)"
+    curl -I "${baseUrl}" | grep -i "commitSha: $(git_commitSha)"
     set +x
     echo "Test successful!"
 }
