@@ -28,6 +28,7 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
+    echo "createGKECluster      - creates a GKE cluster. See README for prerequisites"
     echo "dev                   - run dev web server locally"
     echo "manualDeploy <gitSha> - interactive interview to deploy to production (will prompt for heroku credentials)"
     echo "prePushVerification   - validates that local code is ready for pull request"
@@ -134,6 +135,56 @@ heartpoints_onMasterMerge() { export herokuApiKey
     heartpoints_test "http://www.heartpoints.org"
 }
 
+heartpoints_createGKECluster() {
+    withinCloudSDK ./heartpoints.sh createGKECluster_commands
+}
+
+cicdServiceAccountEmail() {
+    echo "cicd-353@heartpoints-org.iam.gserviceaccount.com"
+}
+
+withinCloudSDK() { local commands=$@
+    docker run -p 8001:8001 -v "$(pwd)":/heartpoints --rm -w /heartpoints google/cloud-sdk:latest $commands
+}
+
+heartpoints_gcloud_kubectl() { local args=$@
+    withinCloudSDK ./heartpoints.sh kubectl_commands $args
+}
+
+heartpoints_kubectl_commands() { local args=$@
+    gke_cicdAccountLogin
+    gcloud container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
+    kubectl $args
+}
+
+gke_cicdAccountLogin() {
+    gcloud auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=heartpoints-org-a5b59b6b4963.json
+}
+
+heartpoints_createGKECluster_commands() {
+    gke_cicdAccountLogin
+    gcloud beta container --project "heartpoints-org" \
+        clusters create "heartpoints-org" \
+        --zone "us-central1-a" \
+        --username "admin" \
+        --cluster-version "1.11.5-gke.5" \
+        --machine-type "g1-small" \
+        --image-type "COS" \
+        --disk-type "pd-standard" \
+        --disk-size "30" \
+        --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
+        --num-nodes "1" \
+        --enable-stackdriver-kubernetes \
+        --enable-ip-alias \
+        --network "projects/heartpoints-org/global/networks/default" \
+        --subnetwork "projects/heartpoints-org/regions/us-central1/subnetworks/default" \
+        --default-max-pods-per-node "110" \
+        --addons HorizontalPodAutoscaling,HttpLoadBalancing,KubernetesDashboard \
+        --enable-autoupgrade \
+        --enable-autorepair \
+        --maintenance-window "11:00"
+}
+
 heartpoints_runServer() {
     heartpoints_yarn start
 }
@@ -173,6 +224,56 @@ heartpoints_deploy() { local gitSha=$1; local herokuApiKey=$2
         -H "Content-Type: application/json" \
         -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
         -H "Authorization: Bearer ${herokuApiKey}"
+}
+
+brew_cask_install() { local package=$1
+    if ! brew ls --versions $package > /dev/null; then
+        if ! brew info cask &>/dev/null; then
+            brew tap caskroom/cask
+        fi
+        brew cask install $package
+    fi
+}
+
+heartpoints_kubectl() { local args=$@
+    kubectl_install
+    kubectl $args
+}
+
+kubectl_install() {
+    if command_does_not_exist kubectl; then
+        brew install kubernetes-cli
+    fi
+}
+
+heartpoints_buildAndDeployToMinikube() {
+    heartpoints_minikube_start
+    eval $(minikube docker-env)
+    heartpoints_buildAndTagImage "locally-built" #TODO: Add user, timestamp, sha?
+    heartpoints_kubectl apply -f heartpoints-k8s.yml
+}
+
+virtualbox_install() {
+    brew_cask_install virtualbox
+}
+
+minikube_install() {
+    kubectl_install
+    virtualbox_install
+    if command_does_not_exist minikube; then
+        curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.32.0/minikube-darwin-amd64 && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube
+    fi
+}
+
+heartpoints_minikube() { local args=$@
+    minikube_install
+    minikube $args
+}
+
+heartpoints_minikube_start() {
+    if ! heartpoints_minikube status | grep "host: Running"; then
+        heartpoints_minikube start
+    fi
 }
 
 heroku_cli() { local args=$@

@@ -1,0 +1,30 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: heartpoints-org
+  name: heartpoints-org
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: heartpoints-org
+      name: heartpoints-org
+    spec:
+      containers:
+        - name: heartpoints-org
+          image: locally-built
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: heartpoints-org
+spec:
+  type: NodePort
+  ports:
+  - port: 443
+    targetPort: 5001
+  selector:
+    app: heartpoints-org
