@@ -291,11 +291,15 @@ kubectl_install() {
     fi
 }
 
+heartpoints_dockerImageTag() {
+    echo "sha-$(git_commitSha)"
+}
+
 heartpoints_buildAndDeployToMinikube() {
     heartpoints_minikube_start
     eval $(minikube docker-env)
-    heartpoints_buildAndTagImage "locally-built" #TODO: Add user, timestamp, sha?
-    heartpoints_deployToMinikube
+    heartpoints_buildAndTagImage 
+    heartpoints_deployToMinikube "$(heartpoints_dockerImageTag)"
     local minikubeStartupTimout=30
     echo "deployment complete... waiting ${minikubeStartupTimout} seconds before running test (ctrl+c to safely exit)"
     sleep ${minikubeStartupTimout}
