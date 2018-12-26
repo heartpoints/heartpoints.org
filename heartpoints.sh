@@ -28,13 +28,14 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "createGKECluster      - creates a GKE cluster. See README for prerequisites"
-    echo "dev                   - run dev web server locally"
-    echo "manualDeploy <gitSha> - interactive interview to deploy to production (will prompt for heroku credentials)"
-    echo "prePushVerification   - validates that local code is ready for pull request"
-    echo "tailProductionLogs    - tail the logs from production to see how server is performing"
-    echo "model                 - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
-    echo "yarn                  - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
+    echo "createGKECluster          - creates a GKE cluster. See README for prerequisites"
+    echo "dev                       - run dev web server locally"
+    echo "manualDeploy <gitSha>     - interactive interview to deploy to production (will prompt for heroku credentials)"
+    echo "prePushVerification       - validates that local code is ready for pull request"
+    echo "tailProductionLogs        - tail the logs from production to see how server is performing"
+    echo "model                     - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
+    echo "yarn                      - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
+    echo "buildAndDeployToMinikube  - using minikube's docker daemon, build image, then deploy via yaml"
     echo ""
 }
 
@@ -250,6 +251,16 @@ heartpoints_buildAndDeployToMinikube() {
     heartpoints_minikube_start
     eval $(minikube docker-env)
     heartpoints_buildAndTagImage "locally-built" #TODO: Add user, timestamp, sha?
+    heartpoints_deployToMinikube
+    echo ""
+}
+
+heartpoints_urlOfMinikubeWebsite() {
+    minikube_install
+    echo "http://$(minikube ip)192.168.99.100:30000/"
+}
+
+heartpoints_deployToMinikube() {
     heartpoints_kubectl apply -f heartpoints-k8s.yml
 }
 
