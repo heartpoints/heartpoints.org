@@ -28,14 +28,17 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "createGKECluster          - creates a GKE cluster. See README for prerequisites"
-    echo "dev                       - run dev web server locally"
-    echo "manualDeploy <gitSha>     - interactive interview to deploy to production (will prompt for heroku credentials)"
-    echo "prePushVerification       - validates that local code is ready for pull request"
-    echo "tailProductionLogs        - tail the logs from production to see how server is performing"
-    echo "model                     - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
-    echo "yarn                      - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
-    echo "buildAndDeployToMinikube  - using minikube's docker daemon, build image, then deploy via yaml"
+    echo "createGKECluster            - creates a GKE cluster. See README for prerequisites"
+    echo "dev                         - run dev web server locally"
+    echo "manualDeploy <gitSha>       - interactive interview to deploy to production (will prompt for heroku credentials)"
+    echo "prePushVerification         - validates that local code is ready for pull request"
+    echo "tailProductionLogs          - tail the logs from production to see how server is performing"
+    echo "model                       - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
+    echo "yarn                        - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
+    echo "buildAndDeployToMinikube    - using minikube's docker daemon, build image, then deploy via yaml"
+    echo "openMinikubeWebsite         - assuming site is running in minikube locally, open web browser to home page"
+    echo "destroyMinikubeEnvironment  - if minikube dev environment is running, destroys it"
+    echo "testAgainstMinikube         - run tests against the minikube-hosted website"
     echo ""
 }
 
@@ -116,13 +119,42 @@ heartpoints_buildTagAndTest() {
     heartpoints_testImage "${imageURI}"
 }
 
+heartpoints_onTestComplete() { local failureOrSuccess=$1
+    echo """
+
+    Test Suite ${failureOrSuccess}  -  more details in $(heartpoints_testOutputFile)
+
+    """
+}
+
+heartpoints_testOutputFile() {
+    echo "test-result.txt"
+}
+
+test_output() { local output=$1
+    echo $output >> "$(heartpoints_testOutputFile)"
+    echo $output
+}
+
 heartpoints_test() { local baseUrl=$1
-    echo "Testing..."
     set -e
-    curl "${baseUrl}" --fail
-    curl "${baseUrl}/bundle.js" --fail
-    curl -I "${baseUrl}" | grep -i "commitSha: $(git_commitSha)"
-    echo "Test successful!"
+    trap "heartpoints_onTestComplete failed; false" ERR
+    echo "" > "$(heartpoints_testOutputFile)"
+    echo "Testing..."
+    echo "Test homepage html file is 200..."
+    curl "${baseUrl}" --fail -o /dev/null >> "$(heartpoints_testOutputFile)"
+    echo "passed"
+    echo "" 
+    echo "Test bundle.js file is 200..." 
+    curl "${baseUrl}/bundle.js" --fail -o /dev/null >> "$(heartpoints_testOutputFile)"
+    echo "passed"
+    echo "" 
+    echo "Test commitSha presence in header matches current sha ($(git_commitSha)):" 
+    local headerOutput="$(curl -I "${baseUrl}")"
+    echo "$headerOutput"
+    echo headerOutput | grep -i "commitSha: $(git_commitSha)"
+    echo "passed"
+    heartpoints_onTestComplete "passed"
 }
 
 heartpoints_onMasterMerge() { export herokuApiKey
@@ -134,6 +166,10 @@ heartpoints_onMasterMerge() { export herokuApiKey
     echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
     sleep ${secondsToWait}
     heartpoints_test "http://www.heartpoints.org"
+}
+
+heartpoints_testAgainstMinikube() {
+    heartpoints_test "$(heartpoints_urlOfMinikubeWebsite)"
 }
 
 heartpoints_createGKECluster() {
@@ -227,12 +263,20 @@ heartpoints_deploy() { local gitSha=$1; local herokuApiKey=$2
         -H "Authorization: Bearer ${herokuApiKey}"
 }
 
-brew_cask_install() { local package=$1
-    if ! brew ls --versions $package > /dev/null; then
-        if ! brew info cask &>/dev/null; then
-            brew tap caskroom/cask
-        fi
-        brew cask install $package
+brew_cask_caskIsInstalled() { local caskName=$1
+    brew cask list | grep "${caskName}" > /dev/null 2>&1
+}
+
+brew_cask_installCaskroom() {
+    if ! brew info cask &>/dev/null; then
+        brew tap caskroom/cask
+    fi
+}
+
+brew_cask_installCask() { local caskName=$1
+    brew_cask_installCaskroom
+    if ! brew_cask_caskIsInstalled "${caskName}"; then
+        brew cask install $caskName
     fi
 }
 
@@ -252,12 +296,23 @@ heartpoints_buildAndDeployToMinikube() {
     eval $(minikube docker-env)
     heartpoints_buildAndTagImage "locally-built" #TODO: Add user, timestamp, sha?
     heartpoints_deployToMinikube
-    echo ""
+    local minikubeStartupTimout=30
+    echo "deployment complete... waiting ${minikubeStartupTimout} seconds before running test (ctrl+c to safely exit)"
+    sleep ${minikubeStartupTimout}
+    heartpoints_testAgainstMinikube
+}
+
+heartpoints_destroyMinikubeEnvironment() {
+    heartpoints_minikube_stop
 }
 
 heartpoints_urlOfMinikubeWebsite() {
-    minikube_install
-    echo "http://$(minikube ip)192.168.99.100:30000/"
+    minikube_install > /dev/null 2>&1
+    echo "http://$(minikube ip):30000/"
+}
+
+heartpoints_openMinikubeWebsite() {
+    open "$(heartpoints_urlOfMinikubeWebsite)"
 }
 
 heartpoints_deployToMinikube() {
@@ -265,7 +320,7 @@ heartpoints_deployToMinikube() {
 }
 
 virtualbox_install() {
-    brew_cask_install virtualbox
+    brew_cask_installCask virtualbox
 }
 
 minikube_install() {
@@ -282,9 +337,19 @@ heartpoints_minikube() { local args=$@
 }
 
 heartpoints_minikube_start() {
-    if ! heartpoints_minikube status | grep "host: Running"; then
+    if ! heartpoints_minikube_isRunning; then
         heartpoints_minikube start
     fi
+}
+
+heartpoints_minikube_stop() {
+    if heartpoints_minikube_isRunning; then
+        heartpoints_minikube stop
+    fi
+}
+
+heartpoints_minikube_isRunning() {
+    heartpoints_minikube status | grep "host: Running"
 }
 
 heroku_cli() { local args=$@

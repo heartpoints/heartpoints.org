@@ -81,3 +81,4 @@ build/Release
 node_modules
 
 heartpoints-org-*
+test-result.txt
