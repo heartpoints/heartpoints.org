@@ -35,10 +35,10 @@ heartpoints_help() {
     echo "tailProductionLogs          - tail the logs from production to see how server is performing"
     echo "model                       - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
     echo "yarn                        - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
-    echo "buildAndDeployToMinikube    - using minikube's docker daemon, build image, then deploy via yaml"
+    echo "buildAndDeployToMinikube    - using minikube's docker daemon, build image, then deploy and test"
     echo "openMinikubeWebsite         - assuming site is running in minikube locally, open web browser to home page"
     echo "destroyMinikubeEnvironment  - if minikube dev environment is running, destroys it"
-    echo "testAgainstMinikube         - run tests against the minikube-hosted website"
+    echo "testAgainstMinikube         - run tests against an existing minikube-hosted website"
     echo ""
 }
 
@@ -94,6 +94,7 @@ heartpoints_dev_url() {
 }
 
 heartpoints_buildAndTagImage() { local imageURI=$1
+    echo "Please ensure Docker daemon is running"
     docker build --build-arg commitSha="$(git_commitSha)" -t ${imageURI} .
 }
 
@@ -106,7 +107,7 @@ heartpoints_testImage() { local imageURI=$1
 }
 
 heartpoints_prePushVerification() {
-    heartpoints_buildTagAndTest
+    heartpoints_buildAndDeployToMinikube
 }
 
 heartpoints_onPullRequest() {
@@ -142,17 +143,17 @@ heartpoints_test() { local baseUrl=$1
     echo "" > "$(heartpoints_testOutputFile)"
     echo "Testing..."
     echo "Test homepage html file is 200..."
-    curl "${baseUrl}" --fail -o /dev/null >> "$(heartpoints_testOutputFile)"
+    curl -L --insecure "${baseUrl}" --fail -o /dev/null >> "$(heartpoints_testOutputFile)"
     echo "passed"
     echo "" 
     echo "Test bundle.js file is 200..." 
-    curl "${baseUrl}/bundle.js" --fail -o /dev/null >> "$(heartpoints_testOutputFile)"
+    curl -L --insecure "${baseUrl}/bundle.js" --fail -o /dev/null >> "$(heartpoints_testOutputFile)"
     echo "passed"
     echo "" 
     echo "Test commitSha presence in header matches current sha ($(git_commitSha)):" 
-    local headerOutput="$(curl -I "${baseUrl}")"
+    local headerOutput="$(curl -L --insecure -I "${baseUrl}")"
     echo "$headerOutput"
-    echo headerOutput | grep -i "commitSha: $(git_commitSha)"
+    echo "$headerOutput" | grep -i "commitSha: $(git_commitSha)"
     echo "passed"
     heartpoints_onTestComplete "passed"
 }
@@ -275,8 +276,8 @@ brew_cask_installCaskroom() {
 
 brew_cask_installCask() { local caskName=$1
     brew_cask_installCaskroom
-    if ! brew_cask_caskIsInstalled "${caskName}"; then
-        brew cask install $caskName
+    if command_does_not_exist "${caskName}"; then
+        brew cask install "${caskName}"
     fi
 }
 
@@ -295,11 +296,15 @@ heartpoints_dockerImageTag() {
     echo "sha-$(git_commitSha)"
 }
 
-heartpoints_buildAndDeployToMinikube() {
+heartpoints_pointToAndRunMinikubeDockerDaemon() {
     heartpoints_minikube_start
     eval $(minikube docker-env)
-    heartpoints_buildAndTagImage 
-    heartpoints_deployToMinikube "$(heartpoints_dockerImageTag)"
+}
+
+heartpoints_buildAndDeployToMinikube() {
+    heartpoints_pointToAndRunMinikubeDockerDaemon
+    heartpoints_buildAndTagImage "heartpoints.org:latest"
+    heartpoints_deployToMinikube
     local minikubeStartupTimout=30
     echo "deployment complete... waiting ${minikubeStartupTimout} seconds before running test (ctrl+c to safely exit)"
     sleep ${minikubeStartupTimout}
@@ -312,7 +317,7 @@ heartpoints_destroyMinikubeEnvironment() {
 
 heartpoints_urlOfMinikubeWebsite() {
     minikube_install > /dev/null 2>&1
-    echo "http://$(minikube ip):30000/"
+    echo "http://$(minikube ip)/"
 }
 
 heartpoints_openMinikubeWebsite() {
@@ -343,6 +348,7 @@ heartpoints_minikube() { local args=$@
 heartpoints_minikube_start() {
     if ! heartpoints_minikube_isRunning; then
         heartpoints_minikube start
+        heartpoints_minikube addons enable ingress
     fi
 }
 
