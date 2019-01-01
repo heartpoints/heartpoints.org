@@ -21,16 +21,10 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: heartpoints-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /
-        backend:
-          serviceName: heartpoints-org
-          servicePort: 80
+  backend:
+    serviceName: heartpoints-org
+    servicePort: 80
 ---
 apiVersion: v1
 kind: Service
