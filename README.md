@@ -10,10 +10,10 @@ to get a local version of this repository.
 
 ## Use the CLI
 
-On a machine with bash shell, use the `./heartpoints.sh` CLI to run various commands that are useful
-in the development of heartpoints.org.
+On a machine with bash shell, use the `./heartpoints.sh` CLI (`./hp` for short) to run various
+commands that are useful in the development of heartpoints.org.
 
-To get a list of commands available, just run without arguments: `./heartpoints.sh`
+To get a list of commands available, just run without arguments: `./hp`
 
 ### Run Dev Server
 
@@ -30,11 +30,10 @@ Deploys to production shall happen automatically upon merge via CircleCI
 
 #### Manual Deployment
 
-Make sure you have Heroku deployment credentials, then launch the interactive
+Make sure you have production deployment credentials, then launch the interactive
 manual deploy script: `./heartpoints.sh manual_deploy`
 
-Note: only deploys from "master"
-are allowed.
+Note: only deploys from "master" are allowed.
 
 ## Google Cloud
 

@@ -17,13 +17,15 @@ heartpoints_help() {
     echo ""
     echo "createGKECluster            - creates a GKE cluster. See README for prerequisites"
     echo "localDev                    - run dev web server locally"
-    echo "manualDeploy <gitSha>       - interactive interview to deploy to production"
+    echo "manualDeploy <gitSha>       - interactive interview to deploy to production (may prompt for credentials)"
     echo "minikubeBuildDeployTest     - using minikube's docker daemon, build image, then deploy and test"
+    echo "minikubeDashboard           - open minikube dashboard in web browser"
     echo "minikubeDestroyEnvironment  - if minikube dev environment is running, destroys it"
     echo "minikubeOpenWebsite         - assuming site is running in minikube locally, open web browser to home page"
     echo "minikubeRunTests            - run tests against an existing minikube-hosted website"
     echo "model                       - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
     echo "prePushVerification         - validates that local code is ready for pull request"
+    echo "tailProductionLogs          - TODO: Need a k8s equivalent (can generate a url if that is a better way to tail)"
     echo "yarn                        - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
     echo ""
 }
@@ -79,33 +81,28 @@ heartpoints_dockerBuildTagAndTest() {
 heartpoints_onTestComplete() { local failureOrSuccess=$1
     echo """
 
-    Test Suite ${failureOrSuccess} - more details in $(heartpoints_testOutputFile)
+    Test Suite ${failureOrSuccess}
 
     """
-}
-
-test_output() { local output=$1
-    echo "$output" >> "$(heartpoints_testOutputFile)"
-    echo "$output"
 }
 
 heartpoints_test() { local baseUrl=$1
     set -e
     trap "heartpoints_onTestComplete failed; false" ERR
-    echo "Testing..." > "$(heartpoints_testOutputFile)"
-    test_output "Test homepage html file is 200..."
-    test_output "$(curl -L --insecure "${baseUrl}" --fail -o /dev/null)"
-    test_output "passed"
-    test_output "" 
-    test_output "Test bundle.js file is 200..." 
-    test_output "$(curl -L --insecure "${baseUrl}/bundle.js" --fail -o /dev/null)"
-    test_output "passed"
-    test_output "" 
-    test_output "Test commitSha presence in header matches current sha ($(git_currentSha)):" 
+    echo "Testing..."
+    echo "Test homepage html file is 200..."
+    echo "$(curl -L --insecure "${baseUrl}" --fail -o /dev/null)"
+    echo "passed"
+    echo "" 
+    echo "Test bundle.js file is 200..." 
+    echo "$(curl -L --insecure "${baseUrl}/bundle.js" --fail -o /dev/null)"
+    echo "passed"
+    echo "" 
+    echo "Test commitSha presence in header matches current sha ($(git_currentSha)):" 
     local headerOutput="$(curl -L --insecure -I "${baseUrl}?preventCache=$(uuidgen)")"
-    test_output "$headerOutput"
-    test_output "$headerOutput" | grep -i "commitSha: $(git_currentSha)"
-    test_output "passed"
+    echo "$headerOutput"
+    echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"
+    echo "passed"
     heartpoints_onTestComplete "passed"
 }
 
@@ -218,11 +215,25 @@ heartpoints_minikube() { local args=$@
     minikube $args
 }
 
+heartpoints_minikubeIngressNotEnabled() {
+    ! heartpoints_minikube addons list | grep "ingress: edabled"
+}
+
+heartpoints_minikubeEnableIngress() {
+    if heartpoints_minikubeIngressNotEnabled; then
+        heartpoints_minikube addons enable ingress
+    fi
+}
+
+heartpoints_minikubeDashboard() {
+    heartpoints_minikube dashboard 
+}
+
 heartpoints_minikube_start() {
     if ! heartpoints_minikube_isRunning; then
         heartpoints_minikube start
-        heartpoints_minikube addons enable ingress
     fi
+    heartpoints_minikubeEnableIngress
 }
 
 heartpoints_minikube_stop() {
@@ -368,16 +379,8 @@ virtualbox_install() {
     brew_cask_installCask virtualbox
 }
 
-# "Variables"
-
 cicdServiceAccountEmail() {
     echo "cicd-353@heartpoints-org.iam.gserviceaccount.com"
 }
-
-heartpoints_testOutputFile() {
-    echo "test-result.txt"
-}
-
-# Entrypoint
 
 heartpoints $@
