@@ -92,7 +92,7 @@ test_output() { local output=$1
 heartpoints_test() { local baseUrl=$1
     set -e
     trap "heartpoints_onTestComplete failed; false" ERR
-    echo "Testing...." > "$(heartpoints_testOutputFile)"
+    echo "Testing..." > "$(heartpoints_testOutputFile)"
     test_output "Test homepage html file is 200..."
     test_output "$(curl -L --insecure "${baseUrl}" --fail -o /dev/null)"
     test_output "passed"
@@ -102,7 +102,7 @@ heartpoints_test() { local baseUrl=$1
     test_output "passed"
     test_output "" 
     test_output "Test commitSha presence in header matches current sha ($(git_currentSha)):" 
-    local headerOutput="$(curl -L --insecure -I "${baseUrl}")"
+    local headerOutput="$(curl -L --insecure -I "${baseUrl}?preventCache=$(uuidgen)")"
     test_output "$headerOutput"
     test_output "$headerOutput" | grep -i "commitSha: $(git_currentSha)"
     test_output "passed"
@@ -178,7 +178,7 @@ heartpoints_pushImage() { local imageURI=$1
 
 heartpoints_manualDeploy() { local gitSha=$1
     gcloud_login
-    heartpoints_deployToKubernetes "${gitSha}"
+    heartpoints_deployToKubernetes "gcr.io/heartpoints-org/heartpoints.org:${gitSha}"
 }
 
 heartpoints_deployToKubernetes() { local image=$1
