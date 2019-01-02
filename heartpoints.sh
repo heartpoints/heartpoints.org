@@ -15,18 +15,20 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "createGKECluster            - creates a GKE cluster. See README for prerequisites"
-    echo "localDev                    - run dev web server locally"
-    echo "manualDeploy <gitSha>       - interactive interview to deploy to production"
-    echo "minikubeBuildDeployTest     - using minikube's docker daemon, build image, then deploy and test"
-    echo "minikubeDashboard           - open minikube dashboard in web browser"
-    echo "minikubeDestroyEnvironment  - if minikube dev environment is running, destroys it"
-    echo "minikubeOpenWebsite         - assuming site is running in minikube locally, open web browser to home page"
-    echo "minikubeRunTests            - run tests against an existing minikube-hosted website"
-    echo "model                       - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
-    echo "prePushVerification         - validates that local code is ready for pull request"
-    echo "tailProductionLogs          - TODO: Need a k8s equivalent (can generate a url if that is a better way to tail)"
-    echo "yarn                        - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
+    echo "createGKECluster                     - creates a GKE cluster. See README for prerequisites"
+    echo "localDev                             - run dev web server locally"
+    echo "manualDeploy <gitSha>                - interactive interview to deploy to production"
+    echo "minikubeBuild <taggedImageName>      - using minikube's docker daemon, build image and tag with minikube metadata"
+    echo "minikubeBuildDeployTest              - minikubeBuild, then minikubeDeployTest"
+    echo "minikubeDashboard                    - open minikube dashboard in web browser"
+    echo "minikubeDeployTest <taggedImageName> - deploy image to mk and test it (defaults to image for head sha)"
+    echo "minikubeDestroyEnvironment           - if minikube dev environment is running, destroys it"
+    echo "minikubeOpenWebsite                  - assuming site is running in minikube locally, open web browser to home page"
+    echo "minikubeRunTests                     - run tests against an existing minikube-hosted website"
+    echo "model                                - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
+    echo "prePushVerification                  - validates that local code is ready for pull request"
+    echo "tailProductionLogs                   - TODO: Need a k8s equivalent (can generate a url if that is a better way to tail)"
+    echo "yarn                                 - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
     echo ""
 }
 
@@ -51,15 +53,30 @@ heartpoints_yarn() { local args=$@
     yarn ${args}
 }
 
-heartpoints_buildAndTagImage() { local imageURI=$1; local gitSha=$2
+ensureDockerCliConfiguredToRunningDaemon() {
     echo "Please ensure Docker daemon is running if it is not"
-    docker build --build-arg commitSha="${gitSha}" -t ${imageURI} .
 }
 
-heartpoints_dockerTestImage() { local imageURI=$1
+gitHeadIsDirty() {
+    ! git diff-index --quiet HEAD > /dev/null
+}
+
+heartpoints_ensureCommitIsAppropriate() {
+    if gitHeadIsDirty; then
+        errorAndExit "error: uncommitted changes!"
+    fi
+}
+
+heartpoints_buildAndTagImage() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
+    ensureDockerCliConfiguredToRunningDaemon
+    heartpoints_ensureCommitIsAppropriate
+    docker build --build-arg commitSha="${shaToReportInHttpHeaders}" -t ${taggedImageName} .
+}
+
+heartpoints_dockerTestImage() { local taggedImageName=$1
     local testName="heartpointsTest"
     trap "docker stop ${testName} > /dev/null" EXIT
-    docker run --detach --name "${testName}" --rm "${imageURI}"
+    docker run --detach --name "${testName}" --rm "${taggedImageName}"
     sleep 5
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
 }
@@ -74,9 +91,10 @@ heartpoints_onPullRequest() {
 
 heartpoints_dockerBuildTagAndTest() {
     local imageRepo="circleci"
-    local imageURL="$(heartpoints_taggedImageName ${imageRepo} $(git_currentSha))"
-    heartpoints_buildAndTagImage "${imageURI}"
-    heartpoints_dockerTestImage "${imageURI}"
+    local shaToBuild="$(git_currentSha)"
+    local taggedImageName="$(heartpoints_taggedImageName ${imageRepo} ${shaToBuild})"
+    heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
+    heartpoints_dockerTestImage "${taggedImageName}"
 }
 
 heartpoints_onTestComplete() { local failureOrSuccess=$1
@@ -198,6 +216,7 @@ heartpoints_k8sResourceYaml() { local image=$1
 
 heartpoints_deployToKubernetes() { local image=$1
     echo "$(heartpoints_k8sResourceYaml "${image}")" | kubectl apply -f -
+    echo "deployment request complete... to check status run './heartpoints.sh minikubeDashboard'"
 }
 
 heartpoints_pointToAndRunMinikubeDockerDaemon() {
@@ -210,43 +229,44 @@ heartpoints_taggedImageName() { local imageRepository=$1; local gitSha=$2
 }
 
 heartpoints_productionBuildDeployTest() {
-    #assumes docker cli points to legit docker daemon (so far only run in circleci)
-
+    #TODO: DRY up wrt: heartpoints_minikubeBuildDeployTest
+    ensureDockerCliConfiguredToRunningDaemon
     local imageRepository="$(heartpoints_gcr)"
-    
     local shaToBuild="$(git_currentSha)"
     local taggedImageName="$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
     heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
-    
     heartpoints_pushImage "${taggedImageName}" #assumes we have cred to push to the docker repo
-
     heartpoints_deployToKubernetes "${taggedImageName}" #assumes we are authed to kubectl deploy
+    heartpoints_testAfterWait heartpoints_test "http://www.heartpointsfixthis.org" # TODO: fix this link!!!!!
+}
 
-    #slightly different test
-    local secondsToWait=45
-    echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
-    sleep ${secondsToWait}
-    heartpoints_test "http://www.heartpointsfixthis.org" # TODO: fix this link!!!!!
+heartpoints_minikubeDeployTest() { local taggedImageName=$1
+    heartpoints_deployToKubernetes "${taggedImageName}"
+    heartpoints_testAfterWait heartpoints_minikubeRunTests
+}
+
+heartpoints_testAfterWait() { local testCommand=$@
+    local minikubeStartupTimout=30
+    echo "waiting ${minikubeStartupTimout} seconds before running test"
+    sleep ${minikubeStartupTimout}
+    $testCommand
 }
 
 heartpoints_minikubeBuildDeployTest() {
-    heartpoints_pointToAndRunMinikubeDockerDaemon
-
-    local imageRepository="minikube"
-    
     local shaToBuild="$(git_currentSha)"
-    local taggedImageName="$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
-    heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
-    
-    #no push
-    
-    heartpoints_deployToKubernetes "${taggedImageName}"
+    local taggedImageName="$(heartpoints_minikubeTaggedImageName ${shaToBuild})"
+    heartpoints_minikubeBuild "${taggedImageName}" "${shaToBuild}"
+    heartpoints_minikubeDeployTest "${taggedImageName}"
+}
 
-    #slightly different test
-    local minikubeStartupTimout=30
-    echo "deployment complete... waiting ${minikubeStartupTimout} seconds before running test (ctrl+c to safely exit)"
-    sleep ${minikubeStartupTimout}
-    heartpoints_minikubeRunTests
+heartpoints_minikubeTaggedImageName() { local shaToBuild=$1
+    local imageRepository="minikube"
+    echo "$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
+}
+
+heartpoints_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
+    heartpoints_pointToAndRunMinikubeDockerDaemon
+    heartpoints_buildAndTagImage "${taggedImageName}" "${shaToReportInHttpHeaders}"
 }
 
 heartpoints_minikubeDestroyEnvironment() {
@@ -311,11 +331,12 @@ gke_cicdAccountLogin() {
     gcloud auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=heartpoints-org-a5b59b6b4963.json
 }
 
-gcloud_login() { # this may not be necessary if we use gke_cicdAccountLogin
+gcloud_login() { # rename this
     gcloud_install
-    gcloud auth login # TODO: fix this to be non-interactive!!
+    gcloud auth login # TODO: fix this to be non-interactive or use a service account or something
     gcloud config set project heartpoints-org
     gcloud auth configure-docker
+    gcloud container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
 }
 
 # Misc functions
