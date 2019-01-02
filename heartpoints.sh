@@ -54,7 +54,7 @@ heartpoints_yarn() { local args=$@
 }
 
 ensureDockerCliConfiguredToRunningDaemon() {
-    echo "Please ensure Docker daemon is running if it is not"
+    echo "WARN: Please ensure Docker daemon is running if it is not"
 }
 
 gitHeadIsDirty() {
@@ -195,10 +195,8 @@ heartpoints_gcr() {
 }
 
 heartpoints_manualDeploy() { local gitSha=$1
+    requiredParameter "gitSha" "${gitSha}" 
     gcloud_login
-    if string_is_empty "${gitSha}"; then
-        errorAndExit "gitSha must be specified"
-    fi
     heartpoints_deployToKubernetes "$(heartpoints_taggedImageName $(heartpoints_gcr) ${gitSha})"
 }
 
@@ -240,12 +238,24 @@ heartpoints_productionBuildDeployTest() {
     heartpoints_testAfterWait heartpoints_test "http://www.heartpointsfixthis.org" # TODO: fix this link!!!!!
 }
 
+errorIfEmpty() { local possiblyEmpty=$1; local errorMessage=$2
+    if string_is_empty "${possiblyEmpty}"; then
+        errorAndExit "${errorMessage}"
+    fi
+}
+
+requiredParameter() { local parameterName=$1; local parameterValue=$2
+    errorIfEmpty "${parameterValue}" "${parameterName} is required parameter"
+}
+
 heartpoints_minikubeDeployTest() { local taggedImageName=$1
+    requiredParameter "taggedImageName" "${taggedImageName}" 
     heartpoints_deployToKubernetes "${taggedImageName}"
     heartpoints_testAfterWait heartpoints_minikubeRunTests
 }
 
 heartpoints_testAfterWait() { local testCommand=$@
+    requiredParameter "testCommand" "${testCommand}"
     local minikubeStartupTimout=30
     echo "waiting ${minikubeStartupTimout} seconds before running test"
     sleep ${minikubeStartupTimout}
@@ -260,11 +270,14 @@ heartpoints_minikubeBuildDeployTest() {
 }
 
 heartpoints_minikubeTaggedImageName() { local shaToBuild=$1
+    requiredParameter "shaToBuild" "${shaToBuild}"
     local imageRepository="minikube"
     echo "$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
 }
 
 heartpoints_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
+    requiredParameter "taggedImageName" "${taggedImageName}"
+    requiredParameter "shaToReportInHttpHeaders" "${shaToReportInHttpHeaders}"
     heartpoints_pointToAndRunMinikubeDockerDaemon
     heartpoints_buildAndTagImage "${taggedImageName}" "${shaToReportInHttpHeaders}"
 }
@@ -288,7 +301,7 @@ heartpoints_minikube() { local args=$@
 }
 
 heartpoints_minikubeIngressNotEnabled() {
-    ! heartpoints_minikube addons list | grep "ingress: enabled"
+    ! heartpoints_minikube addons list | grep "ingress: enabled" > /dev/null
 }
 
 heartpoints_minikubeEnableIngress() {
