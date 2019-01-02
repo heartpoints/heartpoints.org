@@ -92,7 +92,7 @@ test_output() { local output=$1
 heartpoints_test() { local baseUrl=$1
     set -e
     trap "heartpoints_onTestComplete failed; false" ERR
-    echo "Testing..." > "$(heartpoints_testOutputFile)"
+    echo "Testing...." > "$(heartpoints_testOutputFile)"
     test_output "Test homepage html file is 200..."
     test_output "$(curl -L --insecure "${baseUrl}" --fail -o /dev/null)"
     test_output "passed"
