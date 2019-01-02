@@ -17,7 +17,7 @@ heartpoints_help() {
     echo ""
     echo "createGKECluster            - creates a GKE cluster. See README for prerequisites"
     echo "localDev                    - run dev web server locally"
-    echo "manualDeploy <gitSha>       - interactive interview to deploy to production (may prompt for credentials)"
+    echo "manualDeploy <gitSha>       - interactive interview to deploy to production"
     echo "minikubeBuildDeployTest     - using minikube's docker daemon, build image, then deploy and test"
     echo "minikubeDashboard           - open minikube dashboard in web browser"
     echo "minikubeDestroyEnvironment  - if minikube dev environment is running, destroys it"
@@ -51,9 +51,9 @@ heartpoints_yarn() { local args=$@
     yarn ${args}
 }
 
-heartpoints_buildAndTagImage() { local imageURI=$1
+heartpoints_buildAndTagImage() { local imageURI=$1; local gitSha=$2
     echo "Please ensure Docker daemon is running if it is not"
-    docker build --build-arg commitSha="$(git_currentSha)" -t ${imageURI} .
+    docker build --build-arg commitSha="${gitSha}" -t ${imageURI} .
 }
 
 heartpoints_dockerTestImage() { local imageURI=$1
@@ -73,7 +73,8 @@ heartpoints_onPullRequest() {
 }
 
 heartpoints_dockerBuildTagAndTest() {
-    local imageURI="heartpoints.org:$(git_currentSha)"
+    local imageRepo="circleci"
+    local imageURL="$(heartpoints_taggedImageName ${imageRepo} $(git_currentSha))"
     heartpoints_buildAndTagImage "${imageURI}"
     heartpoints_dockerTestImage "${imageURI}"
 }
@@ -107,14 +108,7 @@ heartpoints_test() { local baseUrl=$1
 }
 
 heartpoints_onMasterMerge() {
-    local imageURI="gcr.io/heartpoints-org/heartpoints.org:$(git_currentSha)"
-    heartpoints_buildAndTagImage "${imageURI}"
-    heartpoints_pushImage "${imageURI}"
-    heartpoints_deploy $(git_currentSha)
-    local secondsToWait=45
-    echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
-    sleep ${secondsToWait}
-    heartpoints_test "http://www.heartpointsfixthis.org" # TODO: fix t his link!!!!!
+    heartpoints_productionBuildDeployTest
 }
 
 heartpoints_minikubeRunTests() {
@@ -173,13 +167,37 @@ heartpoints_pushImage() { local imageURI=$1
     docker push "${imageURI}"
 }
 
+errorAndExit() { local message=$1
+    echo $message
+    exit 1
+}
+
+heartpoints_gcr() {
+    echo "gcr.io/heartpoints-org"
+}
+
 heartpoints_manualDeploy() { local gitSha=$1
     gcloud_login
-    heartpoints_deployToKubernetes "gcr.io/heartpoints-org/heartpoints.org:${gitSha}"
+    if string_is_empty "${gitSha}"; then
+        errorAndExit "gitSha must be specified"
+    fi
+    heartpoints_deployToKubernetes "$(heartpoints_taggedImageName $(heartpoints_gcr) ${gitSha})"
+}
+
+stringReplace() { local originalString=$1; local stringToReplace=$2; local stringToPutInItsPlace=$3
+    echo "$originalString" | sed "s~${stringToReplace}~${stringToPutInItsPlace}~"
+}
+
+fileReplace() { local fileName=$1; local stringToReplace=$2; local stringToPutInItsPlace=$3
+    cat "${fileName}" | sed "s~${stringToReplace}~${stringToPutInItsPlace}~"
+}
+
+heartpoints_k8sResourceYaml() { local image=$1
+    echo "$(fileReplace "heartpoints-k8s.yml" "{{image}}" "${image}")"
 }
 
 heartpoints_deployToKubernetes() { local image=$1
-    cat heartpoints-k8s.yml | sed "s/{{image}}/${image}/" | kubectl apply -f -
+    echo "$(heartpoints_k8sResourceYaml "${image}")" | kubectl apply -f -
 }
 
 heartpoints_pointToAndRunMinikubeDockerDaemon() {
@@ -187,10 +205,44 @@ heartpoints_pointToAndRunMinikubeDockerDaemon() {
     eval $(minikube docker-env)
 }
 
+heartpoints_taggedImageName() { local imageRepository=$1; local gitSha=$2
+    echo "${imageRepository}/heartpoints.org:${gitSha}"
+}
+
+heartpoints_productionBuildDeployTest() {
+    #assumes docker cli points to legit docker daemon (so far only run in circleci)
+
+    local imageRepository="$(heartpoints_gcr)"
+    
+    local shaToBuild="$(git_currentSha)"
+    local taggedImageName="$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
+    heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
+    
+    heartpoints_pushImage "${taggedImageName}" #assumes we have cred to push to the docker repo
+
+    heartpoints_deployToKubernetes "${taggedImageName}" #assumes we are authed to kubectl deploy
+
+    #slightly different test
+    local secondsToWait=45
+    echo "waiting ${secondsToWait} seconds for deploy to complete before testing..."
+    sleep ${secondsToWait}
+    heartpoints_test "http://www.heartpointsfixthis.org" # TODO: fix this link!!!!!
+}
+
 heartpoints_minikubeBuildDeployTest() {
     heartpoints_pointToAndRunMinikubeDockerDaemon
-    heartpoints_buildAndTagImage "heartpoints.org:$(git_currentSha)"
-    heartpoints_deployToKubernetes "heartpoints.org:$(git_currentSha)"
+
+    local imageRepository="minikube"
+    
+    local shaToBuild="$(git_currentSha)"
+    local taggedImageName="$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
+    heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
+    
+    #no push
+    
+    heartpoints_deployToKubernetes "${taggedImageName}"
+
+    #slightly different test
     local minikubeStartupTimout=30
     echo "deployment complete... waiting ${minikubeStartupTimout} seconds before running test (ctrl+c to safely exit)"
     sleep ${minikubeStartupTimout}
@@ -216,7 +268,7 @@ heartpoints_minikube() { local args=$@
 }
 
 heartpoints_minikubeIngressNotEnabled() {
-    ! heartpoints_minikube addons list | grep "ingress: edabled"
+    ! heartpoints_minikube addons list | grep "ingress: enabled"
 }
 
 heartpoints_minikubeEnableIngress() {
