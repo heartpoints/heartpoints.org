@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: heartpoints-org
-          image: heartpoints.org:latest
+          image: {{image}}
           imagePullPolicy: IfNotPresent
 ---
 apiVersion: extensions/v1beta1
