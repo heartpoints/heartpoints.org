@@ -159,7 +159,7 @@ heartpoints_createGKECluster_commands() {
         --zone "us-central1-a" \
         --username "admin" \
         --cluster-version "1.11.5-gke.5" \
-        --machine-type "g1-small" \
+        --machine-type "n1-standard-1" \
         --image-type "COS" \
         --disk-type "pd-standard" \
         --disk-size "30" \
