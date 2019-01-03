@@ -235,7 +235,7 @@ heartpoints_productionBuildDeployTest() {
     heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
     heartpoints_pushImage "${taggedImageName}" #assumes we have cred to push to the docker repo
     heartpoints_deployToKubernetes "${taggedImageName}" #assumes we are authed to kubectl deploy
-    heartpoints_testAfterWait heartpoints_test "http://www.heartpointsfixthis.org" # TODO: fix this link!!!!!
+    heartpoints_testAfterWait heartpoints_test "http://35.244.131.133/" # TODO: fix this link!!!!!
 }
 
 errorIfEmpty() { local possiblyEmpty=$1; local errorMessage=$2
