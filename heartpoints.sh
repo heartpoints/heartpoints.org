@@ -228,7 +228,6 @@ heartpoints_taggedImageName() { local imageRepository=$1; local gitSha=$2
 
 heartpoints_productionBuildDeployTest() {
     #TODO: DRY up wrt: heartpoints_minikubeBuildDeployTest
-    ensureDockerCliConfiguredToRunningDaemon
     local imageRepository="$(heartpoints_gcr)"
     local shaToBuild="$(git_currentSha)"
     local taggedImageName="$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
@@ -345,9 +344,7 @@ gke_cicdAccountLogin() {
 }
 
 gcloud_login() { # rename this
-    gcloud_install
-    gcloud auth login # TODO: fix this to be non-interactive or use a service account or something
-    gcloud config set project heartpoints-org
+    gke_cicdAccountLogin
     gcloud auth configure-docker
     gcloud container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
 }

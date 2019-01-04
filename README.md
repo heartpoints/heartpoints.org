@@ -40,7 +40,10 @@ Note: only deploys from "master" are allowed.
 1. There exists a heartpoints.org organization
 2. The organization contains a project named heartpoints-org
 3. As an admin within the organization
-    1. Create a service account "cicd" with the Kubernetes Engine Admin and Service Account User roles. At the time of this writing, the generated account email is: cicd-353@heartpoints-org.iam.gserviceaccount.com. Important: if you recreate this service account, you must update `cicdServiceAccountEmail()` within heartpoints.sh.
+    1. Create a service account "cicd". At the time of this writing, the generated account email is: cicd-353@heartpoints-org.iam.gserviceaccount.com. Important: if you recreate this service account, you must update `cicdServiceAccountEmail()` within heartpoints.sh. Make sure the service account has the following permissions:
+        * Kubernetes Engine Admin
+        * Service Account User
+        * Storage Admin
     2. Create an IAM for mchen@heartpoints.org with the "Owner" permission
 4. Generate JSON key and place at the root of this repo. Add to gitignore.
 5. Run `./heartpoints.sh createGKECluster` 
