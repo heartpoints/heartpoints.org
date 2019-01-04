@@ -335,8 +335,12 @@ heartpoints_model() {
     heartpoints_yarn ts-node src/heartpoints-cli.ts
 }
 
-# Authentication
+heartpoints_tä() { local message=$1 
+    git add -A
+    git commit -m "${message}"
+}
 
+# Authentication
 
 gke_cicdAccountLogin() {
     gcloud_install
