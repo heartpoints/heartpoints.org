@@ -213,7 +213,7 @@ heartpoints_k8sResourceYaml() { local image=$1
 }
 
 heartpoints_deployToKubernetes() { local image=$1
-    echo "$(heartpoints_k8sResourceYaml "${image}")" #| kubectl apply -f -
+    echo "$(heartpoints_k8sResourceYaml "${image}")" | kubectl apply -f -
     echo "deployment request complete... to check status run './heartpoints.sh minikubeDashboard'"
 }
 
@@ -335,7 +335,7 @@ heartpoints_model() {
     heartpoints_yarn ts-node src/heartpoints-cli.ts
 }
 
-heartpoints_tä() { local message=$1 
+heartpoints_g() { local message=$1 
     git add -A
     git commit -m "${message}"
 }
