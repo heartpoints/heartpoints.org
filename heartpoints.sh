@@ -125,8 +125,9 @@ heartpoints_test() { local baseUrl=$1
     heartpoints_onTestComplete "passed"
 }
 
-heartpoints_onMasterMerge() {
-    heartpoints_productionBuildDeployTest
+heartpoints_onMasterMerge() { export gcpCicdServiceAccountCredentialsJson
+    gke_cicdAccountLogin
+    productionBuildDeployTest
 }
 
 heartpoints_minikubeRunTests() {
@@ -181,7 +182,6 @@ heartpoints_runServer() {
 }
 
 heartpoints_pushImage() { local imageURI=$1
-    gcloud_login #TODO: fix this login to be non-interactive and stuff
     docker push "${imageURI}"
 }
 
@@ -226,7 +226,12 @@ heartpoints_taggedImageName() { local imageRepository=$1; local gitSha=$2
     echo "${imageRepository}/heartpoints.org:${gitSha}"
 }
 
-heartpoints_productionBuildDeployTest() {
+heartpoints_manualProductionBuildDeployTest() {
+    gcloud_login
+    productionBuildDeployTest
+}
+
+productionBuildDeployTest() {
     #TODO: DRY up wrt: heartpoints_minikubeBuildDeployTest
     local imageRepository="$(heartpoints_gcr)"
     local shaToBuild="$(git_currentSha)"
@@ -342,13 +347,18 @@ heartpoints_g() { local message=$@
 
 # Authentication
 
-gke_cicdAccountLogin() {
+gke_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson
     gcloud_install
-    gcloud auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=heartpoints-org-a5b59b6b4963.json
+    trap "rm gcpCicdServiceAccountCredentialsJson.json" EXIT
+    if [ -v gcpCicdServiceAccountCredentialsJson ]; then
+        echo "$gcpCicdServiceAccountCredentialsJson" > gcpCicdServiceAccountCredentialsJson.json
+    fi
+    gcloud auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=gcpCicdServiceAccountCredentialsJson.json
 }
 
-gcloud_login() { # rename this and change this back to manual login and fix where its used to not use manual login
-    gke_cicdAccountLogin
+gcloud_login() {
+    gcloud auth login
+    gcloud config set project heartpoints-org
     gcloud auth configure-docker
     gcloud container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
 }
