@@ -335,7 +335,7 @@ heartpoints_model() {
     heartpoints_yarn ts-node src/heartpoints-cli.ts
 }
 
-heartpoints_g() { local message=$1 
+heartpoints_g() { local message=$@ 
     git add -A
     git commit -m "${message}"
 }
@@ -347,7 +347,7 @@ gke_cicdAccountLogin() {
     gcloud auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=heartpoints-org-a5b59b6b4963.json
 }
 
-gcloud_login() { # rename this
+gcloud_login() { # rename this and change this back to manual login and fix where its used to not use manual login
     gke_cicdAccountLogin
     gcloud auth configure-docker
     gcloud container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org

@@ -30,6 +30,12 @@ Deploys to production shall happen automatically upon merge via CircleCI
 
 #### Manual Deployment
 
+##### Deploy via web
+
+Go to https://circleci.com/gh/heartpoints/heartpoints.org/tree/master, choose a previously run job (you may search the page by the git commit sha), and rerun the workflow.
+
+##### Deploy from Mac
+
 Make sure you have production deployment credentials, then launch the interactive
 manual deploy script: `./heartpoints.sh manual_deploy`
 
