@@ -16,6 +16,9 @@ spec:
         - name: heartpoints-org
           image: {{image}}
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 25m
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
