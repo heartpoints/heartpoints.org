@@ -52,7 +52,9 @@ Note: only deploys from "master" are allowed.
         * Storage Admin
     2. Create an IAM for mchen@heartpoints.org with the "Owner" permission
 4. Generate JSON key and place at the root of this repo. Add to gitignore.
-5. Run `./heartpoints.sh createGKECluster` 
+5. Run `./heartpoints.sh createGKECluster`
+
+After the first deployment to GKE, a loadbalancer with an ephemeral IP will be created. Using the Google Console UI, promote this to a static IP named heartpoints-org.
 
 ## Next Steps
 

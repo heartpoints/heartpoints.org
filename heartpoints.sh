@@ -126,8 +126,8 @@ heartpoints_test() { local baseUrl=$1
 }
 
 heartpoints_onMasterMerge() { export gcpCicdServiceAccountCredentialsJson
-    gke_cicdAccountLogin
-    productionBuildDeployTest
+    gcloud_cicdAccountLogin
+    cicdProductionBuildDeployTest
 }
 
 heartpoints_minikubeRunTests() {
@@ -147,15 +147,14 @@ heartpoints_gcloud_kubectl() { local args=$@
 }
 
 heartpoints_kubectl_commands() { local args=$@
-    gke_cicdAccountLogin
-    gcloud container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
+    gcloud_cicdAccountLogin
     kubectl_install
     kubectl $args
 }
 
 heartpoints_createGKECluster_commands() {
-    gke_cicdAccountLogin
-    gcloud beta container --project "heartpoints-org" \
+    gcloud_cicdAccountLogin
+    gcloud_cli beta container --project "heartpoints-org" \
         clusters create "heartpoints-org" \
         --zone "us-central1-a" \
         --username "admin" \
@@ -196,7 +195,6 @@ heartpoints_gcr() {
 
 heartpoints_manualDeploy() { local gitSha=$1
     requiredParameter "gitSha" "${gitSha}" 
-    gcloud_login
     heartpoints_deployToKubernetes "$(heartpoints_taggedImageName $(heartpoints_gcr) ${gitSha})"
 }
 
@@ -227,7 +225,12 @@ heartpoints_taggedImageName() { local imageRepository=$1; local gitSha=$2
 }
 
 heartpoints_manualProductionBuildDeployTest() {
-    gcloud_login
+    gcloud_manualLogin
+    productionBuildDeployTest
+}
+
+cicdProductionBuildDeployTest() {
+    gcloud_cicdAccountLogin
     productionBuildDeployTest
 }
 
@@ -237,9 +240,9 @@ productionBuildDeployTest() {
     local shaToBuild="$(git_currentSha)"
     local taggedImageName="$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
     heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
-    heartpoints_pushImage "${taggedImageName}" #assumes we have cred to push to the docker repo
-    heartpoints_deployToKubernetes "${taggedImageName}" #assumes we are authed to kubectl deploy
-    heartpoints_testAfterWait heartpoints_test "http://35.244.131.133/" # TODO: fix this link!!!!!
+    heartpoints_pushImage "${taggedImageName}"
+    heartpoints_deployToKubernetes "${taggedImageName}"
+    heartpoints_testAfterWait heartpoints_test "http://35.244.131.133/" # This refers to the static loadbalancer IP in gcloud
 }
 
 errorIfEmpty() { local possiblyEmpty=$1; local errorMessage=$2
@@ -347,20 +350,27 @@ heartpoints_g() { local message=$@
 
 # Authentication
 
-gke_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson
-    gcloud_install
-    trap "rm gcpCicdServiceAccountCredentialsJson.json" EXIT
+gcloud_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson
     if [ -v gcpCicdServiceAccountCredentialsJson ]; then
+        trap "rm gcpCicdServiceAccountCredentialsJson.json" EXIT
         echo "$gcpCicdServiceAccountCredentialsJson" > gcpCicdServiceAccountCredentialsJson.json
+        gcloud_cli auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=gcpCicdServiceAccountCredentialsJson.json
+        gcloud_configure
+    else
+        echo "Unable to log into service account - gcpCicdServiceAccountCredentialsJson is not set"
+        exit 1
     fi
-    gcloud auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=gcpCicdServiceAccountCredentialsJson.json
 }
 
-gcloud_login() {
-    gcloud auth login
-    gcloud config set project heartpoints-org
-    gcloud auth configure-docker
-    gcloud container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
+gcloud_manualLogin() {
+    gcloud_cli auth login
+    gcloud_configure
+}
+
+gcloud_configure() {
+    gcloud_cli config set project heartpoints-org
+    gcloud_cli auth configure-docker
+    gcloud_cli container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
 }
 
 # Misc functions
@@ -391,7 +401,14 @@ file_does_not_exist() { local possibleFilePath=$1
 }
 
 gcloud_install() {
-    brew cask install google-cloud-sdk 
+    if command_does_not_exist "gcloud"; then
+        brew cask install google-cloud-sdk
+    fi
+}
+
+gcloud_cli() { local args=$@
+    gcloud_install   
+    gcloud ${args}
 }
 
 git_currentSha() {
