@@ -7,7 +7,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: ./heartpoints.sh onPullRequest
+      - run: ./heartpoints.sh onMasterMerge
   onMasterMerge:
     docker:
       - image: circleci/node:10
