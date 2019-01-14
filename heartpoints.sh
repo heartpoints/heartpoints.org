@@ -126,7 +126,6 @@ heartpoints_test() { local baseUrl=$1
 }
 
 heartpoints_onMasterMerge() { export gcpCicdServiceAccountCredentialsJson
-    gcloud_cicdAccountLogin
     cicdProductionBuildDeployTest
 }
 
