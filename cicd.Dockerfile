@@ -19,11 +19,8 @@ RUN curl https://sdk.cloud.google.com | bash
 # nvm
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
 
-
-
-#WORKDIR /heartpoints.org
-#COPY . .
-#RUN ./heartpoints.sh prepareForRun
-#ARG commitSha
-#ENV commitSha=$commitSha
-
+# docker
+RUN apt-get update && apt-get install -y apt-transport-https ca-certificates gnupg-agent software-properties-common
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+RUN apt-get update && apt-get install -y docker-ce

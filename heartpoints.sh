@@ -179,10 +179,6 @@ heartpoints_runServer() {
     heartpoints_yarn start
 }
 
-heartpoints_pushImage() { local imageURI=$1
-    docker push "${imageURI}"
-}
-
 errorAndExit() { local message=$1
     echo $message
     exit 1
@@ -239,7 +235,7 @@ productionBuildDeployTest() {
     local shaToBuild="$(git_currentSha)"
     local taggedImageName="$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
     heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
-    heartpoints_pushImage "${taggedImageName}"
+    docker push "${taggedImageName}"
     heartpoints_deployToKubernetes "${taggedImageName}"
     heartpoints_testAfterWait heartpoints_test "http://35.244.131.133/" # This refers to the static loadbalancer IP in gcloud
 }
@@ -252,6 +248,13 @@ errorIfEmpty() { local possiblyEmpty=$1; local errorMessage=$2
 
 requiredParameter() { local parameterName=$1; local parameterValue=$2
     errorIfEmpty "${parameterValue}" "${parameterName} is required parameter"
+}
+
+heartpoints_buildAndPushCicdImage() {
+    local imageURI="$(heartpoints_gcr)/cicd:1.0.0"
+    docker build -t "$imageURI" -f cicd.Dockerfile .
+    # gcloud_manualLogin
+    docker push "$imageURI"
 }
 
 heartpoints_minikubeDeployTest() { local taggedImageName=$1
@@ -284,6 +287,7 @@ heartpoints_minikubeTaggedImageName() { local shaToBuild=$1
 heartpoints_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     requiredParameter "taggedImageName" "${taggedImageName}"
     requiredParameter "shaToReportInHttpHeaders" "${shaToReportInHttpHeaders}"
+    heartpoints_pointToAndRunMinikubeDockerDaemon
     heartpoints_pointToAndRunMinikubeDockerDaemon
     heartpoints_buildAndTagImage "${taggedImageName}" "${shaToReportInHttpHeaders}"
 }

@@ -2,7 +2,10 @@ version: 2
 jobs:
   onPullRequest:
     docker:
-      - image: google/cloud-sdk:alpine #circleci/node:10
+      - image: gcr.io/heartpoints-org/cicd:1.0.0 # todo: document how this image got there
+        auth:
+          username: _json_key
+          password: $gcpCicdServiceAccountCredentialsJson
     steps:
       - checkout
       - setup_remote_docker:
