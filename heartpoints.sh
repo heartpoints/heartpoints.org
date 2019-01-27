@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -ex
 
 heartpoints() { local command=$1; local remainingArgs=${@:2}
     if string_is_empty "${command}"; then

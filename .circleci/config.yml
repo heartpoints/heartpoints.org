@@ -2,7 +2,7 @@ version: 2
 jobs:
   onPullRequest:
     docker:
-      - image: circleci/node:10
+      - image: google/cloud-sdk:alpine #circleci/node:10
     steps:
       - checkout
       - setup_remote_docker:
@@ -17,8 +17,8 @@ jobs:
           docker_layer_caching: true
       - run:
           command: |
-          echo 'export gcpCicdServiceAccountCredentialsJson="$gcpCicdServiceAccountCredentialsJson"' >> $BASH_ENV
-          ./heartpoints.sh onMasterMerge
+            # echo 'export $gcpCicdServiceAccountCredentialsJson' >> $gcpCicdServiceAccountCredentialsJson
+            ./heartpoints.sh onMasterMerge
       
 workflows:
   version: 2
