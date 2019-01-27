@@ -4,7 +4,7 @@ import { VictoryBar, VictoryStack, VictoryChart } from 'victory';
 
 export const Site = () => <div>
     <h1>heartpoints.org Model</h1>
-    <p>Model Run Resultttttt</p>
+    <p>Model Run Result</p>
     <pre>{JSON.stringify(allStates, null, 3)}</pre>
     <VictoryChart>
         <VictoryStack>
