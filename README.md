@@ -15,7 +15,7 @@ to get a local version of this repository.
 
 ## Use the CLI
 
-On a machine with bash shell, use the `./hp` CLI (`./hp` for short) to run various
+On a machine with bash shell, use the `./heartpoints.sh` CLI (`./hp` for short) to run various
 commands that are useful in the development of heartpoints.org.
 
 To get a list of commands available, just run without arguments: `./hp`
@@ -53,11 +53,11 @@ Note: only deploys from "master" are allowed.
 1. There exists a heartpoints.org organization
 2. The organization contains a project named heartpoints-org
 3. As an admin within the organization
+    0. Add an admin if needed by creating an IAM for the user and granting the `Owner` permission
     1. Create a service account "cicd". At the time of this writing, the generated account email is: cicd-353@heartpoints-org.iam.gserviceaccount.com. Important: if you recreate this service account, you must update `cicdServiceAccountEmail()` within heartpoints.sh. Make sure the service account has the following permissions:
         * Kubernetes Engine Admin
         * Service Account User
         * Storage Admin
-    2. Create an IAM for mchen@heartpoints.org with the "Owner" permission
 4. Generate JSON key and add it to the [credentials repository](https://github.com/heartpoints/credentials)
 5. Run `./hp createGKECluster`
 

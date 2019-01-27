@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
 heartpoints() { local command=$1; local remainingArgs=${@:2}
     if string_is_empty "${command}"; then
@@ -253,7 +253,7 @@ requiredParameter() { local parameterName=$1; local parameterValue=$2
 heartpoints_buildAndPushCicdImage() {
     local imageURI="$(heartpoints_gcr)/cicd:1.0.0"
     docker build -t "$imageURI" -f cicd.Dockerfile .
-    # gcloud_manualLogin
+    gcloud_manualLogin
     docker push "$imageURI"
 }
 
