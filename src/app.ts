@@ -1,6 +1,6 @@
-const expressModule = require('express');
-const http = require('http');
-const path = require('path');
+import expressModule from "express";
+import http from "http";
+import path from "path";
 
 const EXPRESS_PORT_CONFIG_KEY = 'port';
 const STARTUP_MESSAGE = 'Express server listening on http://localhost:';
