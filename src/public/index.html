@@ -1,5 +1,8 @@
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="images/heartpointsIcon.png" />
+    <link rel="stylesheet" href="bootstrap.css" />
     <title>heartpoints.org</title>
     <style type="text/css">
         .vertical-center {
@@ -9,28 +12,15 @@
             align-items: center;
         }
     </style>
-    <link rel="icon" href="images/heartpointsIcon.png" />
-    <link rel="stylesheet" href="bootstrap.css" />
 </head>
 <body>
-    <div class="jumbotron vertical-center">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2"> </div>
-                <div class="col-md-8">
-                    <img class="center-block" width="100%" src="images/heartpoints-splash.png" />
-                    <p style="text-align: center; margin-bottom:0px; margin-top: 25px;">help us build something amazing!</p>
-                    <h2 style="text-align: center; margin-top:10px;">
-                        <a href="mailto:info@heartpoints.org">info@heartpoints.org</a> 
-                    </h2>
-                    <p style="text-align: center; margin-bottom:0px; margin-top: 25px;">
-                        <a href="react.html">react app (WIP!!!)</a>
-                    </p>
-                </div>
-                <div class="col-md-2"> 
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="site"></div>
+
+    <!-- Dependencies -->
+    <script src="react/umd/react.development.js"></script>
+    <script src="react-dom/umd/react-dom.development.js"></script>
+
+    <!-- Main -->
+    <script src="bundle.js"></script>
 </body>
 </html>

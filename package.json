@@ -4,7 +4,7 @@
   "description": "A platform for electronic 1 on 1 philanthropy",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js"
+    "start": "ts-node-dev src/app.ts"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,8 @@
     "webpack": "^4.23.1"
   },
   "devDependencies": {
+    "@types/express": "^4.16.1",
+    "ts-node-dev": "^1.0.0-pre.32",
     "webpack-cli": "^3.1.2"
   },
   "engines": {
