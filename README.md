@@ -15,7 +15,7 @@ to get a local version of this repository.
 
 ## Use the CLI
 
-On a machine with bash shell, use the `./heartpoints.sh` CLI (`./hp` for short) to run various
+On a machine with bash shell, use the `./hp` CLI (`./hp` for short) to run various
 commands that are useful in the development of heartpoints.org.
 
 To get a list of commands available, just run without arguments: `./hp`
@@ -24,7 +24,7 @@ To get a list of commands available, just run without arguments: `./hp`
 
 To prepare and run the web server, run:
 
-    ./heartpoints.sh dev
+    ./hp dev
 
 ### Deploy to Production
 
@@ -32,6 +32,8 @@ To prepare and run the web server, run:
 
 Deploys to production shall happen automatically upon merge via CircleCI
 (see ./circleci/config.yml).
+
+Note: Deployments require that the `gcr.io/heartpoints-org/cicd` image is available. If you would like to make updates to the image, you may modify `cicd.Dockerfile` and run `./hp buildAndPushCicdImage`. When pushing an update, be sure to find and replace the semver tag with the next version.
 
 #### Manual Deployment
 
@@ -42,7 +44,7 @@ Go to https://circleci.com/gh/heartpoints/heartpoints.org/tree/master, choose a 
 ##### Deploy from Mac
 
 Make sure you have production deployment credentials, then launch the interactive
-manual deploy script: `./heartpoints.sh manual_deploy`
+manual deploy script: `./hp manual_deploy`
 
 Note: only deploys from "master" are allowed.
 
@@ -57,7 +59,7 @@ Note: only deploys from "master" are allowed.
         * Storage Admin
     2. Create an IAM for mchen@heartpoints.org with the "Owner" permission
 4. Generate JSON key and add it to the [credentials repository](https://github.com/heartpoints/credentials)
-5. Run `./heartpoints.sh createGKECluster`
+5. Run `./hp createGKECluster`
 
 After the first deployment to GKE, a loadbalancer with an ephemeral IP will be created. Using the Google Console UI, promote this to a static IP named heartpoints-org.
 

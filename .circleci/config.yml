@@ -2,7 +2,15 @@ version: 2
 jobs:
   onPullRequest:
     docker:
-      - image: gcr.io/heartpoints-org/cicd:1.0.0 # todo: document how this image got there
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run: ./heartpoints.sh onPullRequest
+  onMasterMerge:
+    docker:
+      - image: gcr.io/heartpoints-org/cicd:1.0.0
         auth:
           username: _json_key
           password: $gcpCicdServiceAccountCredentialsJson
@@ -11,17 +19,6 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run: ./heartpoints.sh onMasterMerge
-  onMasterMerge:
-    docker:
-      - image: google/cloud-sdk:alpine
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          command: |
-            # echo 'export $gcpCicdServiceAccountCredentialsJson' >> $gcpCicdServiceAccountCredentialsJson
-            ./heartpoints.sh onMasterMerge
       
 workflows:
   version: 2
