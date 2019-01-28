@@ -1,6 +1,7 @@
 import * as React from "react";
+import ReactFacebookLogin from "react-facebook-login";
 
-export const HomePage = ({navigateToSimpleModel, isDev}) => <div className="jumbotron vertical-center">
+export const HomePage = ({navigateToSimpleModel, isDev, facebookUserSession, onFacebookLoginComplete}) => <div className="jumbotron vertical-center">
     <div className="container">
         <div className="row">
             <div className="col-md-2"> </div>
@@ -19,4 +20,14 @@ export const HomePage = ({navigateToSimpleModel, isDev}) => <div className="jumb
             </div>
         </div>
     </div>
+    {isDev && <FacebookStuff {...{facebookUserSession, onFacebookLoginComplete}} />}
 </div>
+
+const FacebookStuff = ({facebookUserSession, onFacebookLoginComplete}) => facebookUserSession 
+    ? <pre>{JSON.stringify(facebookUserSession, null, 3)}</pre> 
+    : <ReactFacebookLogin
+        appId="1010813445640879"
+        autoLoad={true}
+        fields="name,email,picture"
+        callback={onFacebookLoginComplete} 
+        />

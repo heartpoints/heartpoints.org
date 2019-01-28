@@ -48,6 +48,10 @@ manual deploy script: `./hp manual_deploy`
 
 Note: only deploys from "master" are allowed.
 
+## Facebook Integration
+
+The app integrates with facebook. To manage the integration, visit https://developers.facebook.com/apps/1010813445640879 (you will need access).
+
 ## Google Cloud
 
 1. There exists a heartpoints.org organization
