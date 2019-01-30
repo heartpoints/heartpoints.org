@@ -2,16 +2,36 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Site } from "./components/site";
+import Cookies from "js-cookie";
 
-const renderApp = ({showSimpleModel, isDev, facebookUserSession}) => {
-    const navigateToSimpleModel = () => renderApp({showSimpleModel: true, isDev, facebookUserSession});
-    const onFacebookLoginComplete = (facebookUserSession) => renderApp({showSimpleModel: showSimpleModel, isDev, facebookUserSession});
+
+const renderApp = (state) => {
+    window.onhashchange = (event) => {
+        const { newURL:currentUrl } = event;
+        renderApp({...state, currentUrl });
+    }
+    const navigateToSimpleModel = () => renderApp({...state, showSimpleModel: true});
+    const onFacebookLoginComplete = (facebookUserSession) => {
+        Cookies.set('facebookUserSession', facebookUserSession)
+        renderApp({...state, facebookUserSession});
+    }
+    const siteProps = {
+        ...state, 
+        navigateToSimpleModel,
+        onFacebookLoginComplete
+    }
     ReactDOM.render(
-        <Site showSimpleModel={showSimpleModel} navigateToSimpleModel={navigateToSimpleModel} isDev={isDev} facebookUserSession={facebookUserSession} onFacebookLoginComplete={onFacebookLoginComplete} />,
+        <Site {...siteProps} />,
         document.getElementById("site")
     );
 }
 
-const isDev = window.location.href.indexOf("localhost") > -1;
-const facebookUserSession = undefined;
-renderApp({showSimpleModel: false, isDev, facebookUserSession });
+const facebookUserSessionString = Cookies.get('facebookUserSession');
+const facebookUserSession = facebookUserSessionString && JSON.parse(facebookUserSessionString);
+const initialState = {
+    showSimpleModel: false, 
+    facebookUserSession, 
+    currentUrl: window.location.href
+}
+
+renderApp(initialState);
