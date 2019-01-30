@@ -1,8 +1,13 @@
 import * as React from "react";
-import { HomePage } from "./HomePage";
+import { HomePage, FacebookStuff } from "./HomePage";
 import { SimpleModel } from "./SimpleModel";
 
-export const Site = ({showSimpleModel, navigateToSimpleModel, isDev, facebookUserSession, onFacebookLoginComplete}) => 
-    showSimpleModel 
+export const Site = (props) => {
+    const {showSimpleModel, currentUrl } = props;
+    const showLogin = currentUrl.indexOf("#login") > -1
+    return showSimpleModel 
         ? <SimpleModel /> 
-        : <HomePage navigateToSimpleModel={navigateToSimpleModel} isDev={isDev} facebookUserSession={facebookUserSession} onFacebookLoginComplete={onFacebookLoginComplete} />
+        : showLogin
+            ? <FacebookStuff {...props} />
+            : <HomePage {...props} />
+}
