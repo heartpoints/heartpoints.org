@@ -1,9 +1,11 @@
+const path = require('path');
+
 module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
-        path: __dirname + "/dist",
-        publicPath: __dirname + '/src'
+        path: path.join(__dirname, "./dist"),
+        publicPath: '/'
     },
     mode: 'development',
 
@@ -19,7 +21,7 @@ module.exports = {
 
     devServer: {
         port: 3000,
-        contentBase: './dist'
+        contentBase: [path.join(__dirname, "./dist"), path.join(__dirname, "./src/public"),path.join(__dirname, "./node_modules")]
     },
 
     module: {
