@@ -10,8 +10,13 @@ Have Docker installed.
 
 ## Clone the repository to your development environment
 
-Follow [these instructions](https://help.github.com/articles/fork-a-repo/)
+Follow [these instructions](https://help.github.com/articles/cloning-a-repository/)
 to get a local version of this repository.
+
+##Create a new branch of the repository
+
+Follow [these instructions](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
+to create and move to a new branch on your local machine.
 
 ## Use the CLI
 
