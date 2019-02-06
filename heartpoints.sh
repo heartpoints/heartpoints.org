@@ -36,7 +36,7 @@ heartpoints_help() {
 
 heartpoints_localDev() {
     heartpoints_serverDev
-    echo "./hp localDev is deprecated. "
+    echo "./hp localDev is deprecated. For server side development, use ./hp serverDev or for client side development use ./hp clientDev"
 }
 
 heartpoints_serverDev(){
