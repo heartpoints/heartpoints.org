@@ -15,8 +15,9 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
+    echo "clientDev                            - run front-end web server with hot reloading"
     echo "createGKECluster                     - creates a GKE cluster. See README for prerequisites"
-    echo "localDev                             - run dev web server locally"
+    echo "localDev                             - run dev web server locally [DEPRECATED]; run serverDev instead"
     echo "manualDeploy <gitSha>                - interactive interview to deploy to production"
     echo "minikubeBuild <taggedImageName>      - using minikube's docker daemon, build image and tag with minikube metadata"
     echo "minikubeBuildDeployTest              - minikubeBuild, then minikubeDeployTest"
@@ -27,17 +28,27 @@ heartpoints_help() {
     echo "minikubeRunTests                     - run tests against an existing minikube-hosted website"
     echo "model                                - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
     echo "prePushVerification                  - validates that local code is ready for pull request"
+    echo "serverDev                            - run dev web server locally"
     echo "tailProductionLogs                   - TODO: Need a k8s equivalent (can generate a url if that is a better way to tail)"
     echo "yarn                                 - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
     echo ""
 }
 
 heartpoints_localDev() {
+    heartpoints_serverDev
+    echo "./hp localDev is deprecated. "
+}
+
+heartpoints_serverDev(){
     heartpoints_prepareForRun
     heartpoints_runServer
 }
 
-heartpoints_prepareForRun() {
+heartpoints_clientDev(){
+    heartpoints_runWebPackDevServer
+}
+
+heartpoints_prepareForRun() { 
     heartpoints_yarn install
     heartpoints_yarn webpack --verbose
     if file_does_not_exist "dist/bundle.js"; then
@@ -51,6 +62,10 @@ heartpoints_yarn() { local args=$@
         npm_cli install yarn -g
     fi
     yarn ${args}
+}
+
+heartpoints_runWebPackDevServer(){
+    heartpoints_yarn webpack-dev-server --hot --inline --color --open
 }
 
 ensureDockerCliConfiguredToRunningDaemon() {
