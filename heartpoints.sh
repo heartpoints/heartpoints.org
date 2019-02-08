@@ -45,6 +45,7 @@ heartpoints_serverDev(){
 }
 
 heartpoints_clientDev(){
+    heartpoints_prepareForRun
     heartpoints_runWebPackDevServer
 }
 
