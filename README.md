@@ -22,27 +22,33 @@ to create and move to a new branch on your local machine.
 
 Verify you are working within the new branch. Do do so, run:
 
-git status
+    git status
 
 When you believe your changes are ready, add them to the git workspace with
 
-git add -A
+    git add -A
 
 and then commit them with
 
-git commit -m "brief description of change"
+    git commit -m "brief description of change"
 
 and push them with
 
-git push origin head
+    git push origin head
 
 Finally, navigate to github.com/heartpoints/heartpoints.org, and look for the prompt to create a new pull request from your newly pushed branch. Here, you can review your changes and if things look good, add any potential code reviewers in the upper right, add an optional explanation in the text box, and click "Create pull request"
 
 You will be taken to the newly created pull request page, where you can see your pull request is automatically tested by the development pipeline. Look for the "Status" or "Details" links on the "Conversation" tab of the pull request to understand what automatic testing jobs are running, and whether they passed or failed (you will see a yellow circle for running, green check for passing, red x for failing)
 
-Once you have passing jobs with green checks and at least one review signoff from a colleague, then, assuming you have the latest changes incorporated into your branch, you will be ready to merge! Click "Squash and Merge" to squash your commits into a single commit for the pull request as a whole, and merge that into master.
+Once you have passing jobs with green checks and at least one review signoff from a colleague, then, assuming you have the latest changes incorporated into your branch, you will be ready to merge! Click "Squash and Merge" to squash your commits into a single commit for the pull request as a whole, and merge that into master. (If the words "squash and merge" are not visible on the button,
+click the down arrow and refine your selection to say squash and merge, then click).
 
-At that point, the pipeline will automatically build, test, deploy, and production verify your change. You can validate your change has made it to production by using the chrome developer tools to inspect the http response headers, looking for the `commitSha` header, which should match the sha of your merged PR commit in master.
+At that point, the pipeline will automatically build, test, deploy, and production verify your change. Master merge pipeline
+jobs can be viewed [here](https://circleci.com/gh/heartpoints/heartpoints.org/tree/master). You may also find this link from
+github by navigating to the "commits" tab of the main repository page, and clicking the small green / red / yellow status icon
+near your merge commit, and following the link.
+
+You can validate your change has made it to production by using the chrome developer tools to inspect the http response headers, looking for the `commitSha` header, which should match the sha of your merged PR commit in master.
 
 ## Use the CLI
 
@@ -90,8 +96,8 @@ To log in via facebook, navigate to `/#login`
 1. There exists a heartpoints.org organization
 2. The organization contains a project named heartpoints-org
 3. As an admin within the organization
-    0. Add an admin if needed by creating an IAM for the user and granting the `Owner` permission
-    1. Create a service account "cicd". At the time of this writing, the generated account email is: cicd-353@heartpoints-org.iam.gserviceaccount.com. Important: if you recreate this service account, you must update `cicdServiceAccountEmail()` within heartpoints.sh. Make sure the service account has the following permissions:
+    1. Add an admin if needed by creating an IAM for the user and granting the `Owner` permission
+    2. Create a service account "cicd". At the time of this writing, the generated account email is: cicd-353@heartpoints-org.iam.gserviceaccount.com. Important: if you recreate this service account, you must update `cicdServiceAccountEmail()` within heartpoints.sh. Make sure the service account has the following permissions:
         * Kubernetes Engine Admin
         * Service Account User
         * Storage Admin

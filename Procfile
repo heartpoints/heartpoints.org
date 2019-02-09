@@ -1,1 +1,0 @@
-web: ./heartpoints.sh production
