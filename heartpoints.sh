@@ -17,7 +17,6 @@ heartpoints_help() {
     echo ""
     echo "clientDev                            - run front-end web server with hot reloading"
     echo "createGKECluster                     - creates a GKE cluster. See README for prerequisites"
-    echo "localDev                             - run dev web server locally [DEPRECATED]; run serverDev instead"
     echo "manualDeploy <gitSha>                - interactive interview to deploy to production"
     echo "minikubeBuild <taggedImageName>      - using minikube's docker daemon, build image and tag with minikube metadata"
     echo "minikubeBuildDeployTest              - minikubeBuild, then minikubeDeployTest"
@@ -34,9 +33,14 @@ heartpoints_help() {
     echo ""
 }
 
+error_and_exit() { local errorMessage=$1
+    echo $errorMessage
+    exit 1
+}
+
 heartpoints_localDev() {
     heartpoints_serverDev
-    echo "./hp localDev is deprecated. For server side development, use ./hp serverDev or for client side development use ./hp clientDev"
+    error_and_exit "localDev is deprecated. For server side development, use ./hp serverDev or for client side development use ./hp clientDev"
 }
 
 heartpoints_serverDev(){
@@ -45,7 +49,7 @@ heartpoints_serverDev(){
 }
 
 heartpoints_clientDev(){
-    heartpoints_prepareForRun
+    heartpoints_yarn install
     heartpoints_runWebPackDevServer
 }
 
@@ -66,7 +70,7 @@ heartpoints_yarn() { local args=$@
 }
 
 heartpoints_runWebPackDevServer(){
-    heartpoints_yarn webpack-dev-server --hot --inline --color --open
+    heartpoints_yarn watch
 }
 
 ensureDockerCliConfiguredToRunningDaemon() {
