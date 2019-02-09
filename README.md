@@ -38,6 +38,10 @@ and push them with
 
 Finally, navigate to github.com/heartpoints/heartpoints.org, and look for the prompt to create a new pull request from your newly pushed branch. Here, you can review your changes and if things look good, add any potential code reviewers in the upper right, add an optional explanation in the text box, and click "Create pull request"
 
+You may also pull request using the following:
+
+    `./hp hub pull-request`
+
 You will be taken to the newly created pull request page, where you can see your pull request is automatically tested by the development pipeline. Look for the "Status" or "Details" links on the "Conversation" tab of the pull request to understand what automatic testing jobs are running, and whether they passed or failed (you will see a yellow circle for running, green check for passing, red x for failing)
 
 Once you have passing jobs with green checks and at least one review signoff from a colleague, then, assuming you have the latest changes incorporated into your branch, you will be ready to merge! Click "Squash and Merge" to squash your commits into a single commit for the pull request as a whole, and merge that into master. (If the words "squash and merge" are not visible on the button,

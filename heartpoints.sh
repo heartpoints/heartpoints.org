@@ -53,6 +53,21 @@ heartpoints_clientDev(){
     heartpoints_runWebPackDevServer
 }
 
+heartpoints_hub() { local args=$@
+    heartpoints_hub_install
+    hub $args
+}
+
+heartpoints_hub_install() {
+    brew_install hub
+}
+
+brew_install() { local packageName=$1
+    if command_does_not_exist "${packageName}"; then
+        brew install "$packageName"
+    fi
+}
+
 heartpoints_prepareForRun() { 
     heartpoints_yarn install
     heartpoints_yarn webpack --verbose
@@ -443,9 +458,7 @@ git_working_directory_is_clean() {
 }
 
 kubectl_install() {
-    if command_does_not_exist kubectl; then
-        brew install kubernetes-cli
-    fi
+    brew_install "kubernetes-cli"
 }
 
 minikube_install() {
