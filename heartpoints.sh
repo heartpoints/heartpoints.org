@@ -17,6 +17,7 @@ heartpoints_help() {
     echo ""
     echo "clientDev                            - run front-end web server with hot reloading"
     echo "createGKECluster                     - creates a GKE cluster. See README for prerequisites"
+    echo "hub                                  - use the github cli"
     echo "manualDeploy <gitSha>                - interactive interview to deploy to production"
     echo "minikubeBuild <taggedImageName>      - using minikube's docker daemon, build image and tag with minikube metadata"
     echo "minikubeBuildDeployTest              - minikubeBuild, then minikubeDeployTest"
