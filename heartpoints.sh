@@ -113,7 +113,7 @@ heartpoints_dockerTestImage() { local taggedImageName=$1
     local testName="heartpointsTest"
     trap "docker stop ${testName} > /dev/null" EXIT
     docker run --detach --name "${testName}" --rm "${taggedImageName}"
-    sleep 5
+    sleep 10
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
 }
 

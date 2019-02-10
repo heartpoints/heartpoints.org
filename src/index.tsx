@@ -47,7 +47,6 @@ const renderApp = (state) => {
         onSideNavCollapseRequested,
         onHamburgerClicked
     }
-    // const SiteWithRouter = withRouter(Site);
     ReactDOM.render(
         <Site {...siteProps} />,
         document.getElementById("site")

@@ -33,13 +33,3 @@ export const FacebookLoggedInButton = props => {
         )}
     </PopupState>
 }
-
-// const PopperContent = ({ TransitionProps, placement }) => (
-//     <Grow
-//         {...TransitionProps}
-//         id="menu-list-grow"
-//         style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-//     >
-        
-//     </Grow>
-// )
