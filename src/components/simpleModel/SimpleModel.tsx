@@ -1,6 +1,6 @@
 import * as React from "react";
 import { VictoryBar, VictoryStack, VictoryChart } from 'victory';
-import { allStates } from "../models/economy-model";
+import { allStates } from "../../models/economy-model";
 
 export const SimpleModel = () => <div>
 <h1>heartpoints.org Model</h1>
