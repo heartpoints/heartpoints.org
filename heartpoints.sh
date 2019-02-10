@@ -154,7 +154,7 @@ heartpoints_test() { local baseUrl=$1
     echo "passed"
     echo "" 
     echo "Test commitSha presence in header matches current sha ($(git_currentSha)):" 
-    local headerOutput="$(curl -L --insecure -I "${baseUrl}?preventCache=$(uuidgen)")"
+    local headerOutput="$(curl -L --insecure -I "${baseUrl}")"
     echo "$headerOutput"
     echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"
     echo "passed"
