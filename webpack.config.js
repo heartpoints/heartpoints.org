@@ -16,10 +16,11 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json"]
+        extensions: [".ts", ".tsx", ".js", ".jsx", ".json"]
     },
 
     devServer: {
+        historyApiFallback: true,
         port: 3000,
         contentBase: [path.join(__dirname, "./dist"), path.join(__dirname, "./src/public"),path.join(__dirname, "./node_modules")]
     },

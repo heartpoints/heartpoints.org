@@ -113,7 +113,7 @@ heartpoints_dockerTestImage() { local taggedImageName=$1
     local testName="heartpointsTest"
     trap "docker stop ${testName} > /dev/null" EXIT
     docker run --detach --name "${testName}" --rm "${taggedImageName}"
-    sleep 5
+    sleep 10
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
 }
 
@@ -154,7 +154,7 @@ heartpoints_test() { local baseUrl=$1
     echo "passed"
     echo "" 
     echo "Test commitSha presence in header matches current sha ($(git_currentSha)):" 
-    local headerOutput="$(curl -L --insecure -I "${baseUrl}?preventCache=$(uuidgen)")"
+    local headerOutput="$(curl -L --insecure -I "${baseUrl}")"
     echo "$headerOutput"
     echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"
     echo "passed"

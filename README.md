@@ -89,11 +89,16 @@ manual deploy script: `./hp manual_deploy`
 
 Note: only deploys from "master" are allowed.
 
+## Dev Only Site
+
+Navigating to `/dev` on the website will take the visitor to the dev-only
+view of heartpoints, where additional features / views may be available.
+
 ## Facebook Integration
 
 The app integrates with facebook. To manage the integration, visit https://developers.facebook.com/apps/1010813445640879 (you will need access).
 
-To log in via facebook, navigate to `/#login`
+To log in via facebook, navigate to `/dev`
 
 ## Google Cloud
 
@@ -109,6 +114,10 @@ To log in via facebook, navigate to `/#login`
 5. Run `./hp createGKECluster`
 
 After the first deployment to GKE, a loadbalancer with an ephemeral IP will be created. Using the Google Console UI, promote this to a static IP named heartpoints-org.
+
+## Material UI Theme
+
+Themes can be updated [here](https://in-your-saas.github.io/material-ui-theme-editor/)
 
 ## Next Steps
 
