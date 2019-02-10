@@ -20,12 +20,6 @@ const renderApp = (state) => {
         deleteSessionCookie();
         renderApp({remainingState});
     }
-    const onProfilePicClicked = () => {
-        renderApp({
-            ...state,
-            isProfilePicMenuOpen: true
-        });
-    }
     const onSideNavCollapseRequested = () => {
         renderApp({
             ...state,
@@ -43,7 +37,6 @@ const renderApp = (state) => {
         navigateToSimpleModel,
         onFacebookLoginComplete,
         onLogoutRequested,
-        onProfilePicClicked,
         onSideNavCollapseRequested,
         onHamburgerClicked
     }
@@ -61,8 +54,7 @@ const initialState = {
     showSimpleModel: false, 
     facebookUserSession, 
     currentUrl: window.location.href,
-    isProfilePicMenuOpen: false,
-    isSideNavOpen: false
+    isSideNavOpen: false,
 }
 
 renderApp(initialState);
