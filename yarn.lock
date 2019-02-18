@@ -3409,6 +3409,11 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-confetti@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-confetti/-/react-confetti-2.3.0.tgz#04928400ade075abebf0a349902d1ffb4e75d453"
+  integrity sha512-qi6Qh8zF3T80bgUK2/iZsYQum+2sLWyhjUpp4nO0uEvaUeIpSfVoj1FH9BLraPmkonn6sCQBK3pFKuS3zY1mJw==
+
 react-dom@^16.6.0:
   version "16.6.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.6.0.tgz#6375b8391e019a632a89a0988bce85f0cc87a92f"
