@@ -38,8 +38,8 @@ behind a feature switch so other devs can see it and it doesn't get lost or forg
 
 ### Keep Branches Up-To-Date via REBASE (MERGES DISALLOWED!!!)
 
-Branches may not be merged unless they are *properly rebased*, please see
-[this video tutorial](https://www.youtube.com/watch?v=tukOm3Afd8s) or find a similar one to understand the procedure.
+Branches may not be merged to origin/master from a pull request unless the pull request commits are *properly rebased*, 
+please see [this video tutorial](https://www.youtube.com/watch?v=tukOm3Afd8s) or find a similar one to understand the procedure.
 The repository settings will prevent unrebased pull requests from merge, enforcing this best practice for everyone.
 
 ### Manually Creating a Branch (not recommended)
