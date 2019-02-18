@@ -93,16 +93,33 @@ git_safeBranchNameForIssueId() { local issueId=$1
     echo "$(git_safeBranchNameFromSentence "$(git_issueDescriptionForIssueId $issueId)")"
 }
 
+git_currentBranchName() { 
+    git rev-parse --abbrev-ref HEAD
+}
+
 heartpoints_branch() { local issueId=$1
     if string_is_empty "$issueId"; then
         heartpoints_hub issue
         echo "Run again with issue number to create and switch to appropriately named branch"
     else
         heartpoints_hub_install
-        git checkout -b "$(git_safeBranchNameForIssueId $issueId)"
+        if strings_are_not_equal "$(git_currentBranchName)" "master"; then
+            echo "Error: you are not in the 'master' branch, you are instead in the '$(git_currentBranchName)' branch."
+            echo "Before using this command, first switch to master using 'git checkout master'"
+            echo "After that, make sure you have the latest from the remote master, by running 'git pull origin master'"
+            echo "With that out of the way, you may run this command to create a new branch"
+            error_and_exit " Please try again"
+        fi
+        git checkout -b "${newBranchToPossiblyCreate}"
+        echo ""
         echo "Use 'git add -A' and 'git commit -m ' to commit to this branch"
         echo "Use 'git push origin head' to push this branch to the remote repository"
         echo "Use 'hp hub pull-request' to create a new pull request from your remote branch to remote master"
+        echo "From there, you will receive a URL where you can:"
+        echo " - view your change"
+        echo " - request reviewers"
+        echo " - View the status of automated tests"
+        echo ""
     fi
 }
 
@@ -586,6 +603,10 @@ string_is_empty() { local possiblyEmptyString=$1
 
 strings_are_equal() { local string1=$1; local string2=$2
     [ "${string1}" = "${string2}" ]
+}
+
+strings_are_not_equal() { local string1=$1; local string2=$2
+    ! strings_are_equal $@
 }
 
 virtualbox_install() {
