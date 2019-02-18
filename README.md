@@ -1,8 +1,12 @@
 heartpoints.org website
 ==================================
 
-# Developing this website:
+Welcome to the Heartpoints.org website repository!
 
+If you are an employee, contractor or volunteer, please visit our internal google drive for internal documents
+about the organization [here](https://docs.google.com/document/d/1BZXYQGlBMvy1x8UQ5b8Bco7hyasknCCjdy6DxbKI03Q/edit)
+
+# Developing this website:
 
 ## Prerequisites
 
