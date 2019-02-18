@@ -13,16 +13,59 @@ Have Docker installed.
 Follow [these instructions](https://help.github.com/articles/cloning-a-repository/)
 to get a local version of this repository.
 
+## Finding and working on a Github Issue
+
+For a left-to-right issue board view, visit [github.com focus board](https://github.com/heartpoints/heartpoints.org/projects/1)
+
+To view issues from terminal, run:
+
+    ./hp hub issues
+
+To browse to issues master list on the web (different than the left-to-right project view), run:
+
+    ./hp hub browse -- issues
+
 ## Create and manage a new branches
 
-When working on a particular change, it is best to do so in a particular branch.
+When working on a particular github issue, it is best to do so in a particular branch. Ideally the name of the branch
+ties back to the issue. 
+
+### Short Lived Branches!
+
+We want branches to be short lived! No long running branches - get that stuff into master and if its not ready put it
+behind a feature switch so other devs can see it and it doesn't get lost or forgotten. Otherwise, delete it!
+
+
+### Keep Branches Up-To-Date via REBASE (MERGES DISALLOWED!!!)
+
+Branches may not be merged unless they are *properly rebased*, please see
+[this video tutorial](https://www.youtube.com/watch?v=tukOm3Afd8s) or find a similar one to understand the procedure.
+The repository settings will prevent unrebased pull requests from merge, enforcing this best practice for everyone.
+
+### Manually Creating a Branch (not recommended)
 
 Follow [these instructions](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
 to create and move to a new branch on your local machine.
 
+### Creating a branch for Github Issue Automatically
+
+To create and check out a nice new branch, first, *make sure you have checked out the master branch and pulled the latest from
+the remote repository!* 
+
+With that out of the way, given you know your github issue id, run:
+
+    ./hp branch [issueId]
+    
+This will create a new branch using our heartpoints standard codified naming rules and check you out into that branch. It
+will also output hints for how to proceed thereafter.
+
+### Verifying you are in the right branch
+
 Verify you are working within the new branch. Do do so, run:
 
     git status
+
+## Add and commit Changes to current branch
 
 When you believe your changes are ready, add them to the git workspace with
 
@@ -32,9 +75,13 @@ and then commit them with
 
     git commit -m "brief description of change"
 
+## Pushing Changes from local branch to remote branch of the same name
+
 and push them with
 
     git push origin head
+
+## Creating a pull request
 
 Finally, navigate to github.com/heartpoints/heartpoints.org, and look for the prompt to create a new pull request from your newly pushed branch. Here, you can review your changes and if things look good, add any potential code reviewers in the upper right, add an optional explanation in the text box, and click "Create pull request"
 
