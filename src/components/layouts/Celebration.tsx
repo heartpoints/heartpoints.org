@@ -1,14 +1,15 @@
 import * as React from 'react';
-import Modal from '@material-ui/core/Modal';
+
 import Confetti from 'react-confetti';
-import { number } from 'prop-types';
+//import { number } from 'prop-types';
 
-
+import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import FavoriteIconTwoTone from '@material-ui/icons/FavoriteBorderTwoTone';
 import RedeemIconOutlined from '@material-ui/icons/RedeemOutlined';
 import StroreIconOutlined from '@material-ui/icons/StoreOutlined';
-import LockIconOutlined from '@material-ui/icons/LockOutlined'
+import LockIconOutlined from '@material-ui/icons/LockOutlined';
+import ClearIconRounded from '@material-ui/icons/ClearOutlined';
 
 export const confettiStyle = {
     "position": "absolute",
@@ -17,7 +18,7 @@ export const confettiStyle = {
 }
 
 export const modalForgroundStyle = {
-    "margin": "100px auto 0",
+    "margin": "50px auto 0",
     "padding": "25px",
     "width": "50%",
     "background-color": "#FFFFFF",
@@ -57,15 +58,22 @@ export const Celebration = (props) => {
             height={1080}
             gravity={0.3}
             numberOfPieces={150}/>
-        <Modal open={true}>
+        <Modal 
+        open={true}
+        disableAutoFocus={true}>
             <div style={modalForgroundStyle}>
-                <h1>Congratualtions!</h1>
-                <h3>
+                <ClearIconRounded style={{float: "right"}}/>
+                <h1 style={{clear: "both", marginTop: "0px", fontSize: "4vw", color: "rgba(255,0,0,0.5"}}>
+                    Congratulations!
+                </h1>
+                <h3 style={{fontSize: "1.5vw"}}>
                     You have been awarded &nbsp;  
                     <FavoriteIconTwoTone />
                     {props.numHeartpointsAwarded}
                 </h3>
-                <br />
+                <img 
+                    style={{width: "50%", margin: "12px 0"}} 
+                    src="images/celebration.png" />
                 <div style={actionContainerStyle}>
                     <h4>What you can do: </h4>
                     <div style={actionIconContainerStyle}>
@@ -74,21 +82,21 @@ export const Celebration = (props) => {
                             size={'large'}
                             variant={'contained'}>
                             <RedeemIconOutlined />
-                            &nbsp; Give It
+                            <h5>&nbsp; Give It</h5>
                         </Button>
                         <Button
                             style={actionButtonStyle}
                             size={'large'}
                             variant={'contained'}>
                             <StroreIconOutlined />
-                            &nbsp; Use It
+                            <h5>&nbsp; Use It</h5>
                         </Button>
                         <Button
                             style={actionButtonStyle}
                             size={'large'}
                             variant={'contained'}>
                             <LockIconOutlined />
-                            &nbsp; Keep It
+                            <h5>&nbsp; Keep It</h5>
                         </Button>
                     </div>
                 </div>
