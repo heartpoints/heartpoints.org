@@ -29,7 +29,7 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "branch [issueId]           - lists issues, unless issueId provided, then creates branch"
+    echo "branch [issueId]                     - lists issues, unless issueId provided, then creates branch"
     echo "clientDev                            - run front-end web server with hot reloading"
     echo "createGKECluster                     - creates a GKE cluster. See README for prerequisites"
     echo "hub                                  - use the github cli"
