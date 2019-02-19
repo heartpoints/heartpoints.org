@@ -29,7 +29,7 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "branch [issueId]           - lists issues, unless issueId provided, then creates branch",
+    echo "branch [issueId]           - lists issues, unless issueId provided, then creates branch"
     echo "clientDev                            - run front-end web server with hot reloading"
     echo "createGKECluster                     - creates a GKE cluster. See README for prerequisites"
     echo "hub                                  - use the github cli"
@@ -63,26 +63,22 @@ string_toLower() { local stringToConvertToAllLowercase=$1
     echo "$stringToConvertToAllLowercase" | tr '[:upper:]' '[:lower:]'
 }
 
-string_firstN() { local sourceString=$1; local lengthNOfDesiredCharsFromTheLeft=$2
-    echo "${sourceString}" | cut -c 1-$lengthNOfDesiredCharsFromTheLeft
-}
-
-string_everythingAfterN() { local sourceString=$1; local indexThatWillBecomeFirstCharOfReturnedString=$2
-    echo "${sourceString:$indexThatWillBecomeFirstCharOfReturnedString}"
+string_firstNChars() { local sourceString=$1; local n=$2
+    echo "${sourceString}" | cut -c 1-$n
 }
 
 string_everythingAfterChar() { local sourceString=$1; local delimitingCharacter=$2;
     cut -d "${delimitingCharacter}" -f 2 <<< "$sourceString"
 }
 
-git_safeBranchNameFromSentence() { local sentence=$1
-    local lowercased="$(string_toLower "${sentence}")"
+git_safeBranchNameFromIssueDescription() { local issueDescription=$1
+    local lowercased="$(string_toLower "${issueDescription}")"
     local maxLength="50"
-    local trimmed="$(string_firstN "${lowercased}" $maxLength)"
+    local trimmed="$(string_firstNChars "${lowercased}" $maxLength)"
     local spacesReplacedWithDashes="${trimmed// /-}"
-    local withoutPoundSignOrLeadingSpace="$(string_everythingAfterChar "${spacesReplacedWithDashes}" "#")"
-    local withoutQuotes="${withoutPoundSignOrLeadingSpace//\"/}"
-    echo $withoutQuotes
+    local withoutQuotes="${spacesReplacedWithDashes//\"/}"
+    local withoutPoundSignOrLeadingSpace="$(string_everythingAfterChar "${withoutQuotes}" "#")"
+    echo $withoutPoundSignOrLeadingSpace
 }
 
 git_issueDescriptionForIssueId() { local issueId=$1
@@ -90,7 +86,7 @@ git_issueDescriptionForIssueId() { local issueId=$1
 }
 
 git_safeBranchNameForIssueId() { local issueId=$1
-    echo "$(git_safeBranchNameFromSentence "$(git_issueDescriptionForIssueId $issueId)")"
+    echo "$(git_safeBranchNameFromIssueDescription "$(git_issueDescriptionForIssueId $issueId)")"
 }
 
 git_currentBranchName() { 
@@ -606,7 +602,7 @@ strings_are_equal() { local string1=$1; local string2=$2
 }
 
 strings_are_not_equal() { local string1=$1; local string2=$2
-    ! strings_are_equal $@
+    ! strings_are_equal "${string1}" "${string2}"
 }
 
 virtualbox_install() {

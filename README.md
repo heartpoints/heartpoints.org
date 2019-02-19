@@ -3,8 +3,8 @@ heartpoints.org website
 
 Welcome to the Heartpoints.org website repository!
 
-If you are an employee, contractor or volunteer, please visit our internal google drive for internal documents
-about the organization [here](https://docs.google.com/document/d/1BZXYQGlBMvy1x8UQ5b8Bco7hyasknCCjdy6DxbKI03Q/edit)
+If you are an employee, contractor, or volunteer, please visit our internal google drive for internal documents
+about the organization [here](https://docs.google.com/document/d/1BZXYQGlBMvy1x8UQ5b8Bco7hyasknCCjdy6DxbKI03Q)
 
 # Developing this website:
 
@@ -29,7 +29,7 @@ To browse to issues master list on the web (different than the left-to-right pro
 
     ./hp hub browse -- issues
 
-## Create and manage a new branches
+## Create and manage branches
 
 When working on a particular github issue, it is best to do so in a particular branch. Ideally the name of the branch
 ties back to the issue. 
