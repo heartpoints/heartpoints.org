@@ -5,8 +5,22 @@ heartpoints() { local command=$1; local remainingArgs=${@:2}
     if string_is_empty "${command}"; then
         heartpoints_help
     else
-        heartpoints_${command} $remainingArgs
+        local localFunctionName="heartpoints_${command}"
+        if function_exists "${localFunctionName}"; then
+            $localFunctionName $remainingArgs
+        else
+            if function_exists $command; then
+                $command $remainingArgs
+            else
+                heartpoints_help
+                error_and_exit "Command not found"
+            fi
+        fi
     fi
+}
+
+function_exists() { local functionName=$1
+    type -t $functionName > /dev/null
 }
 
 heartpoints_help() {
@@ -15,6 +29,7 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
+    echo "branch [issueId]                     - lists issues, unless issueId provided, then creates branch"
     echo "clientDev                            - run front-end web server with hot reloading"
     echo "createGKECluster                     - creates a GKE cluster. See README for prerequisites"
     echo "hub                                  - use the github cli"
@@ -42,6 +57,66 @@ error_and_exit() { local errorMessage=$1
 heartpoints_localDev() {
     heartpoints_serverDev
     error_and_exit "localDev is deprecated. For server side development, use ./hp serverDev or for client side development use ./hp clientDev"
+}
+
+string_toLower() { local stringToConvertToAllLowercase=$1
+    echo "$stringToConvertToAllLowercase" | tr '[:upper:]' '[:lower:]'
+}
+
+string_firstNChars() { local sourceString=$1; local n=$2
+    echo "${sourceString}" | cut -c 1-$n
+}
+
+string_everythingAfterChar() { local sourceString=$1; local delimitingCharacter=$2;
+    cut -d "${delimitingCharacter}" -f 2 <<< "$sourceString"
+}
+
+git_safeBranchNameFromIssueDescription() { local issueDescription=$1
+    local lowercased="$(string_toLower "${issueDescription}")"
+    local maxLength="50"
+    local trimmed="$(string_firstNChars "${lowercased}" $maxLength)"
+    local spacesReplacedWithDashes="${trimmed// /-}"
+    local withoutQuotes="${spacesReplacedWithDashes//\"/}"
+    local withoutPoundSignOrLeadingSpace="$(string_everythingAfterChar "${withoutQuotes}" "#")"
+    echo $withoutPoundSignOrLeadingSpace
+}
+
+git_issueDescriptionForIssueId() { local issueId=$1
+    echo "$(heartpoints_hub issue | grep "#${issueId} ")"
+}
+
+git_safeBranchNameForIssueId() { local issueId=$1
+    echo "$(git_safeBranchNameFromIssueDescription "$(git_issueDescriptionForIssueId $issueId)")"
+}
+
+git_currentBranchName() { 
+    git rev-parse --abbrev-ref HEAD
+}
+
+heartpoints_branch() { local issueId=$1
+    if string_is_empty "$issueId"; then
+        heartpoints_hub issue
+        echo "Run again with issue number to create and switch to appropriately named branch"
+    else
+        heartpoints_hub_install
+        if strings_are_not_equal "$(git_currentBranchName)" "master"; then
+            echo "Error: you are not in the 'master' branch, you are instead in the '$(git_currentBranchName)' branch."
+            echo "Before using this command, first switch to master using 'git checkout master'"
+            echo "After that, make sure you have the latest from the remote master, by running 'git pull origin master'"
+            echo "With that out of the way, you may run this command to create a new branch"
+            error_and_exit " Please try again"
+        fi
+        git checkout -b "${newBranchToPossiblyCreate}"
+        echo ""
+        echo "Use 'git add -A' and 'git commit -m ' to commit to this branch"
+        echo "Use 'git push origin head' to push this branch to the remote repository"
+        echo "Use 'hp hub pull-request' to create a new pull request from your remote branch to remote master"
+        echo "From there, you will receive a URL where you can:"
+        echo " - view your change"
+        echo " - request reviewers"
+        echo " - View the status of automated tests"
+        echo ""
+    fi
 }
 
 heartpoints_serverDev(){
@@ -524,6 +599,10 @@ string_is_empty() { local possiblyEmptyString=$1
 
 strings_are_equal() { local string1=$1; local string2=$2
     [ "${string1}" = "${string2}" ]
+}
+
+strings_are_not_equal() { local string1=$1; local string2=$2
+    ! strings_are_equal "${string1}" "${string2}"
 }
 
 virtualbox_install() {
