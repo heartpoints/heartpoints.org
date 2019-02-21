@@ -42,12 +42,6 @@ export const actionButtonStyle = {
     "background-color": "rgba(255,0,0,0.5)",
 }
 
-/*
-    Below Confetti width & height properties set to static 1080p resolution.
-    need to figure out way to set to 100% screen height & width
-    Probably a simple solution, but string value ('100%') not working
-*/
-
 export const Celebration = (props) => {
     const { innerWidth:width, innerHeight:height } = window;
     const numberOfPieces = width * height / 3638.4;
