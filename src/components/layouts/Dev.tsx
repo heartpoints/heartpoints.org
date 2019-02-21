@@ -16,5 +16,3 @@ export const Dev = props => {
         <FacebookSessionInfo {...{facebookUserSession}} />
     </React.Fragment>
 }
-
-const If = ({condition, children}) => condition ? children : null;
