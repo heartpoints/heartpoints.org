@@ -1,8 +1,5 @@
 import * as React from 'react';
-
 import Confetti from 'react-confetti';
-//import { number } from 'prop-types';
-
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import FavoriteIconTwoTone from '@material-ui/icons/FavoriteBorderTwoTone';
@@ -15,6 +12,8 @@ export const confettiStyle = {
     "position": "absolute",
     "top": "0",
     "left": "0",
+    "width": "100%",
+    "height": "100%"
 }
 
 export const modalForgroundStyle = {
@@ -45,24 +44,27 @@ export const actionButtonStyle = {
 
 /*
     Below Confetti width & height properties set to static 1080p resolution.
-
     need to figure out way to set to 100% screen height & width
-
     Probably a simple solution, but string value ('100%') not working
 */
+
 export const Celebration = (props) => {
+    const { innerWidth:width, innerHeight:height } = window;
+    const numberOfPieces = width * height / 3638.4;
+    const confettiProps = {
+        width,
+        height,
+        numberOfPieces,
+        gravity: 0.3,
+        style: confettiStyle
+    }
     return <React.Fragment>
-        <Confetti 
-            style={confettiStyle}
-            width={1920}
-            height={1080}
-            gravity={0.3}
-            numberOfPieces={150}/>
+        <Confetti {...confettiProps} />
         <Modal 
         open={true}
         disableAutoFocus={true}>
             <div style={modalForgroundStyle}>
-                <ClearIconRounded style={{float: "right"}}/>
+                <ClearIconRounded onClick={props.onXClicked} style={{float: "right"}}/>
                 <h1 style={{clear: "both", marginTop: "0px", fontSize: "4vw", color: "rgba(255,0,0,0.5"}}>
                     Congratulations!
                 </h1>
