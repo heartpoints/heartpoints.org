@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Drawer, IconButton, Divider, List, ListItem, ListItemIcon, ListItemText, withStyles, Link } from "@material-ui/core";
+import { Drawer, IconButton, Divider, List, ListItemIcon, ListItemText, withStyles, ListItem } from "@material-ui/core";
 
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';

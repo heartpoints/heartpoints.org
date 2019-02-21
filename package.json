@@ -32,6 +32,7 @@
     "material-ui-popup-state": "^1.1.1",
     "moment": "^2.22.2",
     "react": "^16.6.0",
+    "react-confetti": "^2.3.0",
     "react-dom": "^16.6.0",
     "react-facebook-login": "^4.1.1",
     "react-router": "^4.3.1",

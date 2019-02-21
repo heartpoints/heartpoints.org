@@ -39,12 +39,47 @@ ties back to the issue.
 We want branches to be short lived! No long running branches - get that stuff into master and if its not ready put it
 behind a feature switch so other devs can see it and it doesn't get lost or forgotten. Otherwise, delete it!
 
-
 ### Keep Branches Up-To-Date via REBASE (MERGES DISALLOWED!!!)
 
 Branches may not be merged to origin/master from a pull request unless the pull request commits are *properly rebased*, 
-please see [this video tutorial](https://www.youtube.com/watch?v=tukOm3Afd8s) or find a similar one to understand the procedure.
+please see [this video tutorial](https://www.youtube.com/watch?v=tukOm3Afd8s) or find a similar one to understand the procedure. Use the following command:
+
+    git pull --rebase origin master
+
+### Merge conflicts if necessary
+
+If your changes conflict with the changes you are pulling in, your rebase will not succeed and git will notify you
+of conflicts. You can use `git status` to understand what is conflicting, and resolve the conflicts in those files.
+
+When ready, you may `git add -A` to add the files whose conflicts you have resolved, and then once all conflicts have
+been resolved, you may run `git rebase --continue` to continue the rebase. 
+
+IMPORTANT: Do not commit accidentally in the middle of a rebase!
+
+### Pushing rebased / non-rebased changes to a branch / pull request
+
 The repository settings will prevent unrebased pull requests from merge, enforcing this best practice for everyone.
+
+If you see the message "This branch is out-of-date with the base branch" then you will need to rebase (see above).
+
+IMPORTANT: DO NOT CLICK THE "Update branch" BUTTON AS IT WILL DO A DIRTY NON-REBASED MERGE
+
+If you receive an error after attempting a push, such as...
+
+    error: failed to push some refs to 'git@github.com:heartpoints/heartpoints.org.git'
+
+you are about to overwrite a remote branch, with its own history of commits; with your
+local version of that same branch, which has a different history.
+
+As long as you intend to replace the remote branch's history with your own, then you may
+override this error by running `git push origin head --force-with-lease`. As long as you
+have recently fetched from the remote, your changes will override the remote. Don't worry,
+in a catastrophe, those changes are still recoverable.
+
+WARNING: If you did not recently rebase, but you did receive this error, then you should
+be worried. Double check that you are in the branch you think you are in, and that you're
+attempting to push to the correct place. Have you already rebased in the latest changes? Double
+check everything before force pushing!!!
 
 ### Manually Creating a Branch (not recommended)
 
