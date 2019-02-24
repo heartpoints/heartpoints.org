@@ -1,12 +1,14 @@
-enum Phase {
+export enum Phase {
     Welcome,
     Rules,
 }
 
-interface State {
-    phase:Phase
+export interface State {
+    phase:Phase,
+    onBeginGameRequested:()=>unknown
 }
 
-const initialState:State = {
-    phase: Phase.Welcome
+export const castleRiskInitialState:State = {
+    phase: Phase.Welcome,
+    onBeginGameRequested: alert
 }

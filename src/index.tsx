@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom";
 
 import { Site } from "./components/layouts/Site";
 import Cookies from "js-cookie";
+import { CastleRiskController } from "./components/castleRisk";
 
 const renderApp = (state) => {
     window.onhashchange = (event) => {
@@ -49,7 +50,8 @@ const renderApp = (state) => {
         onLogoutRequested,
         onSideNavCollapseRequested,
         onHamburgerClicked,
-        onCelebrationXClicked
+        onCelebrationXClicked,
+        CastleRisk: () => CastleRiskController({renderApp, state: siteProps})
     }
 
     ReactDOM.render(
