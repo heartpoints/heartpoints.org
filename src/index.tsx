@@ -15,12 +15,13 @@ const renderApp = (state) => {
     const navigateToSimpleModel = () => renderApp({...state, showSimpleModel: true});
     const onFacebookLoginComplete = (facebookUserSession) => {
         Cookies.set(facebookUserSessionCookieKey, facebookUserSession);
-        renderApp({...state, facebookUserSession, shouldShowCelebration: true});
+        const inDevMode = isDeveloper(facebookUserSession);
+        renderApp({...state, inDevMode, facebookUserSession, shouldShowCelebration: true});
     }
     const onLogoutRequested = () => {
         const {facebookUserSession, ...remainingState} = state;
         deleteSessionCookie();
-        renderApp({remainingState});
+        renderApp({...remainingState, inDevMode: isLocalhost() });
     }
     const onSideNavCollapseRequested = () => {
         renderApp({
@@ -40,6 +41,7 @@ const renderApp = (state) => {
             shouldShowCelebration: false
         });
     }
+
     const siteProps = {
         ...state, 
         navigateToSimpleModel,
@@ -49,6 +51,7 @@ const renderApp = (state) => {
         onHamburgerClicked,
         onCelebrationXClicked
     }
+
     ReactDOM.render(
         <Site {...siteProps} />,
         document.getElementById("site")
@@ -59,12 +62,18 @@ const facebookUserSessionCookieKey = 'facebookUserSession';
 const deleteSessionCookie = () => Cookies.remove(facebookUserSessionCookieKey);
 const facebookUserSessionString = Cookies.get(facebookUserSessionCookieKey);
 const facebookUserSession = facebookUserSessionString && JSON.parse(facebookUserSessionString);
+const isLocalhost = () => false; // window.location.hostname == "localhost";
+const developers = ['tom@tommysullivan.me','mrcorn123@yahoo.com','tastulae@mail.usf.edu',"aashreya.isforever@gmail.com"]
+const isDeveloper = facebookUserSession => facebookUserSession && developers.includes(facebookUserSession.email);
+const inDevMode = isLocalhost() || isDeveloper(facebookUserSession);
+
 const initialState = {
     showSimpleModel: false, 
     facebookUserSession, 
     currentUrl: window.location.href,
     isSideNavOpen: false,
     shouldShowCelebration: false,
+    inDevMode
 }
 
 renderApp(initialState);

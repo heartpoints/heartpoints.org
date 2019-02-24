@@ -205,6 +205,10 @@ After the first deployment to GKE, a loadbalancer with an ephemeral IP will be c
 
 Themes can be updated [here](https://in-your-saas.github.io/material-ui-theme-editor/)
 
+### Icons
+
+Icons can be browsed visually [here](https://material.io/tools/icons/?style=baseline)
+
 ## Next Steps
 
 accounts, accounting equation checks for validity
