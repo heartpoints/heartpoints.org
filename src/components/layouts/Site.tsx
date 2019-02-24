@@ -15,7 +15,7 @@ import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 
 export const Site = (props) => {
     const theme = createMuiTheme(Theme);
-    const {inDevMode, facebookUserSession, shouldShowCelebration, onCelebrationXClicked, DevMode} = props;
+    const {shouldShowCelebration, onCelebrationXClicked} = props;
     return <BrowserRouter>
         <React.Fragment>
             <CssBaseline />

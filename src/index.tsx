@@ -62,7 +62,7 @@ const facebookUserSessionCookieKey = 'facebookUserSession';
 const deleteSessionCookie = () => Cookies.remove(facebookUserSessionCookieKey);
 const facebookUserSessionString = Cookies.get(facebookUserSessionCookieKey);
 const facebookUserSession = facebookUserSessionString && JSON.parse(facebookUserSessionString);
-const isLocalhost = () => false; // window.location.hostname == "localhost";
+const isLocalhost = () => window.location.hostname == "localhost";
 const developers = ['tom@tommysullivan.me','mrcorn123@yahoo.com','tastulae@mail.usf.edu',"aashreya.isforever@gmail.com"]
 const isDeveloper = facebookUserSession => facebookUserSession && developers.includes(facebookUserSession.email);
 const inDevMode = isLocalhost() || isDeveloper(facebookUserSession);
