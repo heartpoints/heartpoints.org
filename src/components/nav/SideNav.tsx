@@ -7,7 +7,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DonutSmallIcon from '@material-ui/icons/DonutSmall';
 
 export const SideNavUnstyled = ({history, isSideNavOpen, classes, theme, onSideNavCollapseRequested}) => {
-    console.log(history);
     return <Drawer
           className={classes.drawer}
           variant="persistent"

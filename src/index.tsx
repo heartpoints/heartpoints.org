@@ -3,7 +3,10 @@ import * as ReactDOM from "react-dom";
 
 import { Site } from "./components/layouts/Site";
 import Cookies from "js-cookie";
-import { CastleRiskController } from "./components/castleRisk";
+import { StatefulController } from "./components/state/StatefulController";
+import { CastleRisk } from "./components/castleRisk/CastleRisk";
+import { CastleRiskInitialState } from "./components/castleRisk/game";
+import { StatefulControllerByProperty } from "./components/state/StatefulControllerByProperty";
 
 const renderApp = (state) => {
     window.onhashchange = (event) => {
@@ -43,6 +46,10 @@ const renderApp = (state) => {
         });
     }
 
+    const statefulController = StatefulController(renderApp, state);
+    const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
+    const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
+    
     const siteProps = {
         ...state, 
         navigateToSimpleModel,
@@ -51,7 +58,7 @@ const renderApp = (state) => {
         onSideNavCollapseRequested,
         onHamburgerClicked,
         onCelebrationXClicked,
-        CastleRisk: () => CastleRiskController({renderApp, state: siteProps})
+        CastleRisk: castleRiskController(CastleRisk)
     }
 
     ReactDOM.render(

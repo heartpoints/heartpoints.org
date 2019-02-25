@@ -22,7 +22,7 @@ export const Site = (props) => {
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
-                    <Route path="/castleRisk" component={CastleRisk} />
+                    <Route path="/castleRisk" component={() => <div><CastleRisk /><CastleRisk /></div>} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <Celebration numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
