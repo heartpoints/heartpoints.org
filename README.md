@@ -227,3 +227,4 @@ plot data visually
 - typescript (javascript with types)
 - http (understand client / server, the request lifecycle)
 - html, css
+- react next time?
