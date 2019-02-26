@@ -47,9 +47,13 @@ const renderApp = (state) => {
     }
 
     const statefulController = StatefulController(renderApp, state);
+    const castleRiskController2 = statefulController(s => s.castleRisk || CastleRiskInitialState, (a, b) => ({...a, castleRisk: { ...a.castleRisk, ...b}}));
+
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
     
+    castleRiskController()
+
     const siteProps = {
         ...state, 
         navigateToSimpleModel,
@@ -58,7 +62,8 @@ const renderApp = (state) => {
         onSideNavCollapseRequested,
         onHamburgerClicked,
         onCelebrationXClicked,
-        CastleRisk: castleRiskController(CastleRisk)
+        CastleRisk: castleRiskController2(CastleRisk)
+        // CastleRisk: castleRiskController(CastleRisk)
     }
 
     ReactDOM.render(
