@@ -2,9 +2,9 @@ import * as React from "react";
 import { Drawer, IconButton, Divider, List, ListItemIcon, ListItemText, withStyles, ListItem } from "@material-ui/core";
 
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import DonutSmallIcon from '@material-ui/icons/DonutSmall';
 
 export const SideNavUnstyled = ({history, isSideNavOpen, classes, theme, onSideNavCollapseRequested}) => {
     return <Drawer
@@ -24,18 +24,13 @@ export const SideNavUnstyled = ({history, isSideNavOpen, classes, theme, onSideN
           <Divider />
           <List>
             <ListItem button onClick={() => history.push("/") }>
-                <ListItemIcon><InboxIcon /></ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItem>
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
+              <ListItemIcon><InboxIcon /></ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItem>
+            <ListItem button onClick={() => history.push("/castleRisk") }>
+              <ListItemIcon><DonutSmallIcon /></ListItemIcon>
+              <ListItemText primary="Castle Risk" />
+            </ListItem>
           </List>
     </Drawer>
 }
