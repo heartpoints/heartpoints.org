@@ -218,3 +218,12 @@ way for one person to give hp to another person
 add expirations to transactions
 change how transactions get generated
 plot data visually
+
+# Topics for Nishi & Tommy
+
+- git
+- install node
+- practice some higher order functions in javascript
+- typescript (javascript with types)
+- http (understand client / server, the request lifecycle)
+- html, css
