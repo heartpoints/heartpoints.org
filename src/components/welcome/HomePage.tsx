@@ -1,6 +1,8 @@
 import * as React from "react";
+import classNames from 'classnames';
 
-export const HomePage = () => <div className="jumbotron vertical-center">
+export const HomePage = () => {
+    return <div className="jumbotron vertical-center">
     <div className="container">
         <div className="row">
             <div className="col-md-2"> </div>
@@ -17,3 +19,4 @@ export const HomePage = () => <div className="jumbotron vertical-center">
         </div>
     </div>
 </div>
+}
