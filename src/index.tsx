@@ -16,6 +16,7 @@ const renderApp = (state) => {
     window.onresize = () => {
         renderApp(state);
     }
+
     const navigateToSimpleModel = () => renderApp({...state, showSimpleModel: true});
     const onFacebookLoginComplete = (facebookUserSession) => {
         Cookies.set(facebookUserSessionCookieKey, facebookUserSession);
@@ -46,6 +47,13 @@ const renderApp = (state) => {
         });
     }
 
+    const onFacebookLoginFailure = () => {
+        alert("Failed!");
+        renderApp({
+            ...state
+        });
+    }
+
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
@@ -58,7 +66,8 @@ const renderApp = (state) => {
         onSideNavCollapseRequested,
         onHamburgerClicked,
         onCelebrationXClicked,
-        CastleRisk: castleRiskController(CastleRisk)
+        CastleRisk: castleRiskController(CastleRisk),
+        onFacebookLoginFailure
     }
 
     ReactDOM.render(
@@ -75,6 +84,7 @@ const isLocalhost = () => window.location.hostname == "localhost";
 const developers = ['tom@tommysullivan.me','mrcorn123@yahoo.com','tastulae@mail.usf.edu',"aashreya.isforever@gmail.com", 'patmetsch@roadrunner.com']
 const isDeveloper = facebookUserSession => facebookUserSession && developers.includes(facebookUserSession.email);
 const inDevMode = isLocalhost() || isDeveloper(facebookUserSession);
+
 
 const initialState = {
     showSimpleModel: false, 
