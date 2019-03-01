@@ -1,0 +1,7 @@
+before_script:
+  - yarn install
+
+test1:
+  image: node:10-slim
+  script:
+  - ./heartpoints.sh onPullRequest
