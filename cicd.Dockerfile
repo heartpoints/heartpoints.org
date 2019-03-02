@@ -24,7 +24,7 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
 
 # git
-RUN apt-get install -y git-all
+RUN apt-get update && apt-get install -y git-all
 
 # docker
 RUN apt-get update && apt-get install -y apt-transport-https ca-certificates gnupg-agent software-properties-common && \
@@ -32,4 +32,5 @@ RUN apt-get update && apt-get install -y apt-transport-https ca-certificates gnu
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
     apt-get update && apt-get install -y docker-ce
 
-COPY * ./
+WORKDIR /heartpoints.org
+COPY . .
