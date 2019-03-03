@@ -27,8 +27,8 @@ workflows:
       - onPullRequest:
           filters:
             branches:
-              only: master
+              ignore: master
       - onMasterMerge:
           filters:
             branches:
-              ignore: master
+              only: master
