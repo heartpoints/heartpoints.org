@@ -376,7 +376,7 @@ heartpoints_minikubeDeployTest() { local taggedImageName=$1
 
 heartpoints_testAfterWait() { local testCommand=$@
     requiredParameter "testCommand" "${testCommand}"
-    local minikubeStartupTimout=30
+    local minikubeStartupTimout=40
     echo "waiting ${minikubeStartupTimout} seconds before running test"
     sleep ${minikubeStartupTimout}
     $testCommand
