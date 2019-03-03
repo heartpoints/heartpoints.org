@@ -229,7 +229,7 @@ heartpoints_test() { local baseUrl=$1
     echo "passed"
     echo "" 
     echo "Test commitSha presence in header matches current sha ($(git_currentSha)):" 
-    local headerOutput="$(curl -L --insecure -I "${baseUrl}")"
+    local headerOutput="$(curl -L --insecure -I "${baseUrl}?preventCache=$(uuidgen)")"
     echo "$headerOutput"
     echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"
     echo "passed"
@@ -362,7 +362,7 @@ requiredParameter() { local parameterName=$1; local parameterValue=$2
 }
 
 heartpoints_buildAndPushCicdImage() {
-    local imageURI="$(heartpoints_gcr)/cicd:1.0.0"
+    local imageURI="$(heartpoints_gcr)/cicd:1.0.1"
     docker build -t "$imageURI" -f cicd.Dockerfile .
     gcloud_manualLogin
     docker push "$imageURI"
@@ -376,7 +376,7 @@ heartpoints_minikubeDeployTest() { local taggedImageName=$1
 
 heartpoints_testAfterWait() { local testCommand=$@
     requiredParameter "testCommand" "${testCommand}"
-    local minikubeStartupTimout=30
+    local minikubeStartupTimout=40
     echo "waiting ${minikubeStartupTimout} seconds before running test"
     sleep ${minikubeStartupTimout}
     $testCommand
