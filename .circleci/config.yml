@@ -10,7 +10,7 @@ jobs:
       - run: ./heartpoints.sh onPullRequest
   onMasterMerge:
     docker:
-      - image: gcr.io/heartpoints-org/cicd:1.0.0
+      - image: gcr.io/heartpoints-org/cicd:1.0.1
         auth:
           username: _json_key
           password: $gcpCicdServiceAccountCredentialsJson
@@ -27,8 +27,8 @@ workflows:
       - onPullRequest:
           filters:
             branches:
-              ignore: master
+              only: master
       - onMasterMerge:
           filters:
             branches:
-              only: master
+              ignore: master

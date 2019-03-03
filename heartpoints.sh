@@ -362,7 +362,7 @@ requiredParameter() { local parameterName=$1; local parameterValue=$2
 }
 
 heartpoints_buildAndPushCicdImage() {
-    local imageURI="$(heartpoints_gcr)/cicd:1.0.0"
+    local imageURI="$(heartpoints_gcr)/cicd:1.0.1"
     docker build -t "$imageURI" -f cicd.Dockerfile .
     gcloud_manualLogin
     docker push "$imageURI"
