@@ -48,7 +48,6 @@ const renderApp = (state) => {
     }
 
     const onFacebookLoginFailure = () => {
-        alert("Failed!");
         renderApp({
             ...state
         });
