@@ -19,6 +19,20 @@ spec:
         resources:
           requests:
             cpu: 25m
+        readinessProbe:
+          exec:
+            command:
+            - curl
+            - http://localhost:5001
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          exec:
+            command:
+            - curl
+            - http://localhost:5001
+          initialDelaySeconds: 10
+          periodSeconds: 10
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
