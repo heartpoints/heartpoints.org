@@ -228,7 +228,7 @@ heartpoints_test() { local baseUrl=$1
     echo "$(curl -L --insecure "${baseUrl}/bundle.js" --fail -o /dev/null)"
     echo "passed"
     echo "" 
-    echo "Test commitSha presence in header matches current sha ($(git_currentSha)):" 
+    echo "Test commitSha presence in header matches current sha ($(git_currentSha)):"
     local headerOutput="$(curl -L --insecure -I "${baseUrl}?preventCache=$(uuidgen)")"
     echo "$headerOutput"
     echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"
@@ -376,7 +376,7 @@ heartpoints_minikubeDeployTest() { local taggedImageName=$1
 
 heartpoints_testAfterWait() { local testCommand=$@
     requiredParameter "testCommand" "${testCommand}"
-    local minikubeStartupTimout=40
+    local minikubeStartupTimout=60
     echo "waiting ${minikubeStartupTimout} seconds before running test"
     sleep ${minikubeStartupTimout}
     $testCommand
