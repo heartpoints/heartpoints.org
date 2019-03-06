@@ -8,7 +8,8 @@ import { Theme } from "../../style/theme";
 import { CssBaseline, withStyles } from "@material-ui/core";
 import { TopNav } from "../nav/TopNav";
 import { SideNav } from "../nav/SideNav";
-import { Celebration } from "./Celebration";
+import { Celebration } from './Celebration';
+import { CelebrationModal } from "./CelebrationModal";
 import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 import classNames from 'classnames';
 
@@ -28,7 +29,7 @@ export const SiteWithoutStyle = (props) => {
                     <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/><CastleRisk {...routerProps} {...props} /></div>} />
                     <Route component={NotFound} />
                 </Switch>    
-                { shouldShowCelebration && <Celebration numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
+                { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
             </MuiThemeProvider>
             </main>
             </div>
