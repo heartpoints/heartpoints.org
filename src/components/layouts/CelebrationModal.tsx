@@ -48,14 +48,19 @@ export const CelebrationModal = (props:ICelebrationModalProps) => {
         gravity: 0.3,
         style: confettiStyle
     }
-    const subtitleText:string = "You have been awarded " + props.numHeartpointsAwarded;
 
     return(
         <React.Fragment>
             <Confetti {...confettiProps} />
             <HPModal
                 title="Congratulations!"
-                subtitle={subtitleText}
+                subtitle={
+                    <h3 style={{fontSize: "1.5vw"}}>
+                        You have been awarded &nbsp;  
+                        <FavoriteIconTwoTone />
+                        {props.numHeartpointsAwarded}
+                    </h3>
+                }
                 imageURL="images/Celebration.png" 
                 onXClicked={props.onXClicked}>
                     <div style={actionContainerStyle}>

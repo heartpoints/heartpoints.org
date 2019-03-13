@@ -19,7 +19,7 @@ export const modalHeaderStyle = {
 
 export interface IHPModalProps{
     title: string,
-    subtitle: string,
+    subtitle: React.ReactNode,
     imageURL: string,
     children: React.ReactNode,
     onXClicked(): void,
