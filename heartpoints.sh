@@ -378,7 +378,6 @@ heartpoints_testUntilSuccess() { local timeoutSeconds=$1; local interval=$2; loc
     timer=0
     while true; do
         if $testCommand; then
-            echo "asdfasdfad"
             break
         elif [ $timer -ge $timeoutSeconds ]; then
             echo "Maximum retries exceeded. Test failed"
