@@ -1,8 +1,7 @@
 import * as React from "react";
-import classNames from 'classnames';
 
 export const HomePage = () => {
-    return <div className="jumbotron vertical-center">
+    return <div className="vertical-center">
     <div className="container">
         <div className="row">
             <div className="col-md-2"> </div>

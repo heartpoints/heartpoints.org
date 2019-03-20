@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 heartpoints() { local command=$1; local remainingArgs=${@:2}
     if string_is_empty "${command}"; then
@@ -217,8 +216,6 @@ heartpoints_onTestComplete() { local failureOrSuccess=$1
 }
 
 heartpoints_test() { local baseUrl=$1
-    set -e
-    trap "heartpoints_onTestComplete failed; false" ERR
     echo "Testing..."
     echo "Test homepage html file is 200..."
     echo "$(curl -L --insecure "${baseUrl}" --fail -o /dev/null)"
@@ -229,11 +226,14 @@ heartpoints_test() { local baseUrl=$1
     echo "passed"
     echo "" 
     echo "Test commitSha presence in header matches current sha ($(git_currentSha)):"
-    local headerOutput="$(curl -L --insecure -I "${baseUrl}?preventCache=$(uuidgen)")"
+    local headerOutput="$(curl -L --insecure -I "${baseUrl}?preventCache=$(date +%s)")"
     echo "$headerOutput"
-    echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"
-    echo "passed"
-    heartpoints_onTestComplete "passed"
+    if echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"; then
+        heartpoints_onTestComplete "passed"
+    else
+        heartpoints_onTestComplete "failed"
+        return 1
+    fi
 }
 
 heartpoints_onMasterMerge() { export gcpCicdServiceAccountCredentialsJson
@@ -348,7 +348,7 @@ productionBuildDeployTest() {
     heartpoints_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
     docker push "${taggedImageName}"
     heartpoints_deployToKubernetes "${taggedImageName}"
-    heartpoints_testAfterWait heartpoints_test "http://35.244.131.133/" # This refers to the static loadbalancer IP in gcloud
+    heartpoints_testUntilSuccess 120 15 heartpoints_test "http://35.244.131.133/" # This refers to the static loadbalancer IP in gcloud
 }
 
 errorIfEmpty() { local possiblyEmpty=$1; local errorMessage=$2
@@ -371,15 +371,22 @@ heartpoints_buildAndPushCicdImage() {
 heartpoints_minikubeDeployTest() { local taggedImageName=$1
     requiredParameter "taggedImageName" "${taggedImageName}" 
     heartpoints_deployToKubernetes "${taggedImageName}"
-    heartpoints_testAfterWait heartpoints_minikubeRunTests
+    heartpoints_testUntilSuccess 120 15 heartpoints_minikubeRunTests
 }
 
-heartpoints_testAfterWait() { local testCommand=$@
-    requiredParameter "testCommand" "${testCommand}"
-    local minikubeStartupTimout=60
-    echo "waiting ${minikubeStartupTimout} seconds before running test"
-    sleep ${minikubeStartupTimout}
-    $testCommand
+heartpoints_testUntilSuccess() { local timeoutSeconds=$1; local interval=$2; local testCommand=${@:3}
+    timer=0
+    while true; do
+        if $testCommand; then
+            break
+        elif [ $timer -ge $timeoutSeconds ]; then
+            echo "Maximum retries exceeded. Test failed"
+            exit 1
+        fi
+        echo "Test failed. A total of $timer seconds have elapsed. Attempting again after $interval seconds..."
+        timer=$(($timer+$interval))
+        sleep $interval
+    done
 }
 
 heartpoints_minikubeBuildDeployTest() {
