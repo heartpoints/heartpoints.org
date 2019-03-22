@@ -284,12 +284,10 @@ heartpoints_dockerTestImage() { local taggedImageName=$1
 
 heartpoints_prePushVerification_help() { echo "validates that local code is ready for pull request"; }
 heartpoints_prePushVerification() {
-    heartpoints_runUnitTests
     heartpoints_minikubeBuildDeployTest
 }
 
 heartpoints_onPullRequest() {
-    heartpoints_runUnitTests
     heartpoints_dockerBuildTagAndTest
 }
 
@@ -437,7 +435,6 @@ heartpoints_manualProductionBuildDeployTest() {
 }
 
 cicdProductionBuildDeployTest() {
-    heartpoints_runUnitTests
     gcloud_cicdAccountLogin
     productionBuildDeployTest
 }
