@@ -1,16 +1,14 @@
-import { TypeSwitch, TypeMatch, TypeDefault, IsStringArray, IsStringDictionary } from "../utils/Switch";
+import { TypeSwitch, TypeMatch, TypeDefault, IsStringArray, IsStringDictionary } from "../utils/TypeSwitch";
 import { theInternet } from "./theInternet";
-import { Maybe, None, Some } from "./maybe";
+import { Maybe } from "./maybe";
 
-export const getCompleteProjection = (url:string):Maybe<unknown> => {
+export const getCompleteProjection = (url:string):Maybe<any> => {
     const maybeRepresentation = theInternet({url});
-    return maybeRepresentation.hasValue
-        ? Some(TypeSwitch<any, any, any>(maybeRepresentation.value,
-            TypeMatch(IsStringArray, mapArrayToCompleteProjection),
-            TypeMatch(IsStringDictionary, mapDictionaryToCompleteProject),
-            TypeDefault(maybeRepresentation.value),
-        ))        
-        : None;
+    return maybeRepresentation.flatMap(representation => TypeSwitch<any,any,any>(representation,
+        TypeMatch(IsStringArray, mapArrayToCompleteProjection),
+        TypeMatch(IsStringDictionary, mapDictionaryToCompleteProject),
+        TypeDefault(representation),
+    ));
 }
 
 const mapArrayToCompleteProjection = arrayRepresentation => arrayRepresentation.map(i => getCompleteProjection(i).value)

@@ -1,6 +1,9 @@
 import * as _ from "lodash";
 import { expect } from "chai";
 import { getCompleteProjection } from "./getCompleteProjection";
+import { contentTypes } from "./contentTypes";
+
+const when = (description, block) => context(`when ${description}`, block);
 
 describe("restful-json", () => {
     describe("getCompleteProjection('http://exampleRecordToStoreAsRestfulJSON')", () => {
@@ -8,6 +11,8 @@ describe("restful-json", () => {
             const projection = getCompleteProjection('http://exampleRecordToStoreAsRestfulJSON').value;
             expect(JSON.stringify(projection, null, 3)).to.equal(JSON.stringify(expectedProjection, null, 3));
         })
+    });
+    describe("contentType", () => {
     });
 });
 

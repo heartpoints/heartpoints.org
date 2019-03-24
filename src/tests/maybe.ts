@@ -1,4 +1,5 @@
 import * as _ from "lodash";
+import { first } from "../utils/list";
 
 export interface Maybe<T = any> {
     map<S>(f:Mapper<T, S>):Maybe<S>,
@@ -36,11 +37,15 @@ export const maybe = <T>(valueIfTrue?:T):Maybe<T> => valueIfTrue !== null && val
 export const reduceMaybe = <T>(inputVal:T, ...ops:Array<MaybeFlatmapper<T, T>>):Maybe<T> => 
     ops.reduce((acc, current) => acc.flatMap(current), Some(inputVal));
 
-export const first = <T>(inputVal:T, ...ops:Array<MaybeFlatmapper<T, unknown>>):Maybe<unknown> => {
+export const firstMaybe = <T, S>(inputVal:T, ...ops:Array<MaybeFlatmapper<T, S>>):Maybe<S> => {
     const opThatReturnedSomeValue = _.find(ops, op => op(inputVal).hasValue);
     return opThatReturnedSomeValue == undefined
         ? None
         : opThatReturnedSomeValue(inputVal);
+}
+
+export const firstSuccessfulMapResult = <T, S extends T>(ts:T[], f:MaybeFlatmapper<T, S>):Maybe<S> => {
+    return first(ts, t => f(t).hasValue).flatMap(t => f(t));
 }
 
 export const maybeValueForKey = (obj:_.Dictionary<unknown>) => (key:string):Maybe<unknown> => maybe(obj[key]);

@@ -1,36 +1,13 @@
-import * as _ from "lodash";
+import { Maybe, Some, None } from "../tests/maybe";
 
-export const Switch = <T, S>(expression:T, ...cases:Array<CaseLike<T, S>>):S => {
+export const Switch = <T, S>(expression:T, ...cases:Array<Case<T, S>>):Maybe<S> => {
     const firstMatchingCase = cases.find(c => c.matches(expression));
-    if(!firstMatchingCase) throw new Error(`No cases matched expression with value ${expression}`);
-    return firstMatchingCase.resolve(expression);
+    return firstMatchingCase
+        ? Some(firstMatchingCase.resolve(expression))
+        : None;
 }
 
-export const TypeSwitch = <T1, T2 extends T1, S>(t1:T1, ...cases:Array<TypeCaseLike<T1, T2, S>>):S => {
-    const firstMatchingCase = cases.find(c => c.matches(t1));
-    if(!firstMatchingCase) throw new Error(`No typecases matched expression with value ${t1}`);
-    return firstMatchingCase.resolve(t1 as T2);
-}
-
-interface TypeCaseLike<T1, T2 extends T1, S> {
-    matches(t1?:T1): t1 is T2,
-    resolve(t2?:T2):S
-}
-
-export const IsStringArray = (v:any): v is Array<string> => _.isArray<string>(v) //todo: further typecheck values?
-export const IsStringDictionary = (v:any): v is _.Dictionary<string> => _.isPlainObject(v) //todo: further typecheck values?
-
-export const TypeMatch = <T1, T2 extends T1, S>(typePredicate:(t1:T1) => t1 is T2, mapToResult:(t2:T2) => S) => ({
-    matches: typePredicate,
-    resolve: (t2:T2) => mapToResult(t2)
-})
-
-export const TypeDefault = <T1, T2, S>(result:S) => ({
-    matches: TrueType,
-    resolve: Constant(result),
-})
-
-export interface CaseLike<T, S> {
+export interface Case<T, S> {
     matches(t?:T):boolean,
     resolve(t?:T):S
 }
@@ -65,6 +42,5 @@ export const DefaultLazy = <T, S>(resolve:(t?:T) => S) => ({
     resolve
 });
 
-export const TrueType = <T1, T2 extends T1>(t1:T1):t1 is T2 => true;
 export const True = () => true;
 export const Constant = <T>(c:T) => () => c;

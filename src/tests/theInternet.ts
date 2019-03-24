@@ -4,9 +4,9 @@ import { numbers } from "./numbers";
 import { names } from "./names";
 import { contentTypes } from "./contentTypes";
 import { colors } from "./colors";
-import { Maybe, first, maybeValueForKey } from "./maybe";
+import { Maybe, firstMaybe, maybeValueForKey } from "./maybe";
 
-export const theInternet = ({url}):Maybe<unknown> => first(
+export const theInternet = ({url}):Maybe<any> => firstMaybe(
     {url},
     oldInternet,
     colors,
