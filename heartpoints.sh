@@ -113,6 +113,16 @@ hub_defaultCommitMessageForCurrentBranch() {
     echo "fixes $(trimLeadingWhitespace "$(hub_descriptionOfCurrentBranchIssue)")"
 }
 
+heartpoints_addCommitPushAndPullRequest() {
+    heartpoints_c
+    git push origin head
+    heartpoints_hub pull-request
+}
+
+heartpoints_createPullRequest() {
+    heartpoints_hub pull-request -m "$(hub_descriptionOfCurrentBranchIssue)"
+}
+
 trimAllWhitespace() { local stringToTrim=$1
     echo "${stringToTrim}" | tr -d '[:space:]'
 }
