@@ -18,8 +18,12 @@ heartpoints() { local command=$1; local remainingArgs="${@:2}"
     fi
 }
 
+allFunctionNames() {
+    declare -F | awk '{print $NF}' | sort | uniq | grep -v "^_" 
+}
+
 function_exists() { local functionName=$1
-    type -t $functionName > /dev/null
+    type -t $functionName > /dev/null 2>&1
 }
 
 heartpoints_help() {
@@ -28,24 +32,7 @@ heartpoints_help() {
     echo ""
     echo "Commands:"
     echo ""
-    echo "branch [issueId]                     - lists issues, unless issueId provided, then creates branch"
-    echo "clientDev                            - run front-end web server with hot reloading"
-    echo "createGKECluster                     - creates a GKE cluster. See README for prerequisites"
-    echo "hub                                  - use the github cli"
-    echo "manualDeploy <gitSha>                - interactive interview to deploy to production"
-    echo "minikubeBuild <taggedImageName>      - using minikube's docker daemon, build image and tag with minikube metadata"
-    echo "minikubeBuildDeployTest              - minikubeBuild, then minikubeDeployTest"
-    echo "minikubeDashboard                    - open minikube dashboard in web browser"
-    echo "minikubeDeployTest <taggedImageName> - deploy image to mk and test it (defaults to image for head sha)"
-    echo "minikubeDestroyEnvironment           - if minikube dev environment is running, destroys it"
-    echo "minikubeOpenWebsite                  - assuming site is running in minikube locally, open web browser to home page"
-    echo "minikubeRunTests                     - run tests against an existing minikube-hosted website"
-    echo "model                                - outputs a sequence of states describing the evolution of the heartpoints ecosystem"
-    echo "prePushVerification                  - validates that local code is ready for pull request"
-    echo "serverDev                            - run dev web server locally"
-    echo "tailProductionLogs                   - TODO: Need a k8s equivalent (can generate a url if that is a better way to tail)"
-    echo "yarn                                 - call the heartpoints-specific version of yarn to add / remove dependencies, etc"
-    echo ""
+    functionNamesAndDescriptions
 }
 
 error_and_exit() { local errorMessage=$1
@@ -53,6 +40,42 @@ error_and_exit() { local errorMessage=$1
     exit 1
 }
 
+functionNamesAndDescriptions() {
+    declare -a functionNames=($(publicFunctionNames))
+    for fullFunctionName in "${functionNames[@]}"
+    do
+        local possibleHelp=""
+        local possibleHelpFunctionName="${fullFunctionName}_help"
+        if function_exists "${possibleHelpFunctionName}"; then
+            possibleHelp=" - $(${possibleHelpFunctionName})"
+        fi
+        local niceFunctionName="$(string_everythingAfterChar "${fullFunctionName}" "_")"
+        echo "$(fixString "${niceFunctionName}" 30)$(fixString "${possibleHelp}" 80)"
+    done
+}
+
+publicFunctionNames() {
+    allFunctionNames | grep "heartpoints_" | grep -v "_help"
+}
+
+stringLength() { local stringInQuestion=$1
+    echo ${#stringInQuestion}
+}
+
+fixString() { local originalString=$1; local fixedWidth=$2
+    local limitedString="$(string_firstNChars "${originalString}" $fixedWidth)"
+    local limitedStringLength="$(stringLength "${limitedString}")"
+    local spacesNeeded=$(expr $fixedWidth - $limitedStringLength)
+    local spaces="$(padString " " $spacesNeeded)"
+    echo "${limitedString}${spaces}"
+}
+
+padString() { local stringToPad=$1; local numTimes=$2
+    local printFCommand="printf '${stringToPad}%.0s' {0..${numTimes}}"
+    eval $printFCommand
+}
+
+heartpoints_localDev_help() { echo "DEPRECATED"; }
 heartpoints_localDev() {
     heartpoints_serverDev
     error_and_exit "localDev is deprecated. For server side development, use ./hp serverDev or for client side development use ./hp clientDev"
@@ -67,11 +90,11 @@ string_firstNChars() { local sourceString=$1; local n=$2
 }
 
 string_everythingAfterChar() { local sourceString=$1; local delimitingCharacter=$2;
-    cut -d "${delimitingCharacter}" -f 2 <<< "$sourceString"
+    echo "${sourceString}" | cut -d "${delimitingCharacter}" -f 2- -
 }
 
 string_everythingBeforeChar() { local sourceString=$1; local delimitingCharacter=$2;
-    cut -d "${delimitingCharacter}" -f1 <<< "$sourceString"
+    cut -d "${delimitingCharacter}" -f 1 <<< "$sourceString"
 }
 
 git_safeBranchNameFromIssueDescription() { local issueDescription=$1
@@ -96,6 +119,7 @@ git_currentBranchName() {
     git rev-parse --abbrev-ref HEAD
 }
 
+heartpoints_c_help() { echo "Alias for commitUsingIssueDescription"; }
 heartpoints_c() {
     heartpoints_commitUsingIssueDescription
 }
@@ -112,6 +136,18 @@ hub_defaultCommitMessageForCurrentBranch() {
     echo "fixes $(trimLeadingWhitespace "$(hub_descriptionOfCurrentBranchIssue)")"
 }
 
+heartpoints_addCommitPushAndPullRequest_help() { echo "adds changes, commits with default description, pushes to remote branch, creates pull request"; }
+heartpoints_addCommitPushAndPullRequest() {
+    heartpoints_c
+    git push origin head
+    heartpoints_hub pull-request
+}
+
+heartpoints_createPullRequest_help() { echo "create pull request using commit message"; }
+heartpoints_createPullRequest() {
+    heartpoints_hub pull-request -m "$(hub_defaultCommitMessageForCurrentBranch)"
+}
+
 trimAllWhitespace() { local stringToTrim=$1
     echo "${stringToTrim}" | tr -d '[:space:]'
 }
@@ -125,6 +161,7 @@ heartpoints_commitUsingIssueDescription() {
     git commit -m "$(hub_defaultCommitMessageForCurrentBranch)"
 }
 
+heartpoints_createIssueAndBranch_help() { echo "<issueDescription> - creates branch and issue using provided description, checks out branch"; }
 heartpoints_createIssueAndBranch() { local issueDescription=$1
     local issueURL=$(heartpoints_hub issue create -m "${issueDescription}")
     local issueId="$(everythingAfterLastSlash "${issueURL}")"
@@ -138,6 +175,7 @@ everythingAfterLastSlash() { local stringWithSlashes=$1
     echo ${stringWithSlashes##*/}
 }
 
+heartpoints_branch_help() { echo "lists issues, unless issueId provided, then creates branch"; }
 heartpoints_branch() { local issueId=$1
     if string_is_empty "$issueId"; then
         heartpoints_hub issue
@@ -167,16 +205,19 @@ heartpoints_branch() { local issueId=$1
     fi
 }
 
+heartpoints_serverDev_help(){ echo "run dev web server locally"; }
 heartpoints_serverDev(){
     heartpoints_prepareForRun
     heartpoints_runServer
 }
 
+heartpoints_clientDev_help() { echo "run front-end web server with hot reloading"; }
 heartpoints_clientDev(){
     heartpoints_yarn install
     heartpoints_runWebPackDevServer
 }
 
+heartpoints_hub_help() { echo "use the github cli"; }
 heartpoints_hub() { local args=$@
     heartpoints_hub_install
     hub "$@"
@@ -201,6 +242,7 @@ heartpoints_prepareForRun() {
     fi
 }
 
+heartpoints_yarn_help() { echo "call the heartpoints-specific version of yarn to add / remove dependencies, etc"; }
 heartpoints_yarn() { local args=$@
     if command_does_not_exist "yarn"; then
         npm_cli install yarn -g
@@ -240,6 +282,7 @@ heartpoints_dockerTestImage() { local taggedImageName=$1
     docker exec "${testName}" bash ./heartpoints.sh test localhost:5001
 }
 
+heartpoints_prePushVerification_help() { echo "validates that local code is ready for pull request"; }
 heartpoints_prePushVerification() {
     heartpoints_minikubeBuildDeployTest
 }
@@ -289,10 +332,12 @@ heartpoints_onMasterMerge() { export gcpCicdServiceAccountCredentialsJson
     cicdProductionBuildDeployTest
 }
 
+heartpoints_minikubeRunTests_help() { echo "run tests against an existing minikube-hosted website"; }
 heartpoints_minikubeRunTests() {
     heartpoints_test "$(heartpoints_urlOfMinikubeWebsite)"
 }
 
+heartpoints_createGKECluster_help() { echo "creates a GKE cluster. See README for prerequisites"; }
 heartpoints_createGKECluster() {
     withinCloudSDK ./heartpoints.sh createGKECluster_commands
 }
@@ -348,6 +393,7 @@ heartpoints_gcr() {
     echo "gcr.io/heartpoints-org"
 }
 
+heartpoints_manualDeploy_help() { echo "interactive interview to deploy to production"; }
 heartpoints_manualDeploy() { local gitSha=$1
     requiredParameter "gitSha" "${gitSha}" 
     heartpoints_deployToKubernetes "$(heartpoints_taggedImageName $(heartpoints_gcr) ${gitSha})"
@@ -417,6 +463,7 @@ heartpoints_buildAndPushCicdImage() {
     docker push "$imageURI"
 }
 
+heartpoints_minikubeDeployTest_help() { echo "<taggedImageName> - deploy image to mk and test it (defaults to image for head sha)"; }
 heartpoints_minikubeDeployTest() { local taggedImageName=$1
     requiredParameter "taggedImageName" "${taggedImageName}" 
     heartpoints_deployToKubernetes "${taggedImageName}"
@@ -438,6 +485,7 @@ heartpoints_testUntilSuccess() { local timeoutSeconds=$1; local interval=$2; loc
     done
 }
 
+heartpoints_minikubeBuildDeployTest_help() { echo "minikubeBuild, then minikubeDeployTest"; }
 heartpoints_minikubeBuildDeployTest() {
     local shaToBuild="$(git_currentSha)"
     local taggedImageName="$(heartpoints_minikubeTaggedImageName ${shaToBuild})"
@@ -451,6 +499,7 @@ heartpoints_minikubeTaggedImageName() { local shaToBuild=$1
     echo "$(heartpoints_taggedImageName ${imageRepository} ${shaToBuild})"
 }
 
+heartpoints_minikubeBuild_help() { echo "<taggedImageName> using minikube's docker daemon, build image and tag with minikube metadata"; }
 heartpoints_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     requiredParameter "taggedImageName" "${taggedImageName}"
     requiredParameter "shaToReportInHttpHeaders" "${shaToReportInHttpHeaders}"
@@ -459,6 +508,7 @@ heartpoints_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpH
     heartpoints_buildAndTagImage "${taggedImageName}" "${shaToReportInHttpHeaders}"
 }
 
+heartpoints_minikubeDestroyEnvironment_help() { echo "if minikube dev environment is running, destroys it"; }
 heartpoints_minikubeDestroyEnvironment() {
     heartpoints_minikube delete
 }
@@ -468,6 +518,7 @@ heartpoints_urlOfMinikubeWebsite() {
     echo "https://$(minikube ip)"
 }
 
+heartpoints_minikubeOpenWebsite_help() { echo "assuming site is running in minikube locally, open web browser to home page"; }
 heartpoints_minikubeOpenWebsite() {
     open "$(heartpoints_urlOfMinikubeWebsite)"
 }
@@ -487,6 +538,7 @@ heartpoints_minikubeEnableIngress() {
     fi
 }
 
+heartpoints_minikubeDashboard_help() { echo "open minikube dashboard in web browser"; }
 heartpoints_minikubeDashboard() {
     heartpoints_minikube dashboard 
 }

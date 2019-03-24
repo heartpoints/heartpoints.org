@@ -29,10 +29,27 @@ To browse to issues master list on the web (different than the left-to-right pro
 
     ./hp hub browse -- issues
 
+To create a new issue from command line:
+
+    ./hp hub issue create -m "description of issue here"
+
 ## Create and manage branches
 
-When working on a particular github issue, it is best to do so in a particular branch. Ideally the name of the branch
-ties back to the issue. 
+When working on a particular github issue, it is best to do so in a particular branch. Ideally the name of the branch ties back to the issue.
+
+To create an issue and make a branch at the same time:
+
+    ./hp createIssueAndBranch "description here"
+
+To create a branch for an already existing issue:
+
+    ./hp branch <issueId>
+
+### Verifying you are in the right branch
+
+Verify you are working within the new branch. Do do so, run:
+
+    git status
 
 ### Short Lived Branches!
 
@@ -86,23 +103,6 @@ check everything before force pushing!!!
 Follow [these instructions](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
 to create and move to a new branch on your local machine.
 
-### Creating a branch for Github Issue Automatically
-
-To create and check out a nice new branch, first, *make sure you have checked out the master branch and pulled the latest from
-the remote repository!* 
-
-With that out of the way, given you know your github issue id, run:
-
-    ./hp branch [issueId]
-    
-This will create a new branch using our heartpoints standard codified naming rules and check you out into that branch. It
-will also output hints for how to proceed thereafter.
-
-### Verifying you are in the right branch
-
-Verify you are working within the new branch. Do do so, run:
-
-    git status
 
 ## Add and commit Changes to current branch
 
@@ -113,6 +113,14 @@ When you believe your changes are ready, add them to the git workspace with
 and then commit them with
 
     git commit -m "brief description of change"
+
+you may also commit using the description for your branch's github issue:
+
+    ./hp commitUsingIssueDescription
+    
+alternatively, a shorthand for the above:
+
+    ./hp c
 
 ## Pushing Changes from local branch to remote branch of the same name
 
@@ -139,6 +147,14 @@ github by navigating to the "commits" tab of the main repository page, and click
 near your merge commit, and following the link.
 
 You can validate your change has made it to production by using the chrome developer tools to inspect the http response headers, looking for the `commitSha` header, which should match the sha of your merged PR commit in master.
+
+## Shortcut for Getting Changes to a PR
+
+To add your local changes to the workspace, commit them using the message that was used to create
+your branch / github issue, push them to your remote branch, and then generate a pull request,
+all as one step, run:
+
+    ./hp addCommitPushAndPullRequest
 
 ## Use the CLI
 
