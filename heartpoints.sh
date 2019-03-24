@@ -291,6 +291,10 @@ heartpoints_onPullRequest() {
     heartpoints_dockerBuildTagAndTest
 }
 
+heartpoints_runUnitTests() {
+    yarn ts-mocha src/tests/**/*.ts
+}
+
 heartpoints_dockerBuildTagAndTest() {
     local imageRepo="circleci"
     local shaToBuild="$(git_currentSha)"
