@@ -1,3 +1,5 @@
+import * as _ from "lodash";
+
 export const Switch = <T, S>(expression:T, ...cases:Array<CaseLike<T, S>>):S => {
     const firstMatchingCase = cases.find(c => c.matches(expression));
     if(!firstMatchingCase) throw new Error(`No cases matched expression with value ${expression}`);
@@ -14,6 +16,9 @@ interface TypeCaseLike<T1, T2 extends T1, S> {
     matches(t1?:T1): t1 is T2,
     resolve(t2?:T2):S
 }
+
+export const IsStringArray = (v:any): v is Array<string> => _.isArray<string>(v) //todo: further typecheck values?
+export const IsStringDictionary = (v:any): v is _.Dictionary<string> => _.isPlainObject(v) //todo: further typecheck values?
 
 export const TypeMatch = <T1, T2 extends T1, S>(typePredicate:(t1:T1) => t1 is T2, mapToResult:(t2:T2) => S) => ({
     matches: typePredicate,

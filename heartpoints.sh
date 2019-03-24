@@ -291,8 +291,9 @@ heartpoints_onPullRequest() {
     heartpoints_dockerBuildTagAndTest
 }
 
-heartpoints_runUnitTests() {
-    yarn ts-mocha src/tests/**/*.ts
+heartpoints_unitTest_help() { echo "run the mocha unit tests, which test without build / deploy"; }
+heartpoints_unitTest() {
+    heartpoints_yarn ts-mocha src/tests/**/*.ts
 }
 
 heartpoints_dockerBuildTagAndTest() {
