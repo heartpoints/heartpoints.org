@@ -3,8 +3,6 @@ import { expect } from "chai";
 import { getCompleteProjection } from "../restguru/getCompleteProjection";
 import { contentTypes } from "../restguru/contentTypes";
 
-const when = (description, block) => context(`when ${description}`, block);
-
 describe("restful-json", () => {
     describe("getCompleteProjection('http://exampleRecordToStoreAsRestfulJSON')", () => {
         it("yields expectedProjection", () => {

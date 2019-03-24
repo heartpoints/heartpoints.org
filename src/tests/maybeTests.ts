@@ -1,12 +1,16 @@
 import { Some, None, reduceMaybe } from "../utils/maybe";
-import { expect } from "./expect";
+import { whenValues, itExpects } from "./expect";
 
 describe("Maybe", () => {
-    it("works", () => {
-        const maybeDoThis = (x:number) => x % 2 == 0 ? Some(x * 2) : None
-        const maybeDoThat = (x:number) => x % 2 == 1 ? Some(x + 3) : None
-        const x = Some(5).flatMap(maybeDoThis).flatMap(maybeDoThat).valueOrDefault(2);
-        expect(x).to.equal(2);
-        expect(reduceMaybe(5, maybeDoThis, maybeDoThat, maybeDoThis, maybeDoThat).valueOrDefault(2)).to.equal(2);
+    const doubleOdds = (x:number) => x % 2 == 1 ? Some(x * 2) : None
+    const add3ToEvens = (x:number) => x % 2 == 0 ? Some(x + 3) : None
+    whenValues({add3ToEvens, doubleOdds}, () => {
+        itExpects(
+            () => Some(5).flatMap(doubleOdds).flatMap(add3ToEvens).valueOrDefault(2)
+        ).toEqual(13);
+
+        itExpects(
+            () => reduceMaybe(5, doubleOdds, add3ToEvens, doubleOdds, add3ToEvens).valueOrDefault(2)
+        ).toEqual(29);
     });
 })
