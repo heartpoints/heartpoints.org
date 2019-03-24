@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-heartpoints() { local command=$1; local remainingArgs=${@:2}
+heartpoints() { local command=$1; local remainingArgs="${@:2}"
     if string_is_empty "${command}"; then
         heartpoints_help
     else
         local localFunctionName="heartpoints_${command}"
         if function_exists "${localFunctionName}"; then
-            $localFunctionName $remainingArgs
+            $localFunctionName "${@:2}"
         else
             if function_exists $command; then
-                $command $remainingArgs
+                $command "${@:2}"
             else
                 heartpoints_help
                 error_and_exit "Command not found"
@@ -70,6 +70,10 @@ string_everythingAfterChar() { local sourceString=$1; local delimitingCharacter=
     cut -d "${delimitingCharacter}" -f 2 <<< "$sourceString"
 }
 
+string_everythingBeforeChar() { local sourceString=$1; local delimitingCharacter=$2;
+    cut -d "${delimitingCharacter}" -f1 <<< "$sourceString"
+}
+
 git_safeBranchNameFromIssueDescription() { local issueDescription=$1
     local lowercased="$(string_toLower "${issueDescription}")"
     local maxLength="50"
@@ -92,6 +96,48 @@ git_currentBranchName() {
     git rev-parse --abbrev-ref HEAD
 }
 
+heartpoints_c() {
+    heartpoints_commitUsingIssueDescription
+}
+
+hub_issueIdOfCurrentBranch() {
+    string_everythingBeforeChar "$(git_currentBranchName)" "-"
+}
+
+hub_descriptionOfCurrentBranchIssue() {
+    git_issueDescriptionForIssueId "$(hub_issueIdOfCurrentBranch)"
+}
+
+hub_defaultCommitMessageForCurrentBranch() {
+    echo "fixes $(trimLeadingWhitespace "$(hub_descriptionOfCurrentBranchIssue)")"
+}
+
+trimAllWhitespace() { local stringToTrim=$1
+    echo "${stringToTrim}" | tr -d '[:space:]'
+}
+
+trimLeadingWhitespace() { local stringToTrim=$1
+    echo "${stringToTrim}" | sed -e 's/^[[:space:]]*//'
+}
+
+heartpoints_commitUsingIssueDescription() {
+    git add -A
+    git commit -m "$(hub_defaultCommitMessageForCurrentBranch)"
+}
+
+heartpoints_createIssueAndBranch() { local issueDescription=$1
+    local issueURL=$(heartpoints_hub issue create -m "${issueDescription}")
+    local issueId="$(everythingAfterLastSlash "${issueURL}")"
+    echo
+    echo "Created issue: ${issueURL}"
+    echo
+    heartpoints_branch "${issueId}"
+}
+
+everythingAfterLastSlash() { local stringWithSlashes=$1
+    echo ${stringWithSlashes##*/}
+}
+
 heartpoints_branch() { local issueId=$1
     if string_is_empty "$issueId"; then
         heartpoints_hub issue
@@ -105,8 +151,11 @@ heartpoints_branch() { local issueId=$1
             echo "With that out of the way, you may run this command to create a new branch"
             error_and_exit " Please try again"
         fi
+        local newBranchToPossiblyCreate="$(git_safeBranchNameForIssueId "${issueId}")"
         git checkout -b "${newBranchToPossiblyCreate}"
-        echo ""
+        echo
+        echo "created / switched to branch '${newBranchToPossiblyCreate}'"
+        echo
         echo "Use 'git add -A' and 'git commit -m ' to commit to this branch"
         echo "Use 'git push origin head' to push this branch to the remote repository"
         echo "Use 'hp hub pull-request' to create a new pull request from your remote branch to remote master"
@@ -114,7 +163,7 @@ heartpoints_branch() { local issueId=$1
         echo " - view your change"
         echo " - request reviewers"
         echo " - View the status of automated tests"
-        echo ""
+        echo
     fi
 }
 
@@ -130,7 +179,7 @@ heartpoints_clientDev(){
 
 heartpoints_hub() { local args=$@
     heartpoints_hub_install
-    hub $args
+    hub "$@"
 }
 
 heartpoints_hub_install() {
@@ -156,7 +205,7 @@ heartpoints_yarn() { local args=$@
     if command_does_not_exist "yarn"; then
         npm_cli install yarn -g
     fi
-    yarn ${args}
+    yarn "$@"
 }
 
 heartpoints_runWebPackDevServer(){
@@ -249,17 +298,17 @@ heartpoints_createGKECluster() {
 }
 
 withinCloudSDK() { local commands=$@
-    docker run -p 8001:8001 -v "$(pwd)":/heartpoints --rm -w /heartpoints google/cloud-sdk:latest $commands
+    docker run -p 8001:8001 -v "$(pwd)":/heartpoints --rm -w /heartpoints google/cloud-sdk:latest "$@"
 }
 
 heartpoints_gcloud_kubectl() { local args=$@
-    withinCloudSDK ./heartpoints.sh kubectl_commands $args
+    withinCloudSDK ./heartpoints.sh kubectl_commands "$@"
 }
 
 heartpoints_kubectl_commands() { local args=$@
     gcloud_cicdAccountLogin
     kubectl_install
-    kubectl $args
+    kubectl "$@"
 }
 
 heartpoints_createGKECluster_commands() {
@@ -377,7 +426,7 @@ heartpoints_minikubeDeployTest() { local taggedImageName=$1
 heartpoints_testUntilSuccess() { local timeoutSeconds=$1; local interval=$2; local testCommand=${@:3}
     timer=0
     while true; do
-        if $testCommand; then
+        if "${@:3}"; then
             break
         elif [ $timer -ge $timeoutSeconds ]; then
             echo "Maximum retries exceeded. Test failed"
@@ -425,7 +474,7 @@ heartpoints_minikubeOpenWebsite() {
 
 heartpoints_minikube() { local args=$@
     minikube_install
-    minikube $args
+    minikube "$@"
 }
 
 heartpoints_minikubeIngressNotEnabled() {
@@ -529,7 +578,7 @@ gcloud_install() {
 
 gcloud_cli() { local args=$@
     gcloud_install   
-    gcloud ${args}
+    gcloud "$@"
 }
 
 git_currentSha() {
@@ -560,7 +609,7 @@ nodejs_ensureCorrectVersion() {
 
 npm_cli() { local args=$@
     nodejs_ensureCorrectVersion   
-    npm ${args}
+    npm "$@"
 }
 
 nvm_download_and_install() {
@@ -620,4 +669,4 @@ cicdServiceAccountEmail() {
     echo "cicd-353@heartpoints-org.iam.gserviceaccount.com"
 }
 
-heartpoints $@
+heartpoints "$@"

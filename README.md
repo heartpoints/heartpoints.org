@@ -153,6 +153,11 @@ To prepare and run the web server, run:
 
     ./hp dev
 
+### View Production
+
+To view the status of all the various services, visit Google Cloud Platform at
+https://console.cloud.google.com and use your heartpoints credentials.
+
 ### Deploy to Production
 
 #### Continuous Deployment Automation
