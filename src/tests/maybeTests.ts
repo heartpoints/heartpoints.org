@@ -1,4 +1,4 @@
-import { Some, None, reduceMaybe } from "./maybe";
+import { Some, None, reduceMaybe } from "../utils/maybe";
 import { expect } from "./expect";
 
 describe("Maybe", () => {

@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { first } from "../utils/list";
+import { first, Mapper } from "./list";
 
 export interface Maybe<T = any> {
     map<S>(f:Mapper<T, S>):Maybe<S>,
@@ -18,7 +18,6 @@ export const None:Maybe<never> = {
 }
 
 export type MaybeFlatmapper<T, S> = Mapper<T, Maybe<S>>
-export type Mapper<T, S> = (t:T)=>S
 
 export const Some = <T>(value:T):Maybe<T> => ({
     map: <S>(f:(t:T)=>S) => Some(f(value)),

@@ -1,4 +1,4 @@
-import { Maybe, Some, None } from "../tests/maybe";
+import { Maybe, Some, None } from "./maybe";
 
 export const Switch = <T, S>(expression:T, ...cases:Array<Case<T, S>>):Maybe<S> => {
     const firstMatchingCase = cases.find(c => c.matches(expression));

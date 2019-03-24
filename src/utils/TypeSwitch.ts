@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 import { Constant } from "./Switch";
-import { Maybe, Some, None } from "../tests/maybe";
+import { Maybe, Some, None } from "./maybe";
 import { TypePredicate } from "./predicate";
 
 //todo: is there not a less imperative way to typesafely express this?

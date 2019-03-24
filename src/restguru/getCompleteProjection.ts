@@ -1,6 +1,7 @@
 import { TypeSwitch, TypeMatch, TypeDefault, IsStringArray, IsStringDictionary } from "../utils/TypeSwitch";
 import { theInternet } from "./theInternet";
-import { Maybe } from "./maybe";
+import { Maybe } from "../utils/maybe";
+import { mapDictionary } from "../utils/list";
 
 export const getCompleteProjection = (url:string):Maybe<any> => {
     const maybeRepresentation = theInternet({url});
@@ -13,7 +14,8 @@ export const getCompleteProjection = (url:string):Maybe<any> => {
 
 const mapArrayToCompleteProjection = arrayRepresentation => arrayRepresentation.map(i => getCompleteProjection(i).value)
 const mapDictionaryToCompleteProject = dictionary => 
-    Object
-        .entries(dictionary)
-        .map(([k,v]) => [getCompleteProjection(k).value as string, getCompleteProjection(v as string).value as string])
-        .reduce((soFar, [k,v]) => ({...soFar, [k]: v}), {});
+    mapDictionary(
+        dictionary, 
+        k => getCompleteProjection(k.toString()).value,
+        v => getCompleteProjection(v as string).value,
+    );

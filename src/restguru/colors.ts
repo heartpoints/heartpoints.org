@@ -1,4 +1,4 @@
-import { Maybe, maybeIf } from "./maybe";
+import { Maybe, maybeIf } from "../utils/maybe";
 
 export const colors = ({url}):Maybe => {
     const possibleMatchingColor = colorFromUrl(url)

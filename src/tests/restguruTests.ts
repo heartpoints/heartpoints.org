@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { expect } from "chai";
-import { getCompleteProjection } from "./getCompleteProjection";
-import { contentTypes } from "./contentTypes";
+import { getCompleteProjection } from "../restguru/getCompleteProjection";
+import { contentTypes } from "../restguru/contentTypes";
 
 const when = (description, block) => context(`when ${description}`, block);
 
