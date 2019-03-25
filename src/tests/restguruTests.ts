@@ -1,16 +1,45 @@
 import * as _ from "lodash";
+import { whenValues, itExpects } from "./expect";
+import { theInternet, basicResources } from "../restguru/theInternet";
 import { expect } from "chai";
 import { getCompleteProjection } from "../restguru/getCompleteProjection";
-import { contentTypes } from "../restguru/contentTypes";
 
 describe("restful-json", () => {
-    describe("getCompleteProjection('http://exampleRecordToStoreAsRestfulJSON')", () => {
-        it("yields expectedProjection", () => {
-            const projection = getCompleteProjection('http://exampleRecordToStoreAsRestfulJSON').value;
-            expect(JSON.stringify(projection, null, 3)).to.equal(JSON.stringify(expectedProjection, null, 3));
+    describe("theInternet", () => {
+        const simpleResourceTest = ({url,contentType,expectedValue}) => 
+            whenValues({url, contentType}, () => {
+                const result = () => theInternet({url, contentType})
+                itExpects(result).toBehaveAsFollows(maybeRepresentation => {
+                    expect(maybeRepresentation.value).to.equal(expectedValue);
+                });
+            });
+
+        simpleResourceTest({
+            url: "http://names/Tommy",
+            contentType: "ifdjhsidufh",
+            expectedValue:"Tommy"
+        })
+
+        simpleResourceTest({
+            url: "http://colors/red",
+            contentType: "ifdjhsidufh",
+            expectedValue:"red"
+        })
+
+        simpleResourceTest({
+            url: "http://colors/red",
+            contentType: "text/html",
+            expectedValue:"<html><body><h1>red</h1><p>red is a color</body></html>"
         })
     });
-    describe("contentType", () => {
+
+    describe("getCompleteProjection()", () => {
+        const url = "http://exampleRecordToStoreAsRestfulJSON"
+        const contentType="http://exampleRecordToStoreAsRestfulJSON"
+        it("yields expectedProjection", () => {
+            const projection = getCompleteProjection({url, contentType}).value;
+            expect(JSON.stringify(projection, null, 3)).to.equal(JSON.stringify(expectedProjection, null, 3));
+        })
     });
 });
 

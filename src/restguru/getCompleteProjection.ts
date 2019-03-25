@@ -3,8 +3,13 @@ import { theInternet } from "./theInternet";
 import { Maybe } from "../utils/maybe";
 import { mapDictionary } from "../utils/list";
 
-export const getCompleteProjection = (url:string):Maybe<any> => {
-    const maybeRepresentation = theInternet({url});
+export type HttpRequestArgs = {
+    url:string,
+    contentType:string,
+}
+
+export const getCompleteProjection = ({url, contentType}:HttpRequestArgs):Maybe<any> => {
+    const maybeRepresentation = theInternet({url, contentType});
     return maybeRepresentation.flatMap(representation => TypeSwitch<any,any,any>(representation,
         TypeMatch(IsStringArray, mapArrayToCompleteProjection),
         TypeMatch(IsStringDictionary, mapDictionaryToCompleteProject),
@@ -12,10 +17,14 @@ export const getCompleteProjection = (url:string):Maybe<any> => {
     ));
 }
 
-const mapArrayToCompleteProjection = arrayRepresentation => arrayRepresentation.map(i => getCompleteProjection(i).value)
+const mapArrayToCompleteProjection = arrayRepresentation => 
+    arrayRepresentation.map(
+        url => getCompleteProjection({url, contentType: "sdfsdf" }).value
+    )
+
 const mapDictionaryToCompleteProject = dictionary => 
     mapDictionary(
         dictionary, 
-        k => getCompleteProjection(k.toString()).value,
-        v => getCompleteProjection(v as string).value,
+        k => getCompleteProjection({url: k.toString(), contentType: "sdfasfsfd"}).value,
+        v => getCompleteProjection({url: v.toString(), contentType: "asfdsfd"}).value,
     );
