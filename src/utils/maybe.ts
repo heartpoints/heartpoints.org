@@ -47,4 +47,4 @@ export const firstSuccessfulMapResult = <T, S extends T>(ts:T[], f:MaybeFlatmapp
     return first(ts, t => f(t).hasValue).flatMap(t => f(t));
 }
 
-export const maybeValueForKey = (obj:_.Dictionary<unknown>) => (key:string):Maybe<unknown> => maybe(obj[key]);
+export const maybeValueForKey = <T>(obj:_.Dictionary<T>) => (key:string):Maybe<T> => maybe(obj[key]);

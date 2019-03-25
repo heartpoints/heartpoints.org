@@ -18,9 +18,6 @@ export type TypeCase<GeneralType, SubType extends GeneralType, ResultType> = {
     resolve:(o:SubType) => ResultType,
 }
 
-export const IsStringArray = (v:any): v is Array<string> => _.isArray<string>(v) //todo: further typecheck values?
-export const IsStringDictionary = (v:any): v is _.Dictionary<string> => _.isPlainObject(v) //todo: further typecheck values?
-
 export const TypeMatch = <T1, T2 extends T1, S>(typePredicate:(t1:T1) => t1 is T2, mapToResult:(t2:T2) => S) => ({
     matches: typePredicate,
     resolve: (t2:T2) => mapToResult(t2)
