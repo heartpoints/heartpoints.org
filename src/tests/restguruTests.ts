@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 import { whenValues, itExpects } from "./expect";
-import { theInternet, basicResources } from "../restguru/theInternet";
+import { theInternet } from "../restguru/theInternet";
 import { expect } from "chai";
 import { getCompleteProjection } from "../restguru/getCompleteProjection";
 
@@ -13,7 +13,7 @@ describe("restful-json", () => {
                     expect(maybeRepresentation.value).to.equal(expectedValue);
                 });
             });
-
+            
         simpleResourceTest({
             url: "http://names/Tommy",
             contentType: "ifdjhsidufh",
@@ -36,10 +36,14 @@ describe("restful-json", () => {
     describe("getCompleteProjection()", () => {
         const url = "http://exampleRecordToStoreAsRestfulJSON"
         const contentType="http://exampleRecordToStoreAsRestfulJSON"
-        it("yields expectedProjection", () => {
-            const projection = getCompleteProjection({url, contentType}).value;
-            expect(JSON.stringify(projection, null, 3)).to.equal(JSON.stringify(expectedProjection, null, 3));
-        })
+        whenValues({url, contentType}, () => {
+            const result = () => getCompleteProjection({url, contentType})
+            itExpects(result).toBehaveAsFollows(projection => {
+                const actual = JSON.stringify(projection.value, null, 3)
+                const expected = JSON.stringify(expectedProjection, null, 3)
+                expect(actual).to.equal(expected);
+            });
+        });
     });
 });
 
