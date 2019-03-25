@@ -27,6 +27,6 @@ export const basicResources:Dictionary<RGSONValue> = {
     ...contentTypes,
 }
 
-const oldInternet = ({url}):Maybe<RGSONValue> => 
+const oldInternet = ({url}:HttpRequestArgs):Maybe<RGSONValue> => 
     maybeValueForKey(basicResources)(url)
     
