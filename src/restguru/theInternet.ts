@@ -7,8 +7,9 @@ import { colors } from "./colors";
 import { Maybe, firstMaybe, maybeValueForKey, maybe } from "../utils/maybe";
 import { Dictionary } from "lodash";
 import { HttpRequestArgs } from "./getCompleteProjection";
+import { RGSONValue } from "./rgson";
 
-export const theInternet = ({url, contentType}:HttpRequestArgs):Maybe<RGson> => 
+export const theInternet = ({url, contentType}:HttpRequestArgs):Maybe<RGSONValue> => 
     maybe(contentType)
         .flatMap(_ =>firstMaybe(
             {url, contentType},
@@ -17,9 +18,8 @@ export const theInternet = ({url, contentType}:HttpRequestArgs):Maybe<RGson> =>
         ))
 
 export type Url = string
-export type RGson = string | number | boolean | null | Url[] | Dictionary<Url>
 
-export const basicResources:Dictionary<RGson> = {
+export const basicResources:Dictionary<RGSONValue> = {
     ...fields,
     ...people,
     ...names,
@@ -27,6 +27,6 @@ export const basicResources:Dictionary<RGson> = {
     ...contentTypes,
 }
 
-const oldInternet = ({url}):Maybe<RGson> => 
+const oldInternet = ({url}):Maybe<RGSONValue> => 
     maybeValueForKey(basicResources)(url)
     
