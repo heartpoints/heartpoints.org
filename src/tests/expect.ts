@@ -1,7 +1,8 @@
 import { expect } from "chai";
 
 export const when = (description, block) => context(`when ${description}`, block);
-export const whenValues = (obj, block) => context(`when:\n${objectAsKeyValueString(obj)}\n${whenSpacing}...\n\n`, block);
+export const and = when;
+export const whenValues = <T>(obj:T, block:(t:T)=>void) => context(`when:\n${objectAsKeyValueString(obj)}\n${whenSpacing}...\n\n`, () => block(obj));
 const whenSpacing = "             ";
 
 export type VoidFunc<T> = (t:T)=>void;
@@ -12,6 +13,9 @@ export const itExpects = <T>(resultProvider:Provider<T>) => (
             it(`it expects ${resultProvider} to be ${expectedValue}`, () =>
                 expect(resultProvider()).to.equal(expectedValue)
             ),
+        toBeFalse: () => it(`it expects ${resultProvider} to be false`, () =>
+            expect(resultProvider()).to.be.false
+        ),
         toBehaveAsFollows: (block:VoidFunc<T>) =>
             it(`it expects ${resultProvider} to behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, () => block(resultProvider())),
     }
