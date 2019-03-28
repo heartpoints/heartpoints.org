@@ -107,6 +107,11 @@ git_safeBranchNameFromIssueDescription() { local issueDescription=$1
     echo $withoutPoundSignOrLeadingSpace
 }
 
+get_pullLatestForCurrentBranch() {
+    heartpoints_ensureCommitIsAppropriate
+    git pull --rebase origin "$(git_currentBranchName)"
+}
+
 git_issueDescriptionForIssueId() { local issueId=$1
     echo "$(heartpoints_hub issue | grep "#${issueId} ")"
 }
