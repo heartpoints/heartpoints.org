@@ -43,8 +43,8 @@ describe("Switch", () => {
     });
 
     const switchWithLazyCase = EmptySwitch()
-        .caseLazy("tommy", ()=>true)
-        .caseLazy(true, ()=>"myes")
+        .caseLazy("tommy", () =>true)
+        .caseLazy(true, () =>"myes")
 
     whenValues({theSwitch: switchWithLazyCase}, ({theSwitch}) => {
         whenValues({inputValue: "nonMatchingInputValue"}, ({inputValue}) => {
@@ -63,9 +63,10 @@ describe("Switch", () => {
     const switchWithMatchesOnly = EmptySwitch()
         .matches(v => v == "tommy", "yay tommy")
         .matches((v:number) => v % 2 == 0, "oooo even number")
+        .matchesLazy((v:number) => v % 2 == 1, odd => `oooo odd number ${odd}`)
 
     whenValues({theSwitch: switchWithMatchesOnly}, ({theSwitch}) => {
-        whenValues({inputValue: 7}, ({inputValue}) => {
+        whenValues({inputValue: "sidfusidufhsidu"}, ({inputValue}) => {
             itExpects(() => theSwitch.value(inputValue).hasValue).toBeFalse()
         })
 
@@ -75,6 +76,10 @@ describe("Switch", () => {
 
         whenValues({inputValue: "tommy"}, ({inputValue}) => {
             itExpects(() => theSwitch.value(inputValue).value).toEqual("yay tommy")
+        })
+
+        whenValues({inputValue: 7}, ({inputValue}) => {
+            itExpects(() => theSwitch.value(inputValue).value).toEqual("oooo odd number 7")
         })
     });
 })

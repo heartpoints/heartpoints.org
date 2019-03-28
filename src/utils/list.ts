@@ -1,6 +1,7 @@
 import { Predicate, TypePredicate } from "./predicate";
 import { Maybe, maybe, Some, None } from "./maybe";
 import { Dictionary } from "lodash";
+import { Mapper } from "./mapper";
 
 export const first = <T>(list:T[], predicate:Predicate<T>):Maybe<T> => 
     maybe(list.find(predicate))
@@ -17,5 +18,3 @@ export const mapDictionary = <T, S>(obj:Dictionary<T>, keyMapper:Mapper<string, 
         .entries(obj)
         .map(([k,v]) => ({newKey: keyMapper(k), newValue: valueMapper(v)}))
         .reduce((soFar, {newKey, newValue}) => ({...soFar, [newKey]: newValue}), {});
-
-export type Mapper<T, S> = (t:T) => S

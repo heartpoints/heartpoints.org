@@ -1,5 +1,6 @@
 import * as _ from "lodash";
-import { first, Mapper } from "./list";
+import { first } from "./list";
+import { Mapper } from "./mapper";
 
 export interface Maybe<T = any> {
     map<S>(f:Mapper<T, S>):Maybe<S>,
