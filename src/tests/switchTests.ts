@@ -59,4 +59,22 @@ describe("Switch", () => {
             itExpects(() => theSwitch.value(inputValue).value).toEqual("myes")
         })
     });
+
+    const switchWithMatchesOnly = EmptySwitch()
+        .matches(v => v == "tommy", "yay tommy")
+        .matches((v:number) => v % 2 == 0, "oooo even number")
+
+    whenValues({theSwitch: switchWithMatchesOnly}, ({theSwitch}) => {
+        whenValues({inputValue: 7}, ({inputValue}) => {
+            itExpects(() => theSwitch.value(inputValue).hasValue).toBeFalse()
+        })
+
+        whenValues({inputValue: 6}, ({inputValue}) => {
+            itExpects(() => theSwitch.value(inputValue).value).toEqual("oooo even number")
+        })
+
+        whenValues({inputValue: "tommy"}, ({inputValue}) => {
+            itExpects(() => theSwitch.value(inputValue).value).toEqual("yay tommy")
+        })
+    });
 })

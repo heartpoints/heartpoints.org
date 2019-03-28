@@ -2,35 +2,62 @@ import { Maybe } from "./maybe";
 import { Provider } from "./provider";
 import * as _ from "lodash";
 import { first } from "./list";
+import { Predicate, combinePredicates } from "./predicate";
 
 interface ISwitch<T, V> {
     case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<T | S, V | R>
     caseLazy<S, R>(possiblyEqualValue:S, resultProviderToUseIfMatch:Provider<R>):ISwitch<T | S, V | R>
+    matches<S, R>(predicate:Predicate<S>, resultToUseIfMatch:R): ISwitch<T | S, V | R>
+    matchesLazy<S, R>(predicate:Predicate<S>, resultProviderToUseIfMatch:Provider<R>): ISwitch<T | S, V | R>
     value<Q extends T>(input:Q):Maybe<V>;
     valueWithDefault<Q extends T, D>(input:Q, defaultValue:D):V | D;
 }
 
 export const EmptySwitch = ():ISwitch<never,never> => ({
     case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<S, R> {
-        return NonEmptySwitch([possiblyEqualValue], [() => resultToUseIfMatch])
+        return this.matchesLazy(input => input == possiblyEqualValue, () => resultToUseIfMatch)
     },
     caseLazy<S, R>(possiblyEqualValue:S, resultProviderToUseIfMatch:Provider<R>):ISwitch<S, R> {
-        return NonEmptySwitch([possiblyEqualValue], [resultProviderToUseIfMatch])
+        return this.matchesLazy((input) => input == possiblyEqualValue, resultProviderToUseIfMatch)
+    },
+    matches<S, R>(predicate:Predicate<S>, resultToUseIfMatch:R): ISwitch<S, R> {
+        return this.matchesLazy(predicate, () => resultToUseIfMatch)
+    },
+    matchesLazy<S, R>(predicate:Predicate<S>, resultProviderToUseIfMatch:Provider<R>): ISwitch<S, R> {
+        return NonEmptySwitch([predicate], [resultProviderToUseIfMatch])
     },
     value(input:any):never { throw new Error() },
     valueWithDefault<D>(input:any, defaultValue:D):D { return defaultValue }
 });
 
-export const NonEmptySwitch = <T, V>(possiblyEqualValues:T[], resultProviders:Array<Provider<V>>):ISwitch<T, V> => ({
+export const NonEmptySwitch = <T, V>(predicates:Array<Predicate<T>>, resultProviders:Array<Provider<V>>):ISwitch<T, V> => ({
     case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<T | S, V | R> {
-        return NonEmptySwitch<T |S, V |R>([...possiblyEqualValues, possiblyEqualValue], [...resultProviders, () => resultToUseIfMatch])
+        return this.matchesLazy(
+            input => input == possiblyEqualValue,
+            () => resultToUseIfMatch
+        )
     },
     caseLazy<S, R>(possiblyEqualValue:S, resultProviderToUseIfMatch:Provider<R>):ISwitch<T | S, V | R> {
-        return NonEmptySwitch<T |S, V |R>([...possiblyEqualValues, possiblyEqualValue], [...resultProviders, resultProviderToUseIfMatch])
+        return this.matchesLazy(
+            input => input == possiblyEqualValue,
+            resultProviderToUseIfMatch
+        )
+    },
+    matches<S, R>(predicate:Predicate<S>, resultToUseIfMatch:R): ISwitch<T | S, V | R> {
+        return this.matchesLazy(
+            predicate,
+            () => resultToUseIfMatch
+        )
+    },
+    matchesLazy<S, R>(predicate:Predicate<S>, resultProviderToUseIfMatch:Provider<R>): ISwitch<T | S, V | R> {
+        return NonEmptySwitch<T |S, V |R>(
+            combinePredicates(predicates, predicate),
+            [...resultProviders, resultProviderToUseIfMatch]
+        )
     },
     value<Q extends T>(input:Q):Maybe<V> {
-        const zipped = _.zip(possiblyEqualValues, resultProviders) as [T, Provider<V>][];
-        const firstMatch = first(zipped, ([a,]) => a == input);
+        const zipped = _.zip(predicates, resultProviders) as [Predicate<T>, Provider<V>][];
+        const firstMatch = first(zipped, ([a,]) => a(input) == true);
         return firstMatch.map(([,b]) => b());
     },
     valueWithDefault<Q extends T, D>(input:Q, defaultValue:D):V|D {
