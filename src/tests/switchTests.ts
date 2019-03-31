@@ -1,25 +1,25 @@
 import { when, whenValues, itExpects } from "./expect";
 import * as _ from "lodash";
 import { expect } from "chai";
-import { EmptySwitch } from "../utils/SwitchOO";
+import { EmptySwitch, Switch } from "../utils/SwitchOO";
 
 describe("Switch", () => {
 
     when("I have an empty switch", () => {
-        const result = EmptySwitch();
+        const result = Switch();
         it("does not compile", () => {
             expect(() => result.value(5 as never)).to.throw;
         });
     });
 
     when("I have an empty switch with default", () => {
-        const result = EmptySwitch();
+        const result = Switch();
         it("equals the default value", () => {
             itExpects(() => result.valueWithDefault(6 as never, 42)).toEqual(42);
         });
     });
 
-    const switchWithOnlyCases = EmptySwitch()
+    const switchWithOnlyCases = Switch()
         .case("myes", 6)
         .case(7, "myrrr")
         .case(true, false);
@@ -42,7 +42,7 @@ describe("Switch", () => {
         })
     });
 
-    const switchWithLazyCase = EmptySwitch()
+    const switchWithLazyCase = Switch()
         .caseLazy("tommy", () =>true)
         .caseLazy(true, () =>"myes")
 
@@ -60,9 +60,20 @@ describe("Switch", () => {
         })
     });
 
-    const switchWithMatchesOnly = EmptySwitch()
-        .matches(v => v == "tommy", "yay tommy")
+    interface GeneralInterface {
+        generalProperty:number,
+    }
+    interface SpecificInterface extends GeneralInterface {
+        specificProperty:SpecialType;
+    }
+    interface SpecialType {}
+
+    const isSpecificInterface = (g:GeneralInterface): g is SpecificInterface => true
+
+    const switchWithMatchesOnly = Switch()
+        .matches((v:string) => v == "tommy", "yay tommy")
         .matches((v:number) => v % 2 == 0, "oooo even number")
+        .matchesType(isSpecificInterface, specific => specific.specificProperty)
         .matchesLazy((v:number) => v % 2 == 1, odd => `oooo odd number ${odd}`)
 
     whenValues({theSwitch: switchWithMatchesOnly}, ({theSwitch}) => {

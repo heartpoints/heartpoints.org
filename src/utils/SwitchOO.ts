@@ -2,7 +2,7 @@ import { Maybe } from "./maybe";
 import { Provider } from "./provider";
 import * as _ from "lodash";
 import { first } from "./list";
-import { Predicate, combinePredicates } from "./predicate";
+import { Predicate, combinePredicates, TypePredicate, combineTypePredicates } from "./predicate";
 import { Mapper, combineMappers } from "./mapper";
 
 interface ISwitch<T, V> {
@@ -10,9 +10,12 @@ interface ISwitch<T, V> {
     caseLazy<S, R>(possiblyEqualValue:S, resultProviderToUseIfMatch:Provider<R>):ISwitch<T | S, V | R>
     matches<S, R>(predicate:Predicate<S>, resultToUseIfMatch:R): ISwitch<T | S, V | R>
     matchesLazy<S, R>(predicate:Predicate<S>, mapperToUseIfMatch:Mapper<S, R>): ISwitch<T | S, V | R>
+    matchesType<S, R, L extends S>(predicate:TypePredicate<S, L>, mapperToUseIfMatch:Mapper<L, R>): ISwitch<T | S, V | R>
     value<Q extends T>(input:Q):Maybe<V>;
     valueWithDefault<Q extends T, D>(input:Q, defaultValue:D):V | D;
 }
+
+export const Switch = ():ISwitch<never, never> => EmptySwitch();
 
 export const EmptySwitch = ():ISwitch<never,never> => ({
     case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<S, R> {
@@ -25,13 +28,16 @@ export const EmptySwitch = ():ISwitch<never,never> => ({
         return this.matchesLazy(predicate, () => resultToUseIfMatch)
     },
     matchesLazy<S, R>(predicate:Predicate<S>, mapperToUseIfMatch:Mapper<S, R>): ISwitch<S, R> {
+        return this.matchesType((r:S):r is S => predicate(r), mapperToUseIfMatch);
+    },
+    matchesType(predicate:TypePredicate<any,any>, mapperToUseIfMatch:Mapper<any,any>) {
         return NonEmptySwitch([predicate], [mapperToUseIfMatch])
     },
     value(input:any):never { throw new Error() },
     valueWithDefault<D>(input:any, defaultValue:D):D { return defaultValue }
 });
 
-export const NonEmptySwitch = <T, V>(predicates:Array<Predicate<T>>, resultProviders:Array<Mapper<T, V>>):ISwitch<T, V> => ({
+export const NonEmptySwitch = <T, V, L extends T>(predicates:Array<TypePredicate<T, L>>, resultProviders:Array<Mapper<L, V>>):ISwitch<T, V> => ({
     case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<T | S, V | R> {
         return this.matchesLazy(
             input => input == possiblyEqualValue,

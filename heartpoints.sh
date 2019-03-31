@@ -50,7 +50,7 @@ functionNamesAndDescriptions() {
             possibleHelp=" - $(${possibleHelpFunctionName})"
         fi
         local niceFunctionName="$(string_everythingAfterChar "${fullFunctionName}" "_")"
-        echo "$(fixString "${niceFunctionName}" 30)$(fixString "${possibleHelp}" 80)"
+        echo "$(fixStringWidth "${niceFunctionName}" 30)$(fixStringWidth "${possibleHelp}" 80)"
     done
 }
 
@@ -62,7 +62,7 @@ stringLength() { local stringInQuestion=$1
     echo ${#stringInQuestion}
 }
 
-fixString() { local originalString=$1; local fixedWidth=$2
+fixStringWidth() { local originalString=$1; local fixedWidth=$2
     local limitedString="$(string_firstNChars "${originalString}" $fixedWidth)"
     local limitedStringLength="$(stringLength "${limitedString}")"
     local spacesNeeded=$(expr $fixedWidth - $limitedStringLength)
@@ -208,6 +208,11 @@ heartpoints_branch() { local issueId=$1
         echo " - View the status of automated tests"
         echo
     fi
+}
+
+heartpoints_checkoutPullRequest_help() { echo "given pull request number / branch name, check out locally"; }
+heartpoints_checkoutPullRequest() { local pullRequestIdOrBranchName=$1
+    heartpoints_hub pr checkout "${pullRequestIdOrBranchName}"
 }
 
 heartpoints_serverDev_help(){ echo "run dev web server locally"; }
