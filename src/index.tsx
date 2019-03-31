@@ -34,6 +34,14 @@ const renderApp = (state) => {
             isSideNavOpen: false
         });
     }
+
+    const onSideNavExpandRequested = () => {
+        renderApp({
+            ...state,
+            isSideNavExpanded: !state.isSideNavExpanded
+        });
+    }
+
     const onHamburgerClicked = () => {
         renderApp({
             ...state,
@@ -65,6 +73,7 @@ const renderApp = (state) => {
         onSideNavCollapseRequested,
         onHamburgerClicked,
         onCelebrationXClicked,
+        onSideNavExpandRequested,
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure
     }
@@ -91,6 +100,7 @@ const initialState = {
     currentUrl: window.location.href,
     isSideNavOpen: false,
     shouldShowCelebration: false,
+    isSideNavExpanded: false,
     inDevMode
 }
 
