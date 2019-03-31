@@ -26,7 +26,7 @@ export const SiteWithoutStyle = (props) => {
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
-                    <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/><CastleRisk {...routerProps} {...props} /></div>} />
+                    <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/></div>} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
