@@ -1,46 +1,94 @@
-import { Maybe, Some, None } from "./maybe";
+import { Maybe } from "./maybe";
+import { Provider } from "./provider";
+import * as _ from "lodash";
+import { first, zip } from "./list";
+import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate } from "./predicate";
+import { Mapper, combineMappers } from "./mapper";
 
-export const Switch = <T, S>(expression:T, ...cases:Array<Case<T, S>>):Maybe<S> => {
-    const firstMatchingCase = cases.find(c => c.matches(expression));
-    return firstMatchingCase
-        ? Some(firstMatchingCase.resolve(expression))
-        : None;
+interface ISwitch<T, V> {
+    case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<T | S, V | R>
+    cases<S, R>(possiblyEqualValues:S[], mapperToUseIfMatch:Mapper<S, R>):ISwitch<T | S, V | R>
+    caseLazy<S, R>(possiblyEqualValue:S, resultProviderToUseIfMatch:Provider<R>):ISwitch<T | S, V | R>
+    matches<S, R>(predicate:Predicate<S>, resultToUseIfMatch:R): ISwitch<T | S, V | R>
+    matchesLazy<S, R>(predicate:Predicate<S>, mapperToUseIfMatch:Mapper<S, R>): ISwitch<T | S, V | R>
+    matchesType<S, R, L extends S>(predicate:TypePredicate<S, L>, mapperToUseIfMatch:Mapper<L, R>): ISwitch<T | S, V | R>
+    get<Q extends T>(input:Q):Maybe<V>;
+    getOrDefault<Q extends T, D>(input:Q, defaultValue:D):V | D;
 }
 
-export interface Case<T, S> {
-    matches(t?:T):boolean,
-    resolve(t?:T):S
-}
+export const Switch = ():ISwitch<never, never> => EmptySwitch();
 
-export const Case = <T, S>(condition:T, result:S) => ({
-    matches: t => t == condition,
-    resolve: Constant(result),
+export const EmptySwitch = ():ISwitch<never,never> => ({
+    case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<S, R> {
+        return this.matchesLazy(input => input == possiblyEqualValue, () => resultToUseIfMatch)
+    },
+    cases<S, R>(possiblyEqualValues:S[], mapperToUseIfMatch:Mapper<S, R>):ISwitch<S, R> {
+        return possiblyEqualValues.length == 0 
+            ? this
+            : this
+                .matchesLazy(n => n == possiblyEqualValues[0], mapperToUseIfMatch)
+                .cases(possiblyEqualValues.slice(1), mapperToUseIfMatch)
+    },
+    caseLazy<S, R>(possiblyEqualValue:S, resultProviderToUseIfMatch:Provider<R>):ISwitch<S, R> {
+        return this.matchesLazy((input) => input == possiblyEqualValue, resultProviderToUseIfMatch)
+    },
+    matches<S, R>(predicate:Predicate<S>, resultToUseIfMatch:R): ISwitch<S, R> {
+        return this.matchesLazy(predicate, () => resultToUseIfMatch)
+    },
+    matchesLazy<S, R>(predicate:Predicate<S>, mapperToUseIfMatch:Mapper<S, R>): ISwitch<S, R> {
+        return this.matchesType((r:S):r is S => predicate(r), mapperToUseIfMatch);
+    },
+    matchesType(predicate:TypePredicate<any,any>, mapperToUseIfMatch:Mapper<any,any>) {
+        return NonEmptySwitch([predicate], [mapperToUseIfMatch])
+    },
+    get(input:any):never { throw new Error() },
+    getOrDefault<D>(input:any, defaultValue:D):D { return defaultValue }
 });
 
-export const CaseLazy = <T, S>(condition:T, resolve:(t?:T)=>S) => ({
-    matches: t => t == condition,
-    resolve
-});
-
-export const Match = <T, S>(matcher:(t:T)=>boolean, result:S) => ({
-    matches: matcher,
-    resolve: Constant(result),
-});
-
-export const MatchLazy = <T, S>(matcher:(t:T)=>boolean, resolve:(t?:T)=>S) => ({
-    matches: matcher,
-    resolve
-});
-
-export const Default = <S>(result:S) => ({
-    matches: True,
-    resolve: Constant(result),
-});
-
-export const DefaultLazy = <T, S>(resolve:(t?:T) => S) => ({
-    matches: True,
-    resolve
-});
-
-export const True = () => true;
-export const Constant = <T>(c:T) => () => c;
+export const NonEmptySwitch = <PossibleInputTypes, PossibleOutputTypes>(typePredicates:Array<TypePredicate<PossibleInputTypes, any>>, resultMappers:Array<Mapper<PossibleInputTypes, PossibleOutputTypes>>):ISwitch<PossibleInputTypes, PossibleOutputTypes> => ({
+    case<NewInputType, NewOutputType>(possiblyEqualValue:NewInputType, resultToUseIfMatch:NewOutputType):ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
+        return this.matchesLazy(
+            input => input == possiblyEqualValue,
+            input => resultToUseIfMatch
+        )
+    },
+    cases<NewInputType, NewOutputType>(possiblyEqualValues:NewInputType[], mapperToUseIfMatch:Mapper<NewInputType, NewOutputType>):ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
+        return possiblyEqualValues.length == 0 
+            ? this
+            : this
+                .matchesLazy(n => n == possiblyEqualValues[0], mapperToUseIfMatch)
+                .cases(possiblyEqualValues.slice(1), mapperToUseIfMatch)
+    },
+    caseLazy<NewInputType, NewOutputType>(possiblyEqualValue:NewInputType, resultProviderToUseIfMatch:Provider<NewOutputType>):ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
+        return this.matchesLazy(
+            input => input == possiblyEqualValue,
+            input => resultProviderToUseIfMatch()
+        )
+    },
+    matches<NewInputType, NewOutputType>(predicate:Predicate<NewInputType>, resultToUseIfMatch:NewOutputType): ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
+        return this.matchesLazy(
+            predicate,
+            input => resultToUseIfMatch
+        )
+    },
+    matchesLazy<NewInputType, NewOutputType>(predicate:Predicate<NewInputType>, mapperToUseIfMatch:Mapper<NewInputType, NewOutputType>): ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
+        return NonEmptySwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType>(
+            combineTypePredicates(typePredicates, asTypePredicate(predicate)),
+            combineMappers(resultMappers, mapperToUseIfMatch)
+        )
+    },
+    matchesType<NewInputType, NewOutputType>(predicate:TypePredicate<NewInputType,any>, mapperToUseIfMatch:Mapper<any,NewOutputType>): ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
+        return NonEmptySwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType>(
+            combineTypePredicates(typePredicates, predicate),
+            combineMappers(resultMappers, mapperToUseIfMatch)
+        )
+    },
+    get<ActualInputType extends PossibleInputTypes>(input:ActualInputType):Maybe<PossibleOutputTypes> {
+        return zip(typePredicates, resultMappers)
+            .flatMap(zipped => first(zipped, ([a,]) => a(input) == true))
+            .map(([,b]) => b(input));
+    },
+    getOrDefault<ActualInputType extends PossibleInputTypes, TypeOfDefaultValue>(input:ActualInputType, defaultValue:TypeOfDefaultValue):PossibleOutputTypes | TypeOfDefaultValue {
+        return this.get(input).valueOrDefault(defaultValue)
+    }
+})
