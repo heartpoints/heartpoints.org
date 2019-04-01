@@ -61,7 +61,7 @@ export const CelebrationModal = (props:ICelebrationModalProps) => {
                         {props.numHeartpointsAwarded}
                     </h3>
                 }
-                imageURL="images/Celebration.png" 
+                imageURL="images/celebration.png" 
                 onXClicked={props.onXClicked}>
                     <div style={actionContainerStyle}>
                         <h4>What you can do: </h4>
