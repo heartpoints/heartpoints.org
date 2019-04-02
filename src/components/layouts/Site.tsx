@@ -8,14 +8,14 @@ import { Theme } from "../../style/theme";
 import { CssBaseline, withStyles } from "@material-ui/core";
 import { TopNav } from "../nav/TopNav";
 import { SideNav } from "../nav/SideNav";
-import { Celebration } from './Celebration';
+import { SearchModal } from "./SearchModal";
 import { CelebrationModal } from "./CelebrationModal";
 import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 import classNames from 'classnames';
 
 export const SiteWithoutStyle = (props) => {
     const theme = createMuiTheme(Theme);
-    const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen} = props;
+    const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen, shouldShowSearch, onSearchXClicked, searchBarValue, searchBarSuggestions, onSearchBarValueChange,onSuggestionsFetchRequested, onSuggestionsClearRequested} = props;
     return <BrowserRouter>
         <React.Fragment>
             <CssBaseline />
@@ -30,6 +30,7 @@ export const SiteWithoutStyle = (props) => {
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
+                { shouldShowSearch && <SearchModal onXClicked={onSearchXClicked} {...props} /> }
             </MuiThemeProvider>
             </main>
             </div>
