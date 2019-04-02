@@ -237,9 +237,20 @@ heartpoints_hub_install() {
     brew_install hub
 }
 
+brew_cli() { local args="$@"
+    if command_does_not_exist "brew"; then
+        yes | /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+    brew "${@}"
+}
+
+brew_uninstall() {
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)"
+}
+
 brew_install() { local packageName=$1
     if command_does_not_exist "${packageName}"; then
-        brew install "$packageName"
+        brew_cli install "$packageName"
     fi
 }
 
@@ -613,19 +624,19 @@ gcloud_configure() {
 # Misc functions
 
 brew_cask_caskIsInstalled() { local caskName=$1
-    brew cask list | grep "${caskName}" > /dev/null 2>&1
+    brew_cli cask list | grep "${caskName}" > /dev/null 2>&1
 }
 
 brew_cask_installCask() { local caskName=$1
     brew_cask_installCaskroom
     if command_does_not_exist "${caskName}"; then
-        brew cask install "${caskName}"
+        brew_cli cask install "${caskName}"
     fi
 }
 
 brew_cask_installCaskroom() {
-    if ! brew info cask &>/dev/null; then
-        brew tap caskroom/cask
+    if ! brew_cli info cask &>/dev/null; then
+        brew_cli tap caskroom/cask
     fi
 }
 
@@ -639,7 +650,7 @@ file_does_not_exist() { local possibleFilePath=$1
 
 gcloud_install() {
     if command_does_not_exist "gcloud"; then
-        brew cask install google-cloud-sdk
+        brew_cli cask install google-cloud-sdk
     fi
 }
 
