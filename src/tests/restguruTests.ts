@@ -3,6 +3,7 @@ import { whenValues, itExpects } from "./expect";
 import { theInternet } from "../restguru/theInternet";
 import { expect } from "chai";
 import { getCompleteProjection } from "../restguru/getCompleteProjection";
+import { jsonString } from "../utils/jsonString";
 
 describe("restful-json", () => {
     describe("theInternet", () => {
@@ -39,9 +40,8 @@ describe("restful-json", () => {
         whenValues({url, contentType}, () => {
             const result = () => getCompleteProjection({url, contentType})
             itExpects(result).toBehaveAsFollows(projection => {
-                const actual = JSON.stringify(projection.value, null, 3)
-                const expected = JSON.stringify(expectedProjection, null, 3)
-                expect(actual).to.equal(expected);
+                expect(jsonString(projection.value))
+                    .to.equal(jsonString(expectedProjection));
             });
         });
     });

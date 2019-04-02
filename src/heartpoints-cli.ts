@@ -1,3 +1,4 @@
 import { allStates } from "./models/economy-model";
+import { jsonString } from "./utils/jsonString";
 
-console.log(JSON.stringify(allStates, null, 3));
+console.log(jsonString(allStates));

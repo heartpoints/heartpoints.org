@@ -1,7 +1,7 @@
 import * as _ from "lodash";
-import { Constant } from "./Switch";
 import { Maybe, Some, None } from "./maybe";
 import { TypePredicate } from "./predicate";
+import { Constant } from "./constant";
 
 //todo: is there not a less imperative way to typesafely express this?
 export const TypeSwitch = <GeneralType, SubType extends GeneralType, ResultType>(condition:GeneralType, ...typeCases:Array<TypeCase<GeneralType, SubType, ResultType>>):Maybe<ResultType> => {

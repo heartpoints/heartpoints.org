@@ -50,7 +50,7 @@ functionNamesAndDescriptions() {
             possibleHelp=" - $(${possibleHelpFunctionName})"
         fi
         local niceFunctionName="$(string_everythingAfterChar "${fullFunctionName}" "_")"
-        echo "$(fixString "${niceFunctionName}" 30)$(fixString "${possibleHelp}" 80)"
+        echo "$(fixStringWidth "${niceFunctionName}" 30)$(fixStringWidth "${possibleHelp}" 80)"
     done
 }
 
@@ -62,7 +62,7 @@ stringLength() { local stringInQuestion=$1
     echo ${#stringInQuestion}
 }
 
-fixString() { local originalString=$1; local fixedWidth=$2
+fixStringWidth() { local originalString=$1; local fixedWidth=$2
     local limitedString="$(string_firstNChars "${originalString}" $fixedWidth)"
     local limitedStringLength="$(stringLength "${limitedString}")"
     local spacesNeeded=$(expr $fixedWidth - $limitedStringLength)
@@ -105,6 +105,11 @@ git_safeBranchNameFromIssueDescription() { local issueDescription=$1
     local withoutQuotes="${spacesReplacedWithDashes//\"/}"
     local withoutPoundSignOrLeadingSpace="$(string_everythingAfterChar "${withoutQuotes}" "#")"
     echo $withoutPoundSignOrLeadingSpace
+}
+
+get_pullLatestForCurrentBranch() {
+    heartpoints_ensureCommitIsAppropriate
+    git pull --rebase origin "$(git_currentBranchName)"
 }
 
 git_issueDescriptionForIssueId() { local issueId=$1
@@ -205,6 +210,11 @@ heartpoints_branch() { local issueId=$1
     fi
 }
 
+heartpoints_checkoutPullRequest_help() { echo "given pull request number / branch name, check out locally"; }
+heartpoints_checkoutPullRequest() { local pullRequestIdOrBranchName=$1
+    heartpoints_hub pr checkout "${pullRequestIdOrBranchName}"
+}
+
 heartpoints_serverDev_help(){ echo "run dev web server locally"; }
 heartpoints_serverDev(){
     heartpoints_prepareForRun
@@ -292,8 +302,8 @@ heartpoints_onPullRequest() {
 }
 
 heartpoints_unitTest_help() { echo "run the mocha unit tests, which test without build / deploy"; }
-heartpoints_unitTest() {
-    heartpoints_yarn ts-mocha src/tests/**/*.ts
+heartpoints_unitTest() { local args="$@"
+    heartpoints_yarn ts-mocha src/tests/**/*.ts "$@"
 }
 
 heartpoints_dockerBuildTagAndTest() {
