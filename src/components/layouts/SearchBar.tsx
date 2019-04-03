@@ -15,10 +15,11 @@ const organizations = [
         name: 'Altruistic Company',
         url: 'http://bing.com'
     }
-  ];
+];
 
 export const SearchBar = (props) => {
-    const { searchBarValue, searchBarSuggestions } = props;
+    const { searchBarValue } = props;
+    console.log({searchBarValue})
 
     const getSuggestions = (searchBarValue) => {
         const inputValue = searchBarValue.trim().toLowerCase();
@@ -37,18 +38,21 @@ export const SearchBar = (props) => {
         </div>
     );
 
-    const onSearchBarValueChange = (event, newValue) => {
-        props.onSearchBarValueChange(event, newValue);
+    const onSearchBarValueChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+        const searchBarValue = event.target.value;
+        // console.log("original event", {searchBarValue})
+        // console.log({controlValue, searchBarValue});
+        props.onSearchBarValueChange(searchBarValue);
     }
 
-    const onSuggestionsFetchRequested = ({ value }) => {
-        const currentSuggestions = getSuggestions(value);
-        props.onSuggestionsFetchRequested(currentSuggestions);
-    }
+    // const onSuggestionsFetchRequested = ({ value }) => {
+    //     const currentSuggestions = getSuggestions(value);
+    //     props.onSuggestionsFetchRequested(currentSuggestions);
+    // }
 
-    const onSuggestionsClearRequested = () => {
-        props.onSuggestionsClearRequested();
-    }
+    // const onSuggestionsClearRequested = () => {
+    //     props.onSuggestionsClearRequested();
+    // }
 
     const inputProps = {
         placeholder: 'Search...',
@@ -56,11 +60,13 @@ export const SearchBar = (props) => {
         onChange: onSearchBarValueChange
     }
 
+    const searchBarSuggestions = getSuggestions(searchBarValue);
+
     return(
         <Autosuggest
             suggestions={searchBarSuggestions}
-            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            onSuggestionsFetchRequested={()=>undefined}
+            onSuggestionsClearRequested={()=>undefined}
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}

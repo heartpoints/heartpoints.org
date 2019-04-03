@@ -22,7 +22,7 @@ module.exports = {
 
     devServer: {
         historyApiFallback: true,
-        port: 3000,
+        port: 3002,
         contentBase: [path.join(__dirname, "./dist"), path.join(__dirname, "./src/public"),path.join(__dirname, "./node_modules")]
     },
 

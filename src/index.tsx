@@ -61,27 +61,27 @@ const renderApp = (state) => {
         });
     }
 
-    const onSearchBarValueChange = (event, {newValue} ) => {
-        alert(newValue);
+    const onSearchBarValueChange = (searchBarValue) => {
+        // console.log({searchBarValue});
         renderApp({
             ...state,
-            searchBarValue: newValue
+            searchBarValue
         });
     }
 
-    const onSuggestionsFetchRequested = (currentSuggestions) => {
-        renderApp({
-            ...state,
-            searchBarSuggestions: currentSuggestions
-        });
-    }
+    // const onSuggestionsFetchRequested = (currentSuggestions) => {
+    //     renderApp({
+    //         ...state,
+    //         searchBarSuggestions: currentSuggestions
+    //     });
+    // }
 
-    const onSuggestionsClearRequested = () => {
-        renderApp({
-            ...state,
-            searchBarSuggestions: []
-        });
-    }
+    // const onSuggestionsClearRequested = () => {
+    //     renderApp({
+    //         ...state,
+    //         searchBarSuggestions: []
+    //     });
+    // }
 
     const onSearchXClicked =() => {
         renderApp({
@@ -93,7 +93,10 @@ const renderApp = (state) => {
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
-    
+
+    const {searchBarValue} = state;
+    // console.log({searchBarValue});
+
     const siteProps = {
         ...state, 
         navigateToSimpleModel,
@@ -106,10 +109,12 @@ const renderApp = (state) => {
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure,
         onSearchBarValueChange,
-        onSuggestionsFetchRequested,
-        onSuggestionsClearRequested,
+        // onSuggestionsFetchRequested,
+        // onSuggestionsClearRequested,
         onSearchXClicked
     }
+
+    console.log('state',{searchBarValue})
 
     ReactDOM.render(
         <Site {...siteProps} />,
