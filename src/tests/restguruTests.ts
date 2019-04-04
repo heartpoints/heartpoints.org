@@ -1,17 +1,16 @@
 import * as _ from "lodash";
-import { whenValues, itIsExpected } from "./expect";
+import { whenValues, then } from "./expect";
 import { theInternet } from "../restguru/theInternet";
 import { expect } from "chai";
-import { getCompleteProjection } from "../restguru/getCompleteProjection";
-import { jsonString } from "../utils/jsonString";
+import { restClient, HttpMethod } from "../restguru/restClient";
 
 describe("restful-json", () => {
     describe("theInternet", () => {
         const simpleResourceTest = ({url,contentType,expectedValue}) => 
             whenValues({url, contentType}, () => {
                 const result = () => theInternet({url, contentType})
-                itIsExpected(result).toBehaveAsFollows(maybeRepresentation => {
-                    expect(maybeRepresentation.value).to.equal(expectedValue);
+                then(result).shouldBehaveAsFollows(maybeRepresentation => {
+                    expect(maybeRepresentation.value).to.deep.equal(expectedValue);
                 });
             });
             
@@ -32,30 +31,40 @@ describe("restful-json", () => {
             contentType: "text/html",
             expectedValue:"<html><body><h1>red</h1><p>red is a color</body></html>"
         })
-    });
 
-    describe("getCompleteProjection()", () => {
-        const url = "http://exampleRecordToStoreAsRestfulJSON"
-        const contentType="http://exampleRecordToStoreAsRestfulJSON"
-        whenValues({url, contentType}, () => {
-            const result = () => getCompleteProjection({url, contentType})
-            itIsExpected(result).toBehaveAsFollows(projection => {
-                expect(jsonString(projection.value))
-                    .to.equal(jsonString(expectedProjection));
-            });
+        simpleResourceTest({
+            url: "http://people",
+            contentType: "http://rest.guru/rgson/primitive",
+            expectedValue: [
+                "http://people/1",
+                "http://people/2",
+            ]
+        })
+
+        simpleResourceTest({
+            url: "http://people",
+            contentType: "http://rest.guru/rgson/completeProjection",
+            expectedValue: [
+                {
+                    "id": 1,
+                    "name": "Tommy",
+                    "favoriteColors": ["red","green","blue"]
+                },
+                {
+                    "id": 2,
+                    "name": "Mike",
+                    "favoriteColors": ["pink","purple"]
+                }
+            ]
+        })
+    });
+    describe("via actual web server", () => {
+        whenValues({restClient: restClient()}, ({restClient}) => {
+            whenValues({url: "http://rest.guru", method: HttpMethod.OPTIONS, accept: ["http://rest.guru/contentTypes/http/optionsResponse"]}, ({url, method, accept}) => {
+                then(() => restClient.request({url, method, accept})).shouldEventually((httpResponse) => {
+                    expect(httpResponse).to.exist;
+                })
+            })
         });
-    });
+    })
 });
-
-const expectedProjection = [
-    {
-        "id": 1,
-        "name": "Tommy",
-        "favoriteColors": ["red","green","blue"]
-    },
-    {
-        "id": 2,
-        "name": "Mike",
-        "favoriteColors": ["pink","purple"]
-    }
-]
