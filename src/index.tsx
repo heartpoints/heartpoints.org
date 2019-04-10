@@ -69,25 +69,11 @@ const renderApp = (state) => {
         });
     }
 
-    // const onSuggestionsFetchRequested = (currentSuggestions) => {
-    //     renderApp({
-    //         ...state,
-    //         searchBarSuggestions: currentSuggestions
-    //     });
-    // }
-
-    // const onSuggestionsClearRequested = () => {
-    //     renderApp({
-    //         ...state,
-    //         searchBarSuggestions: []
-    //     });
-    // }
-
     const onSearchXClicked =() => {
         renderApp({
             ...state,
             shouldShowSearch: false
-        })
+        });
     }
 
     const statefulController = StatefulController(renderApp, state);
@@ -109,8 +95,6 @@ const renderApp = (state) => {
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure,
         onSearchBarValueChange,
-        // onSuggestionsFetchRequested,
-        // onSuggestionsClearRequested,
         onSearchXClicked
     }
 

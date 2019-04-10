@@ -1,21 +1,36 @@
 import * as React from "react";
 import Autosuggest from "react-autosuggest";
+import { OrganizationSearchResult } from "./OrganizationSearchResult";
+
+import { searchBar } from "../../style/searchBar";
 
 
 const organizations = [
     {
-        name: 'Heartpoints',
-        url: 'http://hearpoints.org'
+        imageThumbnailURL: "images/demo_icon.png",
+        title: 'Heartpoints',
+        orgURL: 'http://heartpoints.org'
     },
     {
-        name: 'Some Organization',
-        url: 'http://google.com'
+        imageThumbnailURL: "images/demo_icon.png",
+        title: 'Hard Points',
+        orgURL: 'http://heartpoints.org'
     },
     {
-        name: 'Altruistic Company',
-        url: 'http://bing.com'
+        imageThumbnailURL: "images/demo_icon.png",
+        title: 'Some Organization',
+        orgURL: 'http://google.com'
+    },
+    {
+        imageThumbnailURL: "images/demo_icon.png",
+        title: 'Altruistic Company',
+        orgURL: 'http://bing.com'
     }
 ];
+
+export const suggestionStyle = {
+    "background-color": "black"
+}
 
 export const SearchBar = (props) => {
     const { searchBarValue } = props;
@@ -26,36 +41,26 @@ export const SearchBar = (props) => {
         const inputLength = inputValue.length;
 
         return inputLength === 0 ? [] : organizations.filter(org =>
-            org.name.toLowerCase().slice(0, inputLength) === inputValue
+            org.title.toLowerCase().slice(0, inputLength) === inputValue
         );
     }
 
     const getSuggestionValue = (suggestion) => suggestion.name;
 
     const renderSuggestion = (suggestion) => (
-        <div>
-          {suggestion.name}
-        </div>
+        <OrganizationSearchResult
+            imageThumbnailURL={suggestion.imageThumbnailURL}
+            title={suggestion.title}
+            orgURL={suggestion.orgURL} />
     );
 
     const onSearchBarValueChange = (event:React.ChangeEvent<HTMLInputElement>) => {
         const searchBarValue = event.target.value;
-        // console.log("original event", {searchBarValue})
-        // console.log({controlValue, searchBarValue});
         props.onSearchBarValueChange(searchBarValue);
     }
 
-    // const onSuggestionsFetchRequested = ({ value }) => {
-    //     const currentSuggestions = getSuggestions(value);
-    //     props.onSuggestionsFetchRequested(currentSuggestions);
-    // }
-
-    // const onSuggestionsClearRequested = () => {
-    //     props.onSuggestionsClearRequested();
-    // }
-
     const inputProps = {
-        placeholder: 'Search...',
+        placeholder: 'Type "h"...',
         value: searchBarValue,
         onChange: onSearchBarValueChange
     }
@@ -70,26 +75,8 @@ export const SearchBar = (props) => {
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
+            alwaysRenderSuggestions={true}
+            theme={searchBar}
         />
     )
 }
-
-/*
-
-
-
-class Example extends React.Component {
-    return (
-      <Autosuggest
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        inputProps={inputProps}
-      />
-    );
-  }
-}
-
-*/
