@@ -23,7 +23,7 @@ export const OrganizationSearchResult = (props:IOrganizationSearchResult) => {
     return(
         <div>
             <img style={suggestionContainerChildStyle} src={props.imageThumbnailURL} />
-            <h3 style={suggestionContainerChildStyle}>{props.title}</h3>
+            <h4 style={suggestionContainerChildStyle}>{props.title}</h4>
             <a style={suggestionContainerChildStyle} href={props.orgURL}>{props.orgURL}</a>
         </div>
     )

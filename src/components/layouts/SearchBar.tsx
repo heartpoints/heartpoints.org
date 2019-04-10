@@ -41,7 +41,7 @@ export const SearchBar = (props) => {
         const inputLength = inputValue.length;
 
         return inputLength === 0 ? [] : organizations.filter(org =>
-            org.title.toLowerCase().slice(0, inputLength) === inputValue
+            org.title.toLowerCase().includes(inputValue)
         );
     }
 
