@@ -4,11 +4,14 @@ export const searchBar = {
     },
     suggestion: {
         listStyle: 'none',
-        padding: "10px 20px"
+        padding: "10px 20px",
+        cursor: 'pointer'
     },
     input: {
         width: '450px',
         borderRadius: "10px",
+        borderBottomRightRadius: '10px',   //when returning from inputFocused, bottom corners do not...
+        borderBottomLeftRadius: '10px',    //...round without these two lines.
         padding: '10px 20px',
         border: "1px solid #aaa"
     },

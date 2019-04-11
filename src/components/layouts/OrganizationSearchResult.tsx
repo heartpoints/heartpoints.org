@@ -8,15 +8,7 @@ export interface IOrganizationSearchResult {
 
 export const suggestionContainerChildStyle = {
     "display": "inline",
-    "margin": "3px 10px 3px"
-}
-
-export const suggestionContainerStyle = {
-    "border": "1px solid black",
-    "border-radius": "5px",
-    "background-color": "#e9e9e9",
-    "margin": "0 3px",
-    "cursor": "pointer"
+    "margin": "3px 10px 3px 0px"
 }
 
 export const OrganizationSearchResult = (props:IOrganizationSearchResult) => {

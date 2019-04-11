@@ -28,13 +28,8 @@ const organizations = [
     }
 ];
 
-export const suggestionStyle = {
-    "background-color": "black"
-}
-
 export const SearchBar = (props) => {
     const { searchBarValue } = props;
-    console.log({searchBarValue})
 
     const getSuggestions = (searchBarValue) => {
         const inputValue = searchBarValue.trim().toLowerCase();
@@ -60,7 +55,7 @@ export const SearchBar = (props) => {
     }
 
     const inputProps = {
-        placeholder: 'Type "h"...',
+        placeholder: 'Search...',
         value: searchBarValue,
         onChange: onSearchBarValueChange
     }

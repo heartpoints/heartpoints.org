@@ -69,13 +69,6 @@ const renderApp = (state) => {
         });
     }
 
-    const onSearchXClicked =() => {
-        renderApp({
-            ...state,
-            shouldShowSearch: false
-        });
-    }
-
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
@@ -94,8 +87,7 @@ const renderApp = (state) => {
         onSideNavExpandRequested,
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure,
-        onSearchBarValueChange,
-        onSearchXClicked
+        onSearchBarValueChange
     }
 
     console.log('state',{searchBarValue})
