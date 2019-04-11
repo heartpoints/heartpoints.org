@@ -4,27 +4,30 @@ import { OrganizationSearchResult } from "./OrganizationSearchResult";
 
 import { searchBar } from "../../style/searchBar";
 
-
 const organizations = [
     {
         imageThumbnailURL: "images/demo_icon.png",
         title: 'Heartpoints',
-        orgURL: 'http://heartpoints.org'
+        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+        orgURL: "https:heartpoints.org"
     },
     {
         imageThumbnailURL: "images/demo_icon.png",
         title: 'Hard Points',
-        orgURL: 'http://heartpoints.org'
+        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+        orgURL: "https://google.com"
     },
     {
         imageThumbnailURL: "images/demo_icon.png",
         title: 'Some Organization',
-        orgURL: 'http://google.com'
+        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo',
+        orgURL: "https://bing.com"
     },
     {
         imageThumbnailURL: "images/demo_icon.png",
         title: 'Altruistic Company',
-        orgURL: 'http://bing.com'
+        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
+        orgURL: "https://yahoo.com"
     }
 ];
 
@@ -40,18 +43,23 @@ export const SearchBar = (props) => {
         );
     }
 
-    const getSuggestionValue = (suggestion) => suggestion.name;
+    const getSuggestionValue = (suggestion) => suggestion.title;
+   
 
     const renderSuggestion = (suggestion) => (
         <OrganizationSearchResult
             imageThumbnailURL={suggestion.imageThumbnailURL}
             title={suggestion.title}
-            orgURL={suggestion.orgURL} />
+            statement={suggestion.statement} />
     );
 
     const onSearchBarValueChange = (event:React.ChangeEvent<HTMLInputElement>) => {
         const searchBarValue = event.target.value;
         props.onSearchBarValueChange(searchBarValue);
+    }
+
+    const onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+        alert("You Selected the Organization Titled '" + suggestionValue +"'");
     }
 
     const inputProps = {
@@ -71,6 +79,7 @@ export const SearchBar = (props) => {
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
             alwaysRenderSuggestions={true}
+            onSuggestionSelected={onSuggestionSelected}
             theme={searchBar}
         />
     )

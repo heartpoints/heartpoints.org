@@ -5,7 +5,11 @@ export const searchBar = {
     suggestion: {
         listStyle: 'none',
         padding: "10px 20px",
-        cursor: 'pointer'
+        cursor: 'pointer',
+        borderTop: "1px solid #eee"
+    },
+    suggestionFirst: {
+        borderTop: "none"
     },
     input: {
         width: '450px',

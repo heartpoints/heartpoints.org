@@ -61,11 +61,11 @@ const renderApp = (state) => {
         });
     }
 
-    const onSearchBarValueChange = (searchBarValue) => {
-        // console.log({searchBarValue});
+    const onSearchBarValueChange = (searchBarValue:string) => {
+        const value = searchBarValue === undefined ? '' : searchBarValue;
         renderApp({
             ...state,
-            searchBarValue
+            searchBarValue: value
         });
     }
 
@@ -74,7 +74,6 @@ const renderApp = (state) => {
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
 
     const {searchBarValue} = state;
-    // console.log({searchBarValue});
 
     const siteProps = {
         ...state, 
