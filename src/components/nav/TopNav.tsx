@@ -16,7 +16,7 @@ export const TopNavUnstyled = props => {
             className={classNames(classes.drawerHeader, isSideNavOpen && classes.hide)}>
                 <MenuIcon />
             </IconButton>
-            <img style={{width: "2.5%", margin: "12px 10px"}} src="images/hand-with-heart.png" />
+            <img style={{width: "35px", height: "21px", margin: "12px 10px"}} src="images/hand-with-heart.png" />
             <Typography variant="h4" color="inherit" className={classes.grow}>
                 heartpoints.org
             </Typography>
