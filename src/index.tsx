@@ -61,8 +61,8 @@ const renderApp = (state) => {
         });
     }
 
-    const onSearchBarValueChange = (searchBarValue:string) => {
-        const value = searchBarValue === undefined ? '' : searchBarValue;
+    const onSearchBarValueChange = (searchBarValue) => {
+        const value = searchBarValue === undefined || searchBarValue === 0 ? '' : searchBarValue;
         renderApp({
             ...state,
             searchBarValue: value
