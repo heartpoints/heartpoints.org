@@ -8,14 +8,14 @@ import { Theme } from "../../style/theme";
 import { CssBaseline, withStyles } from "@material-ui/core";
 import { TopNav } from "../nav/TopNav";
 import { SideNav } from "../nav/SideNav";
-import { Celebration } from './Celebration';
+import { SearchBar } from "./SearchBar";
 import { CelebrationModal } from "./CelebrationModal";
 import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 import classNames from 'classnames';
 
 export const SiteWithoutStyle = (props) => {
     const theme = createMuiTheme(Theme);
-    const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen} = props;
+    const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen, onSearchBarValueChange } = props;
     return <BrowserRouter>
         <React.Fragment>
             <CssBaseline />
@@ -27,6 +27,7 @@ export const SiteWithoutStyle = (props) => {
                     <Route exact path="/" component={HomePage} />
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
                     <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/></div>} />
+                    <Route path="/organizationSearch" render={() => <div style={{margin: "150px auto"}}><SearchBar {...props} /></div>} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
@@ -59,6 +60,7 @@ const styles = theme => ({
         marginLeft: drawerWidth,
       },
 })
+
 
 export const Site = withStyles(styles)(SiteWithoutStyle);
 

@@ -61,10 +61,20 @@ const renderApp = (state) => {
         });
     }
 
+    const onSearchBarValueChange = (searchBarValue) => {
+        const value = searchBarValue === undefined || searchBarValue === 0 ? '' : searchBarValue;
+        renderApp({
+            ...state,
+            searchBarValue: value
+        });
+    }
+
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
-    
+
+    const {searchBarValue} = state;
+
     const siteProps = {
         ...state, 
         navigateToSimpleModel,
@@ -75,8 +85,11 @@ const renderApp = (state) => {
         onCelebrationXClicked,
         onSideNavExpandRequested,
         CastleRisk: castleRiskController(CastleRisk),
-        onFacebookLoginFailure
+        onFacebookLoginFailure,
+        onSearchBarValueChange
     }
+
+    console.log('state',{searchBarValue})
 
     ReactDOM.render(
         <Site {...siteProps} />,
@@ -101,7 +114,10 @@ const initialState = {
     isSideNavOpen: false,
     shouldShowCelebration: false,
     isSideNavExpanded: false,
-    inDevMode
+    inDevMode,
+    searchBarValue: '',
+    searchBarSuggestions: [],
+    shouldShowSearch: true
 }
 
 renderApp(initialState);

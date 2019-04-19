@@ -48,7 +48,7 @@ export const SideNavUnstyled = ({history, isSideNavOpen, isSideNavExpanded, onSi
               </ListItemIcon>
               <ListItemText inset primary="Create New" />
              </ListItem>
-             <ListItem button className={classes.nested}>
+             <ListItem button className={classes.nested} onClick={() => history.push("/organizationSearch")}>
               <ListItemIcon>
                 <Search />
               </ListItemIcon>
