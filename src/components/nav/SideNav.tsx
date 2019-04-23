@@ -9,6 +9,7 @@ import DonutSmallIcon from '@material-ui/icons/DonutSmall';
 import StarBorder from '@material-ui/icons/StarBorder';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import Search from '@material-ui/icons/Search';
+import PanTool from '@material-ui/icons/PanTool';
 import Favorite from '@material-ui/icons/Favorite';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
@@ -56,6 +57,10 @@ export const SideNavUnstyled = ({history, isSideNavOpen, isSideNavExpanded, onSi
              </ListItem>
             </List>
             </Collapse>
+            <ListItem button onClick={() => history.push("/")}>
+              <ListItemIcon><PanTool /></ListItemIcon>
+              <ListItemText primary="Volunteer" />
+            </ListItem>
             <ListItem button onClick={() => history.push("/") }>
               <ListItemIcon><Favorite /></ListItemIcon>
               <ListItemText primary="My Heart Collection" />
