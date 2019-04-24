@@ -12,6 +12,9 @@ RUN yarn webpack --verbose
 COPY heartpoints.sh ./
 RUN ./heartpoints.sh unitTest
 
+COPY database.json ./
+COPY migrations migrations
+
 ARG commitSha
 ENV commitSha=$commitSha
 CMD ./heartpoints.sh runServer

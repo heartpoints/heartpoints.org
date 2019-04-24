@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  webapp:
+    build: .
+    environment:
+      - PG_DATABASE=testy
+      - PG_HOST=db
+      - PG_PORT=5432
+      - PG_USER=admin
+      - PG_PASSWORD=password
+    ports:
+      - 5001:5001
+    depends_on:
+      - db_migrate
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=testy
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5432"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+  db_migrate:
+    build: .
+    environment:
+      - PG_DATABASE=testy
+      - PG_HOST=db
+      - PG_PORT=5432
+      - PG_USER=admin
+      - PG_PASSWORD=password
+    command: yarn db-migrate up
+    restart: on-failure
+    depends_on:
+      - db
