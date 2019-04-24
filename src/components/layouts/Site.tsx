@@ -12,6 +12,7 @@ import { SearchBar } from "./SearchBar";
 import { CelebrationModal } from "./CelebrationModal";
 import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 import classNames from 'classnames';
+import { Calendar } from "../calendar/Calendar";
 
 export const SiteWithoutStyle = (props) => {
     const theme = createMuiTheme(Theme);
@@ -22,10 +23,11 @@ export const SiteWithoutStyle = (props) => {
             <div className={classes.root}>
             <main className={classNames(classes.content, { [classes.contentShift]: isSideNavOpen,})}>
             <MuiThemeProvider {...{theme}}>
-                <Route path="/" component={routerProps => <PossibleNavBars {...routerProps} {...props} />} />
+                {/* <Route path="/" component={routerProps => <PossibleNavBars {...routerProps} {...props} />} /> */}
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
+                    <Route path="/calendar" component={() => <Calendar />} />
                     <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/></div>} />
                     <Route path="/organizationSearch" render={() => <div style={{margin: "150px auto"}}><SearchBar {...props} /></div>} />
                     <Route component={NotFound} />
