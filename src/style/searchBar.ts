@@ -1,3 +1,5 @@
+import { addLeadingSlash } from "history/PathUtils";
+
 export const searchBar = {
     container: {
         width: '60%'

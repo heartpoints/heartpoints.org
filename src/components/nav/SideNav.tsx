@@ -57,7 +57,7 @@ export const SideNavUnstyled = ({history, isSideNavOpen, isSideNavExpanded, onSi
              </ListItem>
             </List>
             </Collapse>
-            <ListItem button onClick={() => history.push("/")}>
+            <ListItem button onClick={() => history.push("/volunteeringOptionSearch")}>
               <ListItemIcon><PanTool /></ListItemIcon>
               <ListItemText primary="Volunteer" />
             </ListItem>

@@ -69,11 +69,20 @@ const renderApp = (state) => {
         });
     }
 
+    const onVolunteeringSearchBarValueChange = (volunteeringSearchBarValue) => {
+        const value = volunteeringSearchBarValue === undefined || volunteeringSearchBarValue === 0 ? '' : volunteeringSearchBarValue;
+        renderApp({
+            ...state,
+            volunteeringSearchBarValue: value
+        });
+    }
+
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
 
     const {searchBarValue} = state;
+    const {volunteeringSearchBarValue} = state;
 
     const siteProps = {
         ...state, 
@@ -86,10 +95,12 @@ const renderApp = (state) => {
         onSideNavExpandRequested,
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure,
-        onSearchBarValueChange
+        onSearchBarValueChange,
+        onVolunteeringSearchBarValueChange
     }
 
     console.log('state',{searchBarValue})
+    console.log('state', {volunteeringSearchBarValue})
 
     ReactDOM.render(
         <Site {...siteProps} />,
@@ -117,7 +128,9 @@ const initialState = {
     inDevMode,
     searchBarValue: '',
     searchBarSuggestions: [],
-    shouldShowSearch: true
+    shouldShowSearch: true,
+    volunteeringSearchBarValue: '',
+    volunteeringSearchBarSuggestions: [],
 }
 
 renderApp(initialState);

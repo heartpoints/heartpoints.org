@@ -9,6 +9,7 @@ import { CssBaseline, withStyles } from "@material-ui/core";
 import { TopNav } from "../nav/TopNav";
 import { SideNav } from "../nav/SideNav";
 import { SearchBar } from "./SearchBar";
+import { VolunteeringSearchBar } from "./VolunteeringSearchBar";
 import { CelebrationModal } from "./CelebrationModal";
 import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 import classNames from 'classnames';
@@ -28,6 +29,7 @@ export const SiteWithoutStyle = (props) => {
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
                     <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/></div>} />
                     <Route path="/organizationSearch" render={() => <div style={{margin: "150px auto"}}><SearchBar {...props} /></div>} />
+                    <Route path="/volunteeringOptionSearch" render={() => <div style={{margin: "150px auto"}}><VolunteeringSearchBar {...props} /></div>} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
