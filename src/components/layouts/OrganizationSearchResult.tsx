@@ -6,6 +6,14 @@ export interface IOrganizationSearchResult {
     statement: string
 }
 
+// export interface IOrganizationSearchResult {
+//     title?: string,
+//     imageThumbnailURL?: string,
+//     statement: string,
+//     jobTitle?: string,
+//     whichSearchBar?: string //to check from which search bar the request is coming
+// }
+
 export const headerContainerChildStyle = {
     "display": "inline",
     "margin": "3px 10px 3px 0px"
@@ -27,6 +35,7 @@ export const OrganizationSearchResult = (props:IOrganizationSearchResult) => {
         return statementLength > 125 ? statement.slice(0, 122) + "..." : statement;
     }
 
+   
     return(
         <div>
             <div>
@@ -38,4 +47,5 @@ export const OrganizationSearchResult = (props:IOrganizationSearchResult) => {
             </div>
         </div>
     )
+
 }
