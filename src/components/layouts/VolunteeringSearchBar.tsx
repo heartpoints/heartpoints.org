@@ -1,7 +1,7 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import {searchBar} from '../../style/searchBar';
-import { OrganizationSearchResult } from "./OrganizationSearchResult";
+import { VolunteeringSearchResult } from "./VolunteeringSearchResult";
 
 const volunteeringOptions = [
     {
@@ -10,7 +10,7 @@ const volunteeringOptions = [
         jobDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur'
     },
     {
-        jobTitle: 'JOB 2',
+        jobTitle: 'Opportunity 2',
         organization: 'Library',
         jobDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur'
     },
@@ -20,7 +20,7 @@ const volunteeringOptions = [
         jobDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur'
     },
     {
-        jobTitle: 'Opportunity 4',
+        jobTitle: 'job 4',
         organization: 'Heartpoints',
         jobDescription: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur'
     }
@@ -35,8 +35,8 @@ export const VolunteeringSearchBar = (props) => {
         const inputLength = inputValue.length;
       
         return inputLength === 0 ? [] : volunteeringOptions.filter(option =>
-            (option.jobTitle.toLowerCase().slice(0, inputLength) === inputValue || //search by job title
-             option.organization.toLocaleLowerCase().slice(0, inputLength) === inputValue) //search by organization name
+            (option.jobTitle.toLowerCase().includes(inputValue) || //search by job title
+             option.organization.toLocaleLowerCase().includes(inputValue)) //search by organization name
         );
     };
     
@@ -44,12 +44,12 @@ export const VolunteeringSearchBar = (props) => {
     
     const renderSuggestion = (suggestion) => {
         return (
-            <div></div>
-            // <OrganizationSearchResult
-            //     //whichSearchBar={}
-            //     jobTitle={suggestion.jobTitle}
-            //     title={suggestion.organization}
-            //     statement={suggestion.jobDescription} />
+            <div>
+                <VolunteeringSearchResult
+                    jobTitle={suggestion.jobTitle}
+                    organization={suggestion.organization}
+                    jobDescription={suggestion.jobDescription} />
+            </div>
         )
     }
 

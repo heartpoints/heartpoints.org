@@ -2,7 +2,8 @@ import { addLeadingSlash } from "history/PathUtils";
 
 export const searchBar = {
     container: {
-        width: '60%'
+        width: '60%',
+        margin: "auto"
     },
     suggestion: {
         listStyle: 'none',

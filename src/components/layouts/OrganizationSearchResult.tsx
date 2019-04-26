@@ -6,14 +6,6 @@ export interface IOrganizationSearchResult {
     statement: string
 }
 
-// export interface IOrganizationSearchResult {
-//     title?: string,
-//     imageThumbnailURL?: string,
-//     statement: string,
-//     jobTitle?: string,
-//     whichSearchBar?: string //to check from which search bar the request is coming
-// }
-
 export const headerContainerChildStyle = {
     "display": "inline",
     "margin": "3px 10px 3px 0px"
