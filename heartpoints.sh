@@ -239,7 +239,7 @@ heartpoints_hub_install() {
 
 brew_install() { local packageName=$1
     if command_does_not_exist "${packageName}"; then
-        brew install "$packageName"
+        heartpoints_brew install "$packageName"
     fi
 }
 
@@ -529,8 +529,7 @@ heartpoints_minikubeDestroyEnvironment() {
 }
 
 heartpoints_urlOfMinikubeWebsite() {
-    minikube_install > /dev/null 2>&1
-    echo "https://$(minikube ip)"
+    echo "https://$(heartpoints_minikube ip)"
 }
 
 heartpoints_minikubeOpenWebsite_help() { echo "assuming site is running in minikube locally, open web browser to home page"; }
@@ -538,8 +537,30 @@ heartpoints_minikubeOpenWebsite() {
     open "$(heartpoints_urlOfMinikubeWebsite)"
 }
 
+heartpointpoints_log_path() {
+    local logsPath="$(devEnvironmentPath)/logs"
+    mkdir -p "${logsPath}"
+    echo "${logsPath}"
+}
+
+minikubeInstallLogPath() {
+    echo "$(heartpointpoints_log_path)/mikikube-installation.log"
+}
+
+heartpoints_minikube_update() {
+    if heartpoints_minikube update-check; then
+        brew_cask update minikube
+    fi
+}
+
+heartpoints_updateDependencies() {
+    heartpoints_yarn
+    heartpoints_minikube_update
+}
+
 heartpoints_minikube() { local args=$@
-    minikube_install
+    mkdir -p "$(heartpointpoints_log_path)"
+    minikube_install > "$(minikubeInstallLogPath)" 2>&1
     minikube "$@"
 }
 
@@ -613,20 +634,58 @@ gcloud_configure() {
 # Misc functions
 
 brew_cask_caskIsInstalled() { local caskName=$1
-    brew cask list | grep "${caskName}" > /dev/null 2>&1
+    heartpoints_brew cask list | grep "${caskName}" > "$(heartpointpoints_log_path)/brew_cask_caskIsInstalled.log" 2>&1
 }
 
 brew_cask_installCask() { local caskName=$1
-    brew_cask_installCaskroom
     if command_does_not_exist "${caskName}"; then
-        brew cask install "${caskName}"
+        brew_cask install "${caskName}"
     fi
 }
 
+brew_app_dir_path() {
+    local brewAppDirPath="$(devEnvironmentPath)/brewAppDir"
+    mkdir -p "${brewAppDirPath}"
+    echo "${brewAppDirPath}"
+}
+
+brew_cask() { local args="${@}"
+    brew_cask_installCaskroom
+    heartpoints_brew cask --appdir "$(brew_app_dir_path)" "$@"
+}
+
+devEnvironmentPath() {
+    local devEnvironmentPath="./devEnvironment"
+    mkdir -p "${devEnvironmentPath}"
+    echo "${devEnvironmentPath}"
+}
+
 brew_cask_installCaskroom() {
-    if ! brew info cask &>/dev/null; then
-        brew tap caskroom/cask
+    if ! heartpoints_brew info cask &>/dev/null; then
+        mkdir -p "$(devEnvironmentPath)"
+        heartpoints_brew tap caskroom/cask --appdir "$(brew_app_dir_path)"
     fi
+}
+
+heartpoints_brew() { local args="$@"
+    if command_does_not_exist "$(homebrew_cli_path)"; then
+        brew_install_brew_itself
+    fi
+    $(homebrew_cli_path) "$@"
+}
+
+homebrew_cli_path() {
+    echo "$(homebrew_install_dir)/bin/brew"
+}
+
+homebrew_install_dir() {
+    local homebrewInstallDir="$(devEnvironmentPath)/homebrew"
+    mkdir -p "${homebrewInstallDir}"
+    echo "${homebrewInstallDir}"
+}
+
+brew_install_brew_itself() {
+    curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C "$(homebrew_install_dir)"
 }
 
 command_does_not_exist() { local possibleCommand=$1
@@ -639,7 +698,7 @@ file_does_not_exist() { local possibleFilePath=$1
 
 gcloud_install() {
     if command_does_not_exist "gcloud"; then
-        brew cask install google-cloud-sdk
+        heartpoints_brew cask install google-cloud-sdk
     fi
 }
 
@@ -664,7 +723,7 @@ minikube_install() {
     kubectl_install
     virtualbox_install
     if command_does_not_exist minikube; then
-        curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.32.0/minikube-darwin-amd64 && chmod +x minikube && sudo cp minikube /usr/local/bin/ && rm minikube
+        brew_cask_installCask minikube
     fi
 }
 
