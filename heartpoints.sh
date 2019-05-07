@@ -109,7 +109,7 @@ git_safeBranchNameFromIssueDescription() { local issueDescription=$1
 
 get_pullLatestForCurrentBranch() {
     hp_ensureCommitIsAppropriate
-    git pull --rebase origin "$(git_currentBranchName)"
+    hp_git pull --rebase origin "$(git_currentBranchName)"
 }
 
 git_issueDescriptionForIssueId() { local issueId=$1
@@ -121,7 +121,7 @@ git_safeBranchNameForIssueId() { local issueId=$1
 }
 
 git_currentBranchName() { 
-    git rev-parse --abbrev-ref HEAD
+    hp_git rev-parse --abbrev-ref HEAD
 }
 
 hp_c_help() { echo "Alias for commitUsingIssueDescription"; }
@@ -144,7 +144,7 @@ hub_defaultCommitMessageForCurrentBranch() {
 hp_addCommitPushAndPullRequest_help() { echo "adds changes, commits with default description, pushes to remote branch, creates pull request"; }
 hp_addCommitPushAndPullRequest() {
     hp_c
-    git push origin head
+    hp_git push origin head
     hp_hub pull-request
 }
 
@@ -162,8 +162,8 @@ trimLeadingWhitespace() { local stringToTrim=$1
 }
 
 hp_commitUsingIssueDescription() {
-    git add -A
-    git commit -m "$(hub_defaultCommitMessageForCurrentBranch)"
+    hp_git add -A
+    hp_git commit -m "$(hub_defaultCommitMessageForCurrentBranch)"
 }
 
 hp_createIssueAndBranch_help() { echo "<issueDescription> - creates branch and issue using provided description, checks out branch"; }
@@ -189,18 +189,18 @@ hp_branch() { local issueId=$1
         hp_hub_install
         if strings_are_not_equal "$(git_currentBranchName)" "master"; then
             echo "Error: you are not in the 'master' branch, you are instead in the '$(git_currentBranchName)' branch."
-            echo "Before using this command, first switch to master using 'git checkout master'"
-            echo "After that, make sure you have the latest from the remote master, by running 'git pull origin master'"
+            echo "Before using this command, first switch to master using 'hp git checkout master'"
+            echo "After that, make sure you have the latest from the remote master, by running 'hp git pull origin master'"
             echo "With that out of the way, you may run this command to create a new branch"
             error_and_exit " Please try again"
         fi
         local newBranchToPossiblyCreate="$(git_safeBranchNameForIssueId "${issueId}")"
-        git checkout -b "${newBranchToPossiblyCreate}"
+        hp_git checkout -b "${newBranchToPossiblyCreate}"
         echo
         echo "created / switched to branch '${newBranchToPossiblyCreate}'"
         echo
-        echo "Use 'git add -A' and 'git commit -m ' to commit to this branch"
-        echo "Use 'git push origin head' to push this branch to the remote repository"
+        echo "Use 'hp git add -A' and 'hp git commit -m ' to commit to this branch"
+        echo "Use 'hp git push origin head' to push this branch to the remote repository"
         echo "Use 'hp hub pull-request' to create a new pull request from your remote branch to remote master"
         echo "From there, you will receive a URL where you can:"
         echo " - view your change"
@@ -269,7 +269,7 @@ ensureDockerCliConfiguredToRunningDaemon() {
 }
 
 gitHeadIsDirty() {
-    ! git diff-index --quiet HEAD > /dev/null
+    ! hp_git diff-index --quiet HEAD > /dev/null
 }
 
 hp_ensureCommitIsAppropriate() {
@@ -544,7 +544,11 @@ hp_log_path() { local remainingPath=$1
 }
 
 brew_package_run() { local packageName=$1; local args="${@:2}"
-    $(brew_package_path) "${@:2}"
+    local brewPackagePath="$(brew_package_path ${packageName})"
+    if command_does_not_exist "${brewPackagePath}"; then
+        hp_brew install "${packageName}" > "$(hp_log_path "brewPackageInstall_${packageName}.log")" 2>&1
+    fi
+    "${brewPackagePath}" "${@:2}"
 }
 
 brew_package_path() { local packageName=$1;
@@ -571,11 +575,20 @@ hp_updateDependencies() {
     hp_minikube_update
 }
 
-hp_brew_cask_run() { local caskName=$1; local args="${@:2}"
+brew_cask_cellar_path() {
+    createAndReturnPath "$(homebrew_install_dir)/Cellar"
+}
+
+hp_brew_cask_install() { local caskName=$1
     if hp_brew_cask_notInstalled "${caskName}"; then
+        brew_cask_cellar_path > /dev/null
         hp_brew cask install ${caskName} > "$(hp_log_path caskInstall_${caskName}.log)" 2>&1
     fi
-    errorAndExit "HERE we would figure out how to run cask ${caskName}..."
+}
+
+hp_brew_cask_run() { local caskName=$1; local args="${@:2}"
+    hp_brew_cask_install "${caskName}"
+    "$(homebrew_bin_path "${caskName}")" "${@:2}"
 }
 
 hp_brew_cask_notInstalled() { local caskName=$1
@@ -583,7 +596,7 @@ hp_brew_cask_notInstalled() { local caskName=$1
 }
 
 hp_minikube() { local args=$@
-    #todo: add code here to silently install minikube as a brew cask dep
+    virtualbox_install
     hp_brew_cask_run minikube "${@}"
 }
 
@@ -615,6 +628,10 @@ hp_minikube_stop() {
     fi
 }
 
+hp_git() { local args="${@}"
+    brew_package_run git "${@}"
+}
+
 hp_minikube_isRunning() {
     hp_minikube status | grep "host: Running"
 }
@@ -625,8 +642,8 @@ hp_model() {
 }
 
 hp_g() { local message=$@ 
-    git add -A
-    git commit -m "${message}"
+    hp_git add -A
+    hp_git commit -m "${message}"
 }
 
 hp_enableHpWithoutDotSlash() {
@@ -661,44 +678,13 @@ gcloud_configure() {
     gcloud_cli container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
 }
 
-# Misc functions
-
-# hp_brew_cask_caskIsInstalled() { local caskName=$1
-#     hp_brew_cask list | grep "${caskName}" > "$(hp_log_path hp_brew_cask_caskIsInstalled.log)" 2>&1
-# }
-
-# hp_brew_cask_installCask() { local caskName=$1
-#     if command_does_not_exist "${caskName}"; then
-#         hp_brew_cask install "${caskName}"
-#     fi
-# }
-
 brew_app_dir_path() {
     createAndReturnPath "$(devEnvironmentPath)/brewAppDir"
 }
 
-# hp_brew_cask() { local args="${@}"
-    # hp_brew_cask_installCaskroom
-    # hp_brew cask --appdir "$(brew_app_dir_path)" "${@}"
-    # hp_brew cask
-# }
-
 devEnvironmentPath() {
     createAndReturnPath "./devEnvironment"
 }
-
-# hp_brew_cask_caskroom_installation_log_path() {
-#     hp_log_path "caskroom_installation.log"
-# }
-
-# hp_brew_cask_installCaskroom() {
-#     hp_brew tap caskroom/cask --appdir "$(brew_app_dir_path)" > "$(hp_brew_cask_caskroom_installation_log_path)" 2>&1
-    
-#     if ! hp_brew info cask &>/dev/null; then
-#         echo "Hello"
-#         echo "$(hp_brew_cask_caskroom_installation_log_path)"
-#     fi
-# }
 
 hp_brew() { local args="$@"
     if command_does_not_exist "$(homebrew_cli_path)"; then
@@ -708,7 +694,11 @@ hp_brew() { local args="$@"
 }
 
 homebrew_cli_path() {
-    echo "$(homebrew_install_dir)/bin/brew"
+    homebrew_bin_path brew
+}
+
+homebrew_bin_path() { local caskOrPackageName=$1
+    echo "$(homebrew_install_dir)/bin/${caskOrPackageName}"
 }
 
 homebrew_install_dir() {
@@ -734,7 +724,12 @@ brew_install_brew_itself() {
 }
 
 hp_xcode_install() {
+    local commandLineToolsPath="/Library/Developer/CommandLineTools"
+    mkdir -p "${commandLineToolsPath}"
+    sudo rm -rf "${commandLineToolsPath}"
     xcode-select --install
+    sudo xcode-select -s /Applications/Xcode.app/
+    softwareupdate --install Xcode
 }
 
 command_does_not_exist() { local possibleCommand=$1
@@ -766,11 +761,11 @@ hp_isMac() {
 # }
 
 git_currentSha() {
-    echo "$(git rev-parse HEAD)"
+    echo "$(hp_git rev-parse HEAD)"
 }
 
 git_working_directory_is_clean() {
-    [ -z "$(git status --porcelain)" ]
+    [ -z "$(hp_git status --porcelain)" ]
 }
 
 hp_kubectl() { local args="$@"
@@ -780,8 +775,6 @@ hp_kubectl() { local args="$@"
 # kubectl_install() {
 #     brew_install "kubernetes-cli"
 # }
-
-# invent way 
 
 # minikube_install() {
 #     # kubectl_install
@@ -852,8 +845,7 @@ strings_are_not_equal() { local string1=$1; local string2=$2
 }
 
 virtualbox_install() {
-    hp_brew cask install virtualbox
-    # hp_brew_cask_installCask virtualbox
+    hp_brew_cask_install virtualbox
 }
 
 cicdServiceAccountEmail() {
