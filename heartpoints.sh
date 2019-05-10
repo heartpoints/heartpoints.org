@@ -229,8 +229,7 @@ hp_clientDev(){
 
 hp_hub_help() { echo "use the github cli"; }
 hp_hub() { local args=$@
-    hp_hub_install
-    hub "$@"
+    brew_package_run "hub" "$@"
 }
 
 hp_hub_install() {
@@ -552,7 +551,7 @@ brew_package_run() { local packageName=$1; local args="${@:2}"
 }
 
 brew_package_path() { local packageName=$1;
-    hp_brew --prefix "${packageName}"
+    echo "$(hp_brew --prefix "${packageName}")/bin/${packageName}"
 }
 
 createAndReturnPath() { local path=$1
