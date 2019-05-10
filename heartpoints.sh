@@ -554,6 +554,14 @@ brew_package_path() { local packageName=$1;
     echo "$(hp_brew --prefix "${packageName}")/bin/${packageName}"
 }
 
+hp_slack() {
+    set -e
+    hp_brew_cask_install "slack"
+    echo "Slack is installed / installing. Please use CTRL+space on Mac and search for 'slack' to use it"
+    echo "NOTE: Slack may take a moment before it is available, if it was not previously installed."
+    echo ""
+}
+
 createAndReturnPath() { local path=$1
     mkdir -p "${path}"
     echo "${path}"
