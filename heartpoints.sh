@@ -629,7 +629,8 @@ hp_minikube_stop() {
 }
 
 hp_git() { local args="${@}"
-    brew_package_run git "${@}"
+    git "${@}"
+    # brew_package_run git "${@}"
 }
 
 hp_minikube_isRunning() {
