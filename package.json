@@ -20,6 +20,9 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
+    "@pulumi/gcp": "^0.18.5",
+    "@pulumi/kubernetes": "^0.23.0",
+    "@pulumi/pulumi": "^0.17.10",
     "@types/chai": "^4.1.7",
     "@types/lodash": "^4.14.117",
     "@types/mocha": "^5.2.6",
