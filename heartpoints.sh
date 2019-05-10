@@ -579,10 +579,10 @@ brew_cask_cellar_path() {
     createAndReturnPath "$(homebrew_install_dir)/Cellar"
 }
 
-hp_brew_cask_install() { local caskName=$1
+hp_brew_cask_install() { local caskName=$1; local options="${@:2}"
     if hp_brew_cask_notInstalled "${caskName}"; then
         brew_cask_cellar_path > /dev/null
-        hp_brew cask install ${caskName} > "$(hp_log_path caskInstall_${caskName}.log)" 2>&1
+        hp_brew cask install ${caskName} "${@:2}" > "$(hp_log_path caskInstall_${caskName}.log)" 2>&1
     fi
 }
 
@@ -845,7 +845,7 @@ strings_are_not_equal() { local string1=$1; local string2=$2
 }
 
 virtualbox_install() {
-    hp_brew_cask_install virtualbox
+    hp_brew_cask_install virtualbox --force --verbose --debug
 }
 
 cicdServiceAccountEmail() {
