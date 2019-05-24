@@ -4,33 +4,6 @@ import { OrganizationSearchResult } from "./OrganizationSearchResult";
 
 import { searchBar } from "../../style/searchBar";
 
-const organizations = [
-    {
-        imageThumbnailURL: "images/demo_icon.png",
-        title: 'Heartpoints',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        orgURL: "https:heartpoints.org"
-    },
-    {
-        imageThumbnailURL: "images/demo_icon.png",
-        title: 'Hard Points',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-        orgURL: "https://google.com"
-    },
-    {
-        imageThumbnailURL: "images/demo_icon.png",
-        title: 'Some Organization',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo',
-        orgURL: "https://bing.com"
-    },
-    {
-        imageThumbnailURL: "images/demo_icon.png",
-        title: 'Altruistic Company',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-        orgURL: "https://yahoo.com"
-    }
-];
-
 export const SearchBar = (props) => {
     const { searchBarValue } = props;
 
@@ -38,7 +11,7 @@ export const SearchBar = (props) => {
         const inputValue = searchBarValue.trim().toLowerCase();
         const inputLength = inputValue.length;
 
-        return inputLength === 0 ? [] : organizations.filter(org =>
+        return inputLength === 0 ? [] : props.organizations.filter(org =>
             org.title.toLowerCase().includes(inputValue)
         );
     }
