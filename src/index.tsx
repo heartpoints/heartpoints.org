@@ -66,6 +66,52 @@ const renderApp = (state) => {
             searchBarValue,
         });
 
+    const updateNewOrgTitle = (newOrgTitle) => {
+        renderApp({
+            ...state,
+            newOrgTitle
+        });
+    }
+
+    const updateNewOrgMission = (newOrgMission) => {
+        renderApp({
+            ...state,
+            newOrgMission
+        });
+    }
+
+    const updateNewOrgUrl = (newOrgUrl) => {
+        renderApp({
+            ...state,
+            newOrgUrl
+        });
+    }
+
+    const updateNewOrgLogo = (newOrgLogo) => {
+        renderApp({
+            ...state,
+            newOrgLogo,
+        });
+    }
+
+    const addNewOrganization = () => {
+        const newOrganization = {
+            imageThumbnailURL: state.newOrgLogo.src,
+            title: state.newOrgTitle,
+            statement: state.newOrgMission,
+            organizationURL: state.newOrgUrl
+        };
+
+        renderApp({
+            ...state,
+            organizations: [...state.organizations, newOrganization],
+            newOrgTitle: '',
+            newOrgMission: '',
+            newOrgUrl: '',
+            newOrgLogo: []
+        });
+    }
+
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
@@ -85,10 +131,12 @@ const renderApp = (state) => {
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure,
         onSearchBarValueChange,
+        updateNewOrgTitle,
+        updateNewOrgMission,
+        addNewOrganization,
+        updateNewOrgUrl,
+        updateNewOrgLogo
     }
-
-    console.log('state',{searchBarValue})
-    console.log('state', {volunteeringSearchBarValue})
 
     ReactDOM.render(
         <Site {...siteProps} />,
@@ -105,6 +153,26 @@ const developers = ['tom@tommysullivan.me','mrcorn123@yahoo.com','tastulae@mail.
 const isDeveloper = facebookUserSession => facebookUserSession && developers.includes(facebookUserSession.email);
 const inDevMode = isLocalhost() || isDeveloper(facebookUserSession);
 
+const defaultOrganizations = [
+    {
+        imageThumbnailURL: "images/demo_icon.png",
+        title: 'Heartpoints',
+        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+        organizationURL: "http://heartpoints.org"
+    },
+    {
+        imageThumbnailURL: "images/demo_icon.png",
+        title: 'Some Organization',
+        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo',
+        organizationURL: "https://bing.com"
+    },
+    {
+        imageThumbnailURL: "images/demo_icon.png",
+        title: 'Altruistic Company',
+        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
+        organizationURL: "https://yahoo.com"
+    }
+];
 
 const initialState = {
     showSimpleModel: false, 
@@ -119,6 +187,11 @@ const initialState = {
     shouldShowSearch: true,
     volunteeringSearchBarValue: '',
     volunteeringSearchBarSuggestions: [],
+    newOrgTitle: '',
+    newOrgMission: '',
+    newOrgUrl: '',
+    organizations: defaultOrganizations,
+    newOrgLogo: [],
 }
 
 renderApp(initialState);

@@ -18,9 +18,16 @@ const statementStyle = {
     ...padLeft,
 }
 
+export const urlStyle ={
+    "font-size": "15px",
+    "color": "#99bdf7",
+    "font-style": "italic",
+    "padding-left": "60px"
+}
+
 const maxStatementLength = 125;
 
-export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = undefined}) =>
+export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = undefined, organizationURL = undefined}) =>
     <Fragment>
         <div>
             <img style={headerContainerChildStyle} src={imageThumbnailURL} />
@@ -28,6 +35,7 @@ export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = 
         </div>
         <div>
             {subtitle && <h5 style={padLeft}>{subtitle}</h5>}
+            {organizationURL && <a style = {urlStyle} href={organizationURL} target="_blank">{organizationURL}</a>}
             <p style={statementStyle}>{ellipsis(statement, maxStatementLength)}</p>
         </div>
     </Fragment>
