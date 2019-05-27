@@ -17,43 +17,6 @@ interface Equatable<T = any> {
     value:T
 }
 
-// namespace AbstractAlgebraGeneric {
-//     interface Set<T extends Equatable> {
-//         includes(possibleMember:T):boolean
-//         union<S extends Equatable>(anotherSet:Set<S>):Set<T | S | (S & T)>
-//         intersect<S extends Equatable>(anotherSet:Set<S>):Set<S & T>
-//         negation:Set<any>
-//     }
-
-//     const emptySet:Set<never> = {
-//         includes: (a) => false,
-//         union: (anotherSet) => anotherSet,
-//         intersect: (anotherSet) => emptySet,
-//         get negation() { return infiniteSet }
-//     }
-    
-//     const infiniteSet:Set<any> = {
-//         includes: (a) => true,
-//         union: (anotherSet) => infiniteSet,
-//         intersect: (anotherSet) => anotherSet,
-//         get negation() { return emptySet }
-//     }
-    
-//     const setContainingOneElement = <T extends Equatable>(element:T):Set<T> => ({
-//         includes: (a) => a.equals(element),
-//         union: (anotherSet) => infiniteSet,
-//         intersect: (anotherSet) => anotherSet,
-//         get negation() { return emptySet }
-//     })
-    
-//     const unionOfTwoSets = <T extends Equatable, S extends Equatable>(set1:Set<T>, set2:Set<S>):Set<T | S | (S & T)> => ({
-//         includes: (a:T | S | (S & T)) => set1.includes(a) || set2.includes(a),
-//         union: (anotherSet) => infiniteSet,
-//         intersect: (anotherSet) => anotherSet,
-//         get negation() { return emptySet }
-//     })
-// }
-
 namespace AbstractAlgebra {
     interface Set {
         toString():string
