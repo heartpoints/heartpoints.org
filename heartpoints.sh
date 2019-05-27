@@ -75,12 +75,6 @@ padString() { local stringToPad=$1; local numTimes=$2
     eval $printFCommand
 }
 
-hp_localDev_help() { echo "DEPRECATED"; }
-hp_localDev() {
-    hp_serverDev
-    error_and_exit "localDev is deprecated. For server side development, use ./hp serverDev or for client side development use ./hp clientDev"
-}
-
 string_toLower() { local stringToConvertToAllLowercase=$1
     echo "$stringToConvertToAllLowercase" | tr '[:upper:]' '[:lower:]'
 }

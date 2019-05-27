@@ -1,18 +1,18 @@
 import * as React from "react";
-import { HomePage } from "../welcome/HomePage";
+import { HomePage } from "./welcome/HomePage";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { NotFound } from "../nav/NotFound";
+import { NotFound } from "./nav/NotFound";
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Theme } from "../../style/theme";
+import { Theme } from "../style/theme";
 import { CssBaseline, withStyles } from "@material-ui/core";
-import { TopNav } from "../nav/TopNav";
-import { SideNav } from "../nav/SideNav";
-import { SearchBar } from "./SearchBar";
-import { VolunteeringSearchBar } from "./VolunteeringSearchBar";
-import { SearchBarMerged } from "./SearchBarMerged";
-import { CelebrationModal } from "./CelebrationModal";
-import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
+import { TopNav } from "./nav/TopNav";
+import { SideNav } from "./nav/SideNav";
+import { SearchBar } from "./search/SearchBar";
+import { VolunteeringSearchBar } from "./volunteering/VolunteeringSearchBar";
+import { SearchBarMerged } from "./search/SearchBarMerged";
+import { CelebrationModal } from "./modals/CelebrationModal";
+import { FacebookLoginLogout } from "./facebook/FacebookLoginLogout";
 import classNames from 'classnames';
 
 export const SiteWithoutStyle = (props) => {

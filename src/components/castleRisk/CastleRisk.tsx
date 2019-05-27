@@ -18,6 +18,10 @@ export const CastleRisk = (props) => {
         {phase == Phase.Welcome && <button onClick={() => updateState({phase: Phase.AddPlayer})}>Begin Game</button>}
         {phase == Phase.AddPlayer && <div>
             <input autoFocus type="text" value={player} onChange={e => updateState({player: e.target.value})} />
+            <h3>Players</h3>
+            <ul>
+                <li>{player}</li>
+            </ul>
         </div>}
     </div>
 }

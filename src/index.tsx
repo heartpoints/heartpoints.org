@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Site } from "./components/layouts/Site";
+import { Site } from "./components/Site";
 import Cookies from "js-cookie";
 import { StatefulController } from "./components/state/StatefulController";
 import { CastleRisk } from "./components/castleRisk/CastleRisk";
