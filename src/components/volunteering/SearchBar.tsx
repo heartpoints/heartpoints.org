@@ -41,7 +41,7 @@ const data = [
     }
 ];
 
-export const SearchBarMerged = (props) => {
+export const SearchBar = (props) => {
     const { searchBarValue } = props;
 
     console.log(props.id);
