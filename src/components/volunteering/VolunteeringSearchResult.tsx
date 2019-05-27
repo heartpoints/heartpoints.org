@@ -1,23 +1,10 @@
 import * as React from "react";
-import { blue, red } from "@material-ui/core/colors";
 
 export interface VolunteeringSearchResult {
     jobTitle: string,
     organization: string,
     jobDescription: string
 }
-
-// export const headerContainerChildStyle = {
-//     "display": "inline",
-//     "margin": "3px 10px 10px 0px"
-// }
-
-// export const statementStyle = {
-//     "font-size": "12px",
-//     "color": "#888",
-//     "font-style": "italic",
-//     "margin": "10px 10px 3px 0px"
-// }
 
 const style = {
     margin: '10px 10px 3px 0px',

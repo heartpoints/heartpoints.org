@@ -1,6 +1,6 @@
 import { addLeadingSlash } from "history/PathUtils";
 
-export const searchBar = {
+export const theme = {
     container: {
         width: '60%',
         margin: "auto"

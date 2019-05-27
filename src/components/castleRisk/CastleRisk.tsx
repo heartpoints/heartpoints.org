@@ -11,7 +11,7 @@ export const CastleRisk = (props) => {
         .get(phase)
         .value;
 
-    return  <div className={classes.content}>
+    return <div className={classes.content}>
         <h1>Castle Risk</h1>
         <hr></hr>
         <p>Phase {phaseName}</p>

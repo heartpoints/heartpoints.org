@@ -27,8 +27,8 @@ export const SiteWithoutStyle = (props) => {
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
-                    <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/></div>} />
-                    <Route path="/organizations/search" render={() => <div style={{margin: "150px auto"}}><OrgSearchBar {...props} /></div>} />
+                    <Route path="/castleRisk" component={routerProps => <CastleRisk {...routerProps} {...props} />} />
+                    <Route path="/organizations/search" render={() => <OrgSearchBar {...props} />} />
                     <Route path="/volunteering/search" render={() => <div style={{margin: "150px auto"}}><VolunteeringSearchBar {...props} id='volunteer' /></div>} />
                     <Route component={NotFound} />
                 </Switch>    

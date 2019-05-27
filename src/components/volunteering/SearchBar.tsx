@@ -4,8 +4,8 @@ import * as React from "react";
 import Autosuggest from "react-autosuggest";
 import { OrganizationSearchResult } from "../organizations/OrganizationSearchResult";
 import { VolunteeringSearchResult } from "../volunteering/VolunteeringSearchResult";
-import { searchBar } from "../../style/searchBar";
 import { volunteeringOpportunities } from "../../data/volunteeringOpportunities";
+import { HPSearchBar } from "../search/HPSearchBar";
 
 export const SearchBar = (props) => {
     const { searchBarValue } = props;
@@ -67,24 +67,20 @@ export const SearchBar = (props) => {
     }
 
     const inputProps = {
-        placeholder: 'Search...',
+        placeholder: 'Search ...',
         value: searchBarValue,
         onChange: onSearchBarValueChange
     }
 
-    const searchBarSuggestions = getSuggestions(searchBarValue);
+    const suggestions = getSuggestions(searchBarValue);
 
-    return(
-        <Autosuggest
-            suggestions={searchBarSuggestions}
-            onSuggestionsFetchRequested={()=>undefined}
-            onSuggestionsClearRequested={()=>undefined}
-            getSuggestionValue={getSuggestionValue}
-            renderSuggestion={renderSuggestion}
-            inputProps={inputProps}
-            alwaysRenderSuggestions={true}
-            onSuggestionSelected={onSuggestionSelected}
-            theme={searchBar}
-        />
-    )
+    const hpSearchBarProps = {
+        suggestions,
+        getSuggestionValue,
+        inputProps,
+        onSuggestionSelected,
+        renderSuggestion,
+    } 
+    
+    return <HPSearchBar {...hpSearchBarProps} />
 }
