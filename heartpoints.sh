@@ -519,11 +519,18 @@ hp_minikubeTaggedImageName() { local shaToBuild=$1
     echo "$(hp_taggedImageName ${imageRepository} ${shaToBuild})"
 }
 
+hp_devEnviromentSetup_help()  { echo "use this on Mac OSX to set up everything needed to be an HP dev"; }
+hp_devEnviromentSetup() {
+    hp_xcode_install
+    hp_slack
+    hp_minikube
+    hp_yarn
+}
+
 hp_minikubeBuild_help() { echo "<taggedImageName> using minikube's docker daemon, build image and tag with minikube metadata"; }
 hp_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     requiredParameter "taggedImageName" "${taggedImageName}"
     requiredParameter "shaToReportInHttpHeaders" "${shaToReportInHttpHeaders}"
-    hp_pointToAndRunMinikubeDockerDaemon
     hp_pointToAndRunMinikubeDockerDaemon
     hp_buildAndTagImage "${taggedImageName}" "${shaToReportInHttpHeaders}"
 }

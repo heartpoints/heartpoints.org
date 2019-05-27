@@ -17,6 +17,13 @@ Have Docker installed.
 Follow [these instructions](https://help.github.com/articles/cloning-a-repository/)
 to get a local version of this repository.
 
+## Set up Dev Environment
+
+Most commands run from `hp [command]` will automatically download dependencies lazily, on
+an as-needed basis. You may optionally, proactively install these items up front by running:
+
+    hp devEnviromentSetup
+
 ## Finding and working on a Github Issue
 
 For a left-to-right issue board view, visit [github.com focus board](https://github.com/heartpoints/heartpoints.org/projects/1)
