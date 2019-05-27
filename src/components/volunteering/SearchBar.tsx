@@ -5,41 +5,7 @@ import Autosuggest from "react-autosuggest";
 import { OrganizationSearchResult } from "../organizations/OrganizationSearchResult";
 import { VolunteeringSearchResult } from "../volunteering/VolunteeringSearchResult";
 import { searchBar } from "../../style/searchBar";
-
-const data = [
-    {
-        imageThumbnailURL: "/images/demo_icon.png",
-        title: 'Heartpoints',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        orgURL: "https:heartpoints.org",
-        jobTitle: 'job 1',
-        jobDescription: 'abcdefghijklmnopqrstuvwxyz'
-    },
-    {
-        imageThumbnailURL: "/images/demo_icon.png",
-        title: 'Example Non Profit',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-        orgURL: "https://google.com",
-        jobTitle: 'Need some more hands',
-        jobDescription: 'abcdefghijklmnopqrstuvwxyz'
-    },
-    {
-        imageThumbnailURL: "/images/demo_icon.png",
-        title: 'Some Organization',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo',
-        orgURL: "https://bing.com",
-        jobTitle: 'job 2',
-        jobDescription: 'abcdefghijklmnopqrstuvwxyz'
-    },
-    {
-        imageThumbnailURL: "/images/demo_icon.png",
-        title: 'Altruistic Company',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-        orgURL: "https://yahoo.com",
-        jobTitle: 'opportunity 1',
-        jobDescription: 'abcdefghijklmnopqrstuvwxyz'
-    }
-];
+import { volunteeringOpportunities } from "../../data/volunteeringOpportunities";
 
 export const SearchBar = (props) => {
     const { searchBarValue } = props;
@@ -55,9 +21,9 @@ export const SearchBar = (props) => {
         if (inputLength === 0) {
             results = [];
         }else if (props.id === 'search') {//If statement is to check from which link the search request has been triggered(either organization search or volunteering search).
-            results = data.filter(org => org.title.toLowerCase().includes(inputValue));
+            results = volunteeringOpportunities.filter(org => org.title.toLowerCase().includes(inputValue));
         }else if (props.id === 'volunteer') {
-            results = data.filter(option =>
+            results = volunteeringOpportunities.filter(option =>
                     (option.title.toLocaleLowerCase().includes(inputValue) || //search by organization name
                         option.jobTitle.toLocaleLowerCase().includes(inputValue) //search by job title
                     )
