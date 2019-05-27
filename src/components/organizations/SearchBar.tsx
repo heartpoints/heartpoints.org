@@ -1,45 +1,38 @@
 import * as React from "react";
-import Autosuggest from "react-autosuggest";
-import { OrganizationSearchResult } from "./OrganizationSearchResult";
-import { organizations } from "../../data/organizations";
+import { HPSearchResult } from "../search/HPSearchResult";
 import { HPSearchBar } from "../search/HPSearchBar";
+import { organizations } from "../../data/organizations";
+import { Page } from "../layouts/Page"
 
 export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange } = props;
 
     const getSuggestions = (searchBarValue) => {
         const inputValue = searchBarValue.trim().toLowerCase();
-        const inputLength = inputValue.length;
-
-        return inputLength === 0 ? [] : organizations.filter(org =>
-            org.title.toLowerCase().includes(inputValue)
-        );
+        return inputValue.length === 0 
+            ? [] 
+            : organizations.filter(org =>
+                org.title.toLowerCase().includes(inputValue)
+            );
     }
 
-    const getSuggestionValue = (suggestion) => suggestion.title;
-
-    const renderSuggestion = (suggestion) => (
-        <OrganizationSearchResult
-            imageThumbnailURL={suggestion.imageThumbnailURL}
-            title={suggestion.title}
-            statement={suggestion.statement} />
-    );
-
-    const onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-        alert("You Selected the Organization Titled '" + suggestionValue +"'");
-    }
+    const onSuggestionSelected = ({title}) =>
+        alert(`You Selected the Organization Titled "${title}"`)
 
     const placeholder = "Search by organization name..."
     const suggestions = getSuggestions(searchBarValue);
+
     const hpSearchBarProps = { 
         placeholder,
         suggestions,
-        getSuggestionValue,
-        renderSuggestion,
+        renderSuggestion: HPSearchResult,
         onSuggestionSelected,
         searchBarValue,
         onSearchBarValueChange,
     }
 
-    return <HPSearchBar {...hpSearchBarProps} />
+    return <Page>
+        <h1>Organization Search...</h1>
+        <HPSearchBar {...hpSearchBarProps} />
+    </Page>
 }
