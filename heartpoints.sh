@@ -232,6 +232,12 @@ hp_hub() { local args=$@
     brew_package_run "hub" "$@"
 }
 
+hp_brew_clean_help() { echo "cleans brew in case of unexpected install errors"; }
+hp_brew_clean() {
+    hp_brew update-reset && hp_brew update
+    hp_brew doctor
+}
+
 hp_hub_install() {
     brew_install hub
 }
