@@ -4,34 +4,11 @@ import * as React from "react";
 import Autosuggest from "react-autosuggest";
 import { OrganizationSearchResult } from "../organizations/OrganizationSearchResult";
 import { VolunteeringSearchResult } from "../volunteering/VolunteeringSearchResult";
-import { volunteeringOpportunities } from "../../data/volunteeringOpportunities";
 import { HPSearchBar } from "../search/HPSearchBar";
+import { findVolunteeringOpportunities } from "../../models/volunteeringOpportunities";
 
 export const SearchBar = (props) => {
     const { searchBarValue } = props;
-
-    console.log(props.id);
-
-    const getSuggestions = (searchBarValue) => {
-        const inputValue = searchBarValue.trim().toLowerCase();
-        const inputLength = inputValue.length;
-        
-        let results;
-
-        if (inputLength === 0) {
-            results = [];
-        }else if (props.id === 'search') {//If statement is to check from which link the search request has been triggered(either organization search or volunteering search).
-            results = volunteeringOpportunities.filter(org => org.title.toLowerCase().includes(inputValue));
-        }else if (props.id === 'volunteer') {
-            results = volunteeringOpportunities.filter(option =>
-                    (option.title.toLocaleLowerCase().includes(inputValue) || //search by organization name
-                        option.jobTitle.toLocaleLowerCase().includes(inputValue) //search by job title
-                    )
-                );
-        }
-        return results;
-    }
-
     const getSuggestionValue = (suggestion) => suggestion.title;
    
     const renderSuggestionCalculator = (suggestion) => {
@@ -67,12 +44,12 @@ export const SearchBar = (props) => {
     }
 
     const inputProps = {
-        placeholder: 'Search ...',
+        placeholder: 'Search by organization name or job title...',
         value: searchBarValue,
         onChange: onSearchBarValueChange
     }
 
-    const suggestions = getSuggestions(searchBarValue);
+    const suggestions = findVolunteeringOpportunities(searchBarValue);
 
     const hpSearchBarProps = {
         suggestions,

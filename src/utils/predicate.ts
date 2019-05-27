@@ -12,3 +12,9 @@ export const combineTypePredicates = <A,B extends A,C,D extends C>(ts:Array<Type
 export const asTypePredicate = <T>(regularPredicate:Predicate<T>):TypePredicate<T, T> => {
     return regularPredicate as TypePredicate<T, T>
 }
+
+export const anyOf = <T>(...predicates:Array<Predicate<T>>):Predicate<T> => 
+    (input:T) => predicates.reduce(
+        (anyTrue, currentPredicate) => anyTrue || currentPredicate(input),
+        false
+    )
