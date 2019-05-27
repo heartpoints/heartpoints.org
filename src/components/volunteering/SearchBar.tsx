@@ -8,8 +8,7 @@ import { HPSearchBar } from "../search/HPSearchBar";
 import { findVolunteeringOpportunities } from "../../models/volunteeringOpportunities";
 
 export const SearchBar = (props) => {
-    const { searchBarValue } = props;
-    const getSuggestionValue = (suggestion) => suggestion.title;
+    const { searchBarValue, onSearchBarValueChange } = props;
    
     const renderSuggestionCalculator = (suggestion) => {
         let result = <p>Error in finding results</p>;
@@ -28,35 +27,26 @@ export const SearchBar = (props) => {
         }
         return result;
     }
+
     const renderSuggestion = (suggestion) => (
         <div>
             {renderSuggestionCalculator(suggestion) }
         </div>
     );
 
-    const onSearchBarValueChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        const searchBarValue = event.target.value;
-        props.onSearchBarValueChange(searchBarValue);
-    }
-
-    const onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
-        alert("You Selected the Organization Titled '" + suggestionValue +"'");
-    }
-
-    const inputProps = {
-        placeholder: 'Search by organization name or job title...',
-        value: searchBarValue,
-        onChange: onSearchBarValueChange
+    const onSuggestionSelected = (event, { suggestionValue: { jobTitle }}) => {
+        alert(`You Selected the job titled "${jobTitle}"`);
     }
 
     const suggestions = findVolunteeringOpportunities(searchBarValue);
 
     const hpSearchBarProps = {
-        suggestions,
-        getSuggestionValue,
-        inputProps,
+        placeholder: "Search by organization name or job title...",
+        suggestions: findVolunteeringOpportunities(searchBarValue),
         onSuggestionSelected,
         renderSuggestion,
+        searchBarValue,
+        onSearchBarValueChange,
     } 
     
     return <HPSearchBar {...hpSearchBarProps} />

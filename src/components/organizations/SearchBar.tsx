@@ -5,7 +5,7 @@ import { organizations } from "../../data/organizations";
 import { HPSearchBar } from "../search/HPSearchBar";
 
 export const SearchBar = (props) => {
-    const { searchBarValue } = props;
+    const { searchBarValue, onSearchBarValueChange } = props;
 
     const getSuggestions = (searchBarValue) => {
         const inputValue = searchBarValue.trim().toLowerCase();
@@ -25,23 +25,21 @@ export const SearchBar = (props) => {
             statement={suggestion.statement} />
     );
 
-    const onSearchBarValueChange = (event:React.ChangeEvent<HTMLInputElement>) => {
-        const searchBarValue = event.target.value;
-        props.onSearchBarValueChange(searchBarValue);
-    }
-
     const onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
         alert("You Selected the Organization Titled '" + suggestionValue +"'");
     }
 
-    const inputProps = {
-        placeholder: 'Search...',
-        value: searchBarValue,
-        onChange: onSearchBarValueChange
-    }
-
+    const placeholder = "Search by organization name..."
     const suggestions = getSuggestions(searchBarValue);
-    const hpSearchBarProps = { suggestions, getSuggestionValue, renderSuggestion, inputProps, onSuggestionSelected}
+    const hpSearchBarProps = { 
+        placeholder,
+        suggestions,
+        getSuggestionValue,
+        renderSuggestion,
+        onSuggestionSelected,
+        searchBarValue,
+        onSearchBarValueChange,
+    }
 
     return <HPSearchBar {...hpSearchBarProps} />
 }
