@@ -29,8 +29,8 @@ export const SiteWithoutStyle = (props) => {
                     <Route exact path="/" component={HomePage} />
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
                     <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/></div>} />
-                    <Route path="/organizationSearch" render={() => <div style={{margin: "150px auto"}}><SearchBarMerged {...props} id='search' /></div>} />
-                    <Route path="/volunteeringOptionSearch" render={() => <div style={{margin: "150px auto"}}><SearchBarMerged {...props} id='volunteer' /></div>} />
+                    <Route path="/organizations/search" render={() => <div style={{margin: "150px auto"}}><SearchBarMerged {...props} id='search' /></div>} />
+                    <Route path="/volunteering/search" render={() => <div style={{margin: "150px auto"}}><SearchBarMerged {...props} id='volunteer' /></div>} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }

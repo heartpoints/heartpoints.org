@@ -38,7 +38,7 @@ export const SideNavUnstyled = ({history, isSideNavOpen, isSideNavExpanded, onSi
             </ListItem>
             <ListItem button onClick={onSideNavExpandRequested}>
               <ListItemIcon><Language /></ListItemIcon>
-              <ListItemText primary="Organization" />
+              <ListItemText primary="Organizations" />
               {isSideNavExpanded ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={isSideNavExpanded} timeout="auto" unmountOnExit>
@@ -49,7 +49,7 @@ export const SideNavUnstyled = ({history, isSideNavOpen, isSideNavExpanded, onSi
               </ListItemIcon>
               <ListItemText inset primary="Create New" />
              </ListItem>
-             <ListItem button className={classes.nested} onClick={() => history.push("/organizationSearch")}>
+             <ListItem button className={classes.nested} onClick={() => history.push("/organizations/search")}>
               <ListItemIcon>
                 <Search />
               </ListItemIcon>
@@ -57,9 +57,9 @@ export const SideNavUnstyled = ({history, isSideNavOpen, isSideNavExpanded, onSi
              </ListItem>
             </List>
             </Collapse>
-            <ListItem button onClick={() => history.push("/volunteeringOptionSearch")}>
+            <ListItem button onClick={() => history.push("/volunteering/search")}>
               <ListItemIcon><PanTool /></ListItemIcon>
-              <ListItemText primary="Volunteer" />
+              <ListItemText primary="Volunteering" />
             </ListItem>
             <ListItem button onClick={() => history.push("/") }>
               <ListItemIcon><Favorite /></ListItemIcon>
