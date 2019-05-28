@@ -763,23 +763,18 @@ file_does_not_exist() { local possibleFilePath=$1
 
 gcloud_install() {
     if command_does_not_exist "gcloud"; then
-        hp_brew cask install google-cloud-sdk
+        hp_brew_cask_install google-cloud-sdk
     fi
 }
-
-#todo: make sure it runs in docker when things are not mac / brew based
-#by just making sure tools know, in docker, just assume and run command;
-#only autoinstall on mac. (maybe check isMac)
 
 hp_isMac() {
     strings_are_equal "$(uname)" "Darwin" > /dev/null
 }
 
-# todo: use the locally installed gcloud cask
-# gcloud_cli() { local args=$@
-#     gcloud_install   
-#     gcloud "$@"
-# }
+gcloud_cli() { local args=$@
+    gcloud_install   
+    gcloud "$@"
+}
 
 git_currentSha() {
     echo "$(hp_git rev-parse HEAD)"
@@ -790,12 +785,13 @@ git_working_directory_is_clean() {
 }
 
 hp_kubectl() { local args="$@"
-    brew_package_run kubectl "$@"
+    set -e
+    if hp_isMac; then
+        brew_package_run "kubernetes-cli" "$@"
+    else
+        kubectl "$@"
+    fi
 }
-
-# kubectl_install() {
-#     brew_install "kubernetes-cli"
-# }
 
 # minikube_install() {
 #     # kubectl_install
