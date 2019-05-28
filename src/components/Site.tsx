@@ -1,16 +1,17 @@
 import * as React from "react";
-import { HomePage } from "../welcome/HomePage";
+import { HomePage } from "./welcome/HomePage";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { NotFound } from "../nav/NotFound";
+import { NotFound } from "./nav/NotFound";
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Theme } from "../../style/theme";
+import { Theme } from "../style/theme";
 import { CssBaseline, withStyles } from "@material-ui/core";
-import { TopNav } from "../nav/TopNav";
-import { SideNav } from "../nav/SideNav";
-import { SearchBar } from "./SearchBar";
-import { CelebrationModal } from "./CelebrationModal";
-import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
+import { TopNav } from "./nav/TopNav";
+import { SideNav } from "./nav/SideNav";
+import { SearchBar as OrgSearchBar } from "./organizations/SearchBar";
+import { SearchBar as VolunteeringSearchBar } from "./volunteering/SearchBar";
+import { CelebrationModal } from "./modals/CelebrationModal";
+import { FacebookLoginLogout } from "./facebook/FacebookLoginLogout";
 import classNames from 'classnames';
 
 export const SiteWithoutStyle = (props) => {
@@ -26,8 +27,9 @@ export const SiteWithoutStyle = (props) => {
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
-                    <Route path="/castleRisk" component={routerProps => <div><CastleRisk {...routerProps} {...props}/></div>} />
-                    <Route path="/organizationSearch" render={() => <div style={{margin: "150px auto"}}><SearchBar {...props} /></div>} />
+                    <Route path="/castleRisk" component={routerProps => <CastleRisk {...routerProps} {...props} />} />
+                    <Route path="/organizations/search" render={() => <OrgSearchBar {...props} />} />
+                    <Route path="/volunteering/search" render={() => <VolunteeringSearchBar {...props} />} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Site } from "./components/layouts/Site";
+import { Site } from "./components/Site";
 import Cookies from "js-cookie";
 import { StatefulController } from "./components/state/StatefulController";
 import { CastleRisk } from "./components/castleRisk/CastleRisk";
@@ -55,25 +55,23 @@ const renderApp = (state) => {
         });
     }
 
-    const onFacebookLoginFailure = () => {
+    const onFacebookLoginFailure = () =>
         renderApp({
             ...state
         });
-    }
 
-    const onSearchBarValueChange = (searchBarValue) => {
-        const value = searchBarValue === undefined || searchBarValue === 0 ? '' : searchBarValue;
+    const onSearchBarValueChange = (searchBarValue) =>
         renderApp({
             ...state,
-            searchBarValue: value
+            searchBarValue,
         });
-    }
 
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
 
     const {searchBarValue} = state;
+    const {volunteeringSearchBarValue} = state;
 
     const siteProps = {
         ...state, 
@@ -86,10 +84,11 @@ const renderApp = (state) => {
         onSideNavExpandRequested,
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure,
-        onSearchBarValueChange
+        onSearchBarValueChange,
     }
 
     console.log('state',{searchBarValue})
+    console.log('state', {volunteeringSearchBarValue})
 
     ReactDOM.render(
         <Site {...siteProps} />,
@@ -117,7 +116,9 @@ const initialState = {
     inDevMode,
     searchBarValue: '',
     searchBarSuggestions: [],
-    shouldShowSearch: true
+    shouldShowSearch: true,
+    volunteeringSearchBarValue: '',
+    volunteeringSearchBarSuggestions: [],
 }
 
 renderApp(initialState);

@@ -1,6 +1,8 @@
-export const searchBar = {
+import { addLeadingSlash } from "history/PathUtils";
+
+export const theme = {
     container: {
-        width: '60%'
+        width: '60%',
     },
     suggestion: {
         listStyle: 'none',
