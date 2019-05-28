@@ -8,7 +8,7 @@ const headerContainerChildStyle = {
 }
 
 const padLeft = {
-    "padding-left": "60px"
+    "paddingLeft": "60px"
 }
 
 const statementStyle = {

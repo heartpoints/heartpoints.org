@@ -8,7 +8,7 @@ import { identity } from "../../utils/identity";
 export const HPSearchBar = ({searchBarValue: value, placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange}) => {
     const getSuggestionValue = identity
     const onChange = ({target: { value }}:React.ChangeEvent<HTMLInputElement>) => 
-        !(value === undefined || value === 0) && onSearchBarValueChange(value)
+        onSearchBarValueChange(value)
 
     const inputProps = {
         placeholder,
