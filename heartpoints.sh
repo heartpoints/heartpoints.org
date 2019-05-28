@@ -223,7 +223,7 @@ hp_serverDev(){
 
 hp_clientDev_help() { echo "run front-end web server with hot reloading"; }
 hp_clientDev(){
-    hp_yarn install
+    hp_yarn_global install
     hp_runWebPackDevServer
 }
 
@@ -249,16 +249,16 @@ brew_install() { local packageName=$1
 }
 
 hp_prepareForRun() { 
-    hp_yarn install
-    hp_yarn webpack --verbose
+    hp_yarn_global install
+    hp_yarn_global webpack --verbose
     if file_does_not_exist "dist/bundle.js"; then
         echo "dist/bundle.js not found. was webpack successful?"
         exit 1
     fi
 }
 
-hp_yarn_help() { echo "call the heartpoints-specific version of yarn to add / remove dependencies, etc"; }
-hp_yarn() { local args=$@
+hp_yarn_global_help() { echo "globally install (if needed) - and then call - yarn dependency manager for nodejs"; }
+hp_yarn_global() { local args=$@
     if command_does_not_exist "yarn"; then
         npm_cli install yarn -g
     fi
@@ -266,7 +266,7 @@ hp_yarn() { local args=$@
 }
 
 hp_runWebPackDevServer(){
-    hp_yarn watch
+    hp_yarn_global watch
 }
 
 ensureDockerCliConfiguredToRunningDaemon() {
@@ -308,7 +308,7 @@ hp_onPullRequest() {
 
 hp_unitTest_help() { echo "run the mocha unit tests, which test without build / deploy"; }
 hp_unitTest() { local args="$@"
-    hp_yarn ts-mocha src/tests/**/*.ts "$@"
+    hp_yarn_global ts-mocha src/tests/**/*.ts "$@"
 }
 
 hp_dockerBuildTagAndTest() {
@@ -401,7 +401,7 @@ hp_createGKECluster_commands() {
 }
 
 hp_runServer() {
-    hp_yarn start
+    hp_yarn_global start
 }
 
 errorAndExit() { local message=$1
@@ -616,7 +616,7 @@ hp_brew_cask_notInstalled() { local caskName=$1
 }
 
 hp_minikube() { local args=$@
-    virtualbox_install
+    virtualbox_install_globally
     hp_brew_cask_run minikube "${@}"
 }
 
@@ -658,8 +658,8 @@ hp_minikube_isRunning() {
 }
 
 hp_model() {
-    hp_yarn install
-    hp_yarn ts-node src/heartpoints-cli.ts
+    hp_yarn_global install
+    hp_yarn_global ts-node src/heartpoints-cli.ts
 }
 
 hp_g() { local message=$@ 
@@ -793,14 +793,6 @@ hp_kubectl() { local args="$@"
     fi
 }
 
-# minikube_install() {
-#     # kubectl_install
-#     virtualbox_install
-#     if command_does_not_exist minikube; then
-#         hp_brew_cask_installCask minikube
-#     fi
-# }
-
 nodejs_ensureCorrectVersion() {
     if command_does_not_exist "node" || ! strings_are_equal "$(node -v)" "$(cat .nvmrc)"; then
         nvm_installAndUseVersionInNvmRC
@@ -861,7 +853,7 @@ strings_are_not_equal() { local string1=$1; local string2=$2
     ! strings_are_equal "${string1}" "${string2}"
 }
 
-virtualbox_install() {
+virtualbox_install_globally() {
     hp_brew_cask_install virtualbox --force --verbose --debug
 }
 
