@@ -17,6 +17,28 @@ Have Docker installed.
 Follow [these instructions](https://help.github.com/articles/cloning-a-repository/)
 to get a local version of this repository.
 
+## Set up Dev Environment
+
+Most commands run from `hp [command]` will automatically download dependencies lazily, on
+an as-needed basis, installing everything into a local, .gitignored `devEnvironment` folder
+within the repo directory.
+
+You may optionally, proactively install these items up front by running:
+
+    hp devEnviromentSetup
+
+## Globally Installed Dev Dependencies
+
+While our automation attempts to isolate all software installed for development purposes to the
+`devEnvironment` folder, there are a few dependencies which are installed globally:
+
+- virtualbox
+- yarn
+- nvm
+
+Please be aware that scripts may attempt to install these applications in non-isolated
+places.
+
 ## Finding and working on a Github Issue
 
 For a left-to-right issue board view, visit [github.com focus board](https://github.com/heartpoints/heartpoints.org/projects/1)
