@@ -27,7 +27,7 @@ export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = 
             <h3 style={headerContainerChildStyle}>{title}</h3>
         </div>
         <div>
-            {subtitle && <h5 style={statementStyle}>{subtitle}</h5>}
+            {subtitle && <h5 style={padLeft}>{subtitle}</h5>}
             <p style={statementStyle}>{ellipsis(statement, maxStatementLength)}</p>
         </div>
     </Fragment>

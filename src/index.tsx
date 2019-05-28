@@ -55,27 +55,16 @@ const renderApp = (state) => {
         });
     }
 
-    const onFacebookLoginFailure = () => {
+    const onFacebookLoginFailure = () =>
         renderApp({
             ...state
         });
-    }
 
-    const onSearchBarValueChange = (searchBarValue) => {
-        const value = searchBarValue === undefined || searchBarValue === 0 ? '' : searchBarValue;
+    const onSearchBarValueChange = (searchBarValue) =>
         renderApp({
             ...state,
-            searchBarValue: value
+            searchBarValue,
         });
-    }
-
-    const onVolunteeringSearchBarValueChange = (volunteeringSearchBarValue) => {
-        const value = volunteeringSearchBarValue === undefined || volunteeringSearchBarValue === 0 ? '' : volunteeringSearchBarValue;
-        renderApp({
-            ...state,
-            volunteeringSearchBarValue: value
-        });
-    }
 
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
@@ -96,7 +85,6 @@ const renderApp = (state) => {
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure,
         onSearchBarValueChange,
-        onVolunteeringSearchBarValueChange
     }
 
     console.log('state',{searchBarValue})

@@ -3,6 +3,7 @@ import { addLeadingSlash } from "history/PathUtils";
 export const theme = {
     container: {
         width: '60%',
+        margin: "500px"
     },
     suggestion: {
         listStyle: 'none',
