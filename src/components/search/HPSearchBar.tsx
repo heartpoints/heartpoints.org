@@ -5,7 +5,7 @@ import { theme } from "./theme";
 import { identity } from "../../utils/identity";
 
 //TODO: Note HPSearchBar is sharing its searchBarValue between screens.
-export const HPSearchBar = ({searchBarValue: value, placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange}) => {
+export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange}) => {
     const getSuggestionValue = identity
     const onChange = ({target: { value }}:React.ChangeEvent<HTMLInputElement>) => 
         onSearchBarValueChange(value)

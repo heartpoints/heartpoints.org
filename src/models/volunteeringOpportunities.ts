@@ -2,7 +2,7 @@ import { anyOf } from "../utils/predicate";
 import { volunteeringOpportunities } from "../data/volunteeringOpportunities";
 
 export const findVolunteeringOpportunities = (orgOrJobTitle) => {
-    const inputValue = orgOrJobTitle.trim().toLowerCase();
+    const inputValue = (orgOrJobTitle || "").trim().toLowerCase();
     return inputValue.length === 0
         ? []
         : volunteeringOpportunities.filter(

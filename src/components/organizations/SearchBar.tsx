@@ -8,7 +8,7 @@ export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange } = props;
 
     const getSuggestions = (searchBarValue) => {
-        const inputValue = searchBarValue.trim().toLowerCase();
+        const inputValue = (searchBarValue || "").trim().toLowerCase();
         return inputValue.length === 0 
             ? [] 
             : organizations.filter(org =>
