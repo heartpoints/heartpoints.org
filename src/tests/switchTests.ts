@@ -1,10 +1,10 @@
-import { describeFunction, when, whenValues, itExpects } from "./expect";
+import { when, whenValues, itExpects } from "./expect";
 import * as _ from "lodash";
 import { expect } from "chai";
 import { Switch, SwitchWithoutInput } from "../utils/Switch";
 import { None } from "../utils/Maybe";
 
-describeFunction("SwitchWithoutInput", () => {
+describe("SwitchWithoutInput", () => {
     when("I have an empty SwitchWithoutInput", () => {
         const result = SwitchWithoutInput();
         it("yields None", () => {
@@ -42,7 +42,7 @@ describeFunction("SwitchWithoutInput", () => {
     )
 });
 
-describeFunction("Switch", () => {
+describe("Switch", () => {
 
     when("I have an empty switch", () => {
         const result = Switch();
