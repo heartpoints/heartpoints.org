@@ -3,6 +3,7 @@ import { Provider } from "./provider";
 import { first, zip } from "./list";
 import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate } from "./predicate";
 import { Mapper, combineMappers } from "./mapper";
+import { Pair } from "./pair";
 
 interface ISwitch<T, V> extends ICaseMatch<T, V> {
     get<Q extends T>(input:Q):Maybe<V>;
@@ -35,13 +36,13 @@ interface ISwitchWithoutInput<V> extends ICaseMatchWithoutInput<V> {
 
 export const SwitchWithoutInput = ():ISwitchWithoutInput<never> => EmptySwitchWithoutInput();
 export const EmptySwitchWithoutInput = ():ISwitchWithoutInput<never> => ({
-    case<R>(condition:boolean, resultToUseIfMatch:R):ISwitchWithoutInput<V | R> {
+    case<R>(condition:boolean, resultToUseIfMatch:R):ISwitchWithoutInput<R> {
         return this.matchesLazy(() => condition, () => resultToUseIfMatch)
     },
-    caseLazy<R>(condition:boolean, resultProviderToUseIfMatch:Provider<R>):ISwitchWithoutInput<V | R> {
+    caseLazy<R>(condition:boolean, resultProviderToUseIfMatch:Provider<R>):ISwitchWithoutInput<R> {
         return this.matchesLazy(() => condition, resultProviderToUseIfMatch)
     },
-    matches<R>(predicate:Provider<boolean>, resultToUseIfMatch:R): ISwitchWithoutInput<V | R> {
+    matches<R>(predicate:Provider<boolean>, resultToUseIfMatch:R): ISwitchWithoutInput<R> {
         return this.matchesLazy(predicate, () => resultToUseIfMatch)
     },
     matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitchWithoutInput<R> {
@@ -70,7 +71,7 @@ export const NonEmptySwitchWithoutInput = <V>(predicateProviderPairs:PredicatePr
     },
     matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitchWithoutInput<V | R> {
         return NonEmptySwitchWithoutInput(
-            [...predicateProviderPairs, [predicate, resultProviderToUseIfMatch]]
+            [...predicateProviderPairs, [predicate, resultProviderToUseIfMatch]] as PredicateProviderPairs<V | R>
         )
     },
     get():Maybe<V> {
@@ -79,8 +80,8 @@ export const NonEmptySwitchWithoutInput = <V>(predicateProviderPairs:PredicatePr
             ([predicate, provider]) => predicate()
         ).map(([predicate, provider]) => provider())
     },
-    getOrDefault: <D>(defaultValue:D):D => {
-        return this.get().getOrDefault(defaultValue)
+    getOrDefault<D>(defaultValue:D):V | D {
+        return this.get().valueOrDefault(defaultValue)
     }
 })
 

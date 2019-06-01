@@ -31,7 +31,7 @@ describe("SwitchWithoutInput", () => {
     )
 
     const switchWithoutInputCases = SwitchWithoutInput()
-        .case(3 == 2, () => 3)
+        .case(false, () => 3)
         .matchesLazy(() => false, () => "tommy")
         .caseLazy(4 == 4, () => [2,3,4])
 
