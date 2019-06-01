@@ -4,10 +4,20 @@ import { first, zip } from "./list";
 import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate } from "./predicate";
 import { Mapper, combineMappers } from "./mapper";
 import { Pair } from "./pair";
+import { equals } from "./equals";
+import { Constant } from "./constant";
 
 interface ISwitch<T, V> extends ICaseMatch<T, V> {
     get<Q extends T>(input:Q):Maybe<V>;
     getOrDefault<Q extends T, D>(input:Q, defaultValue:D):V | D;
+}
+
+interface ISwitchWithExplicitInput<T, V> extends ISwitchGetter<V> {
+    case<R>(possiblyEqualValue:T, resultToUseIfMatch:R):ISwitchWithExplicitInput<T, R | V>
+    cases<R>(possiblyEqualValues:T[], mapperToUseIfMatch:Mapper<T, R>):ISwitchWithExplicitInput<T, V | R>
+    caseLazy<R>(possiblyEqualValue:T, mapperToUseIfMatch:Mapper<T, R>):ISwitchWithExplicitInput<T, V | R>
+    matches<R>(predicate:Predicate<T>, resultToUseIfMatch:R): ISwitchWithExplicitInput<T, V | R>
+    matchesLazy<R>(predicate:Predicate<T>, resultMapperToUseIfMatch:Mapper<T, R>): ISwitchWithExplicitInput<T, R | V>,
 }
 
 interface ICaseMatch<T, V> {
@@ -26,24 +36,78 @@ interface ICaseMatchWithoutInput<V> {
     matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitchWithoutInput<V | R>
 }
 
-interface ISwitchWithoutInput<V> extends ICaseMatchWithoutInput<V> {
+interface ISwitchGetter<V> {
     get():Maybe<V>;
     getOrDefault<D>(defaultValue:D):V | D;
 }
 
+interface ISwitchWithoutInput<V> extends ICaseMatchWithoutInput<V>, ISwitchGetter<V> {}
+
 //todo: logic to combine two switches into a larger switch
-//todo: build a switch that accepts a param
+export const SwitchWithExplicitInput = <T>(input:T):ISwitchWithExplicitInput<T, never> => {
+    return SwitchWithExplicitInputImpl(input, [])
+}
+
+type ExplicitInputPredicateMapperPair<T, R> = Pair<Predicate<T>, Mapper<T, R>>
+type ExplicitInputPredicateMapperPairs<T, R> = Array<ExplicitInputPredicateMapperPair<T, R>>
+
+const SwitchWithExplicitInputImpl = <T, V>(input:T, predicateMapperPairs:ExplicitInputPredicateMapperPairs<T, V>):ISwitchWithExplicitInput<T, V> => ({
+    case<R>(possiblyEqualValue:T, resultToUseIfMatch:R):ISwitchWithExplicitInput<T, R | V> {
+        return this.matchesLazy(
+            equals(possiblyEqualValue),
+            Constant(resultToUseIfMatch)
+        )
+    },
+    cases<R>(possiblyEqualValues:T[], mapperToUseIfMatch:Mapper<T, R>):ISwitchWithExplicitInput<T, V | R> {
+        return this.matchesLazy(
+            item => possiblyEqualValues.includes(item),
+            mapperToUseIfMatch
+        )
+    },
+    caseLazy<R>(possiblyEqualValue:T, mapperToUseIfMatch:Mapper<T, R>):ISwitchWithExplicitInput<T, V | R> {
+        return this.matchesLazy(
+            equals(possiblyEqualValue),
+            mapperToUseIfMatch
+        )
+    },
+    matches<R>(predicate:Predicate<T>, resultToUseIfMatch:R): ISwitchWithExplicitInput<T, V | R> {
+        return this.matchesLazy(
+            predicate,
+            Constant(resultToUseIfMatch)
+        )
+    },
+    matchesLazy<R>(predicate:Predicate<T>, resultMapperToUseIfMatch:Mapper<T, R>): ISwitchWithExplicitInput<T, R | V> {
+        return SwitchWithExplicitInputImpl<T, R | V>(
+            input, 
+            [
+                ...predicateMapperPairs, 
+                [predicate, resultMapperToUseIfMatch]
+            ]
+        )
+    },
+    get():Maybe<V> {
+        return first(
+            predicateMapperPairs,
+            ([predicate]) => predicate(input)
+        ).map(
+            ([_, mapper]) => mapper(input)
+        )
+    },
+    getOrDefault<D>(defaultValue:D):V | D {
+        return this.get().valueOrDefault(defaultValue);
+    }
+})
 
 export const SwitchWithoutInput = ():ISwitchWithoutInput<never> => EmptySwitchWithoutInput();
 export const EmptySwitchWithoutInput = ():ISwitchWithoutInput<never> => ({
     case<R>(condition:boolean, resultToUseIfMatch:R):ISwitchWithoutInput<R> {
-        return this.matchesLazy(() => condition, () => resultToUseIfMatch)
+        return this.matchesLazy(Constant(condition), Constant(resultToUseIfMatch))
     },
     caseLazy<R>(condition:boolean, resultProviderToUseIfMatch:Provider<R>):ISwitchWithoutInput<R> {
-        return this.matchesLazy(() => condition, resultProviderToUseIfMatch)
+        return this.matchesLazy(Constant(condition), resultProviderToUseIfMatch)
     },
     matches<R>(predicate:Provider<boolean>, resultToUseIfMatch:R): ISwitchWithoutInput<R> {
-        return this.matchesLazy(predicate, () => resultToUseIfMatch)
+        return this.matchesLazy(predicate, Constant(resultToUseIfMatch))
     },
     matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitchWithoutInput<R> {
         return NonEmptySwitchWithoutInput([[predicate, resultProviderToUseIfMatch]])
@@ -61,24 +125,24 @@ type PredicateProviderPairs<V> = Array<PredicateProviderPair<V>>
 
 export const NonEmptySwitchWithoutInput = <V>(predicateProviderPairs:PredicateProviderPairs<V>):ISwitchWithoutInput<V> => ({
     case<R>(condition:boolean, resultToUseIfMatch:R):ISwitchWithoutInput<V | R> {
-        return this.matchesLazy(() => condition, () => resultToUseIfMatch)
+        return this.matchesLazy(Constant(condition), Constant(resultToUseIfMatch))
     },
     caseLazy<R>(condition:boolean, resultProviderToUseIfMatch:Provider<R>):ISwitchWithoutInput<V | R> {
-        return this.matchesLazy(() => condition, resultProviderToUseIfMatch)
+        return this.matchesLazy(Constant(condition), resultProviderToUseIfMatch)
     },
     matches<R>(predicate:Provider<boolean>, resultToUseIfMatch:R): ISwitchWithoutInput<V | R> {
-        return this.matchesLazy(predicate, () => resultToUseIfMatch)
+        return this.matchesLazy(predicate, Constant(resultToUseIfMatch))
     },
     matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitchWithoutInput<V | R> {
-        return NonEmptySwitchWithoutInput(
-            [...predicateProviderPairs, [predicate, resultProviderToUseIfMatch]] as PredicateProviderPairs<V | R>
+        return NonEmptySwitchWithoutInput<V | R>(
+            [...predicateProviderPairs, [predicate, resultProviderToUseIfMatch]]
         )
     },
     get():Maybe<V> {
         return first(
             predicateProviderPairs,
-            ([predicate, provider]) => predicate()
-        ).map(([predicate, provider]) => provider())
+            ([predicate]) => predicate()
+        ).map(([_, provider]) => provider())
     },
     getOrDefault<D>(defaultValue:D):V | D {
         return this.get().valueOrDefault(defaultValue)
@@ -89,20 +153,20 @@ export const Switch = ():ISwitch<never, never> => EmptySwitch();
 
 export const EmptySwitch = ():ISwitch<never,never> => ({
     case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<S, R> {
-        return this.matchesLazy(input => input == possiblyEqualValue, () => resultToUseIfMatch)
+        return this.matchesLazy(equals(possiblyEqualValue), Constant(resultToUseIfMatch))
     },
     cases<S, R>(possiblyEqualValues:S[], mapperToUseIfMatch:Mapper<S, R>):ISwitch<S, R> {
         return possiblyEqualValues.length == 0 
             ? this
             : this
-                .matchesLazy(n => n == possiblyEqualValues[0], mapperToUseIfMatch)
+                .matchesLazy(equals(possiblyEqualValues[0]), mapperToUseIfMatch)
                 .cases(possiblyEqualValues.slice(1), mapperToUseIfMatch)
     },
     caseLazy<S, R>(possiblyEqualValue:S, resultProviderToUseIfMatch:Provider<R>):ISwitch<S, R> {
-        return this.matchesLazy((input) => input == possiblyEqualValue, resultProviderToUseIfMatch)
+        return this.matchesLazy(equals(possiblyEqualValue), resultProviderToUseIfMatch)
     },
     matches<S, R>(predicate:Predicate<S>, resultToUseIfMatch:R): ISwitch<S, R> {
-        return this.matchesLazy(predicate, () => resultToUseIfMatch)
+        return this.matchesLazy(predicate, Constant(resultToUseIfMatch))
     },
     matchesLazy<S, R>(predicate:Predicate<S>, mapperToUseIfMatch:Mapper<S, R>): ISwitch<S, R> {
         return this.matchesType((r:S):r is S => predicate(r), mapperToUseIfMatch);
@@ -117,27 +181,27 @@ export const EmptySwitch = ():ISwitch<never,never> => ({
 export const NonEmptySwitch = <PossibleInputTypes, PossibleOutputTypes>(typePredicates:Array<TypePredicate<PossibleInputTypes, any>>, resultMappers:Array<Mapper<PossibleInputTypes, PossibleOutputTypes>>):ISwitch<PossibleInputTypes, PossibleOutputTypes> => ({
     case<NewInputType, NewOutputType>(possiblyEqualValue:NewInputType, resultToUseIfMatch:NewOutputType):ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
         return this.matchesLazy(
-            input => input == possiblyEqualValue,
-            input => resultToUseIfMatch
+            equals(possiblyEqualValue),
+            Constant(resultToUseIfMatch)
         )
     },
     cases<NewInputType, NewOutputType>(possiblyEqualValues:NewInputType[], mapperToUseIfMatch:Mapper<NewInputType, NewOutputType>):ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
         return possiblyEqualValues.length == 0 
             ? this
             : this
-                .matchesLazy(n => n == possiblyEqualValues[0], mapperToUseIfMatch)
+                .matchesLazy(equals(possiblyEqualValues[0]), mapperToUseIfMatch)
                 .cases(possiblyEqualValues.slice(1), mapperToUseIfMatch)
     },
     caseLazy<NewInputType, NewOutputType>(possiblyEqualValue:NewInputType, resultProviderToUseIfMatch:Provider<NewOutputType>):ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
         return this.matchesLazy(
-            input => input == possiblyEqualValue,
+            equals(possiblyEqualValue),
             input => resultProviderToUseIfMatch()
         )
     },
     matches<NewInputType, NewOutputType>(predicate:Predicate<NewInputType>, resultToUseIfMatch:NewOutputType): ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
         return this.matchesLazy(
             predicate,
-            input => resultToUseIfMatch
+            Constant(resultToUseIfMatch)
         )
     },
     matchesLazy<NewInputType, NewOutputType>(predicate:Predicate<NewInputType>, mapperToUseIfMatch:Mapper<NewInputType, NewOutputType>): ISwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {

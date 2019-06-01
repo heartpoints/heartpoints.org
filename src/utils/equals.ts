@@ -1,0 +1,1 @@
+export const equals = <T extends V, X extends V, V extends unknown>(value:T) => (other:X) => value == other;

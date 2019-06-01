@@ -1,8 +1,35 @@
 import { when, whenValues, itExpects } from "./expect";
 import * as _ from "lodash";
 import { expect } from "chai";
-import { Switch, SwitchWithoutInput } from "../utils/Switch";
+import { Switch, SwitchWithoutInput, SwitchWithExplicitInput } from "../utils/Switch";
 import { None } from "../utils/Maybe";
+
+describe("SwitchWithExplicitInput", () => {
+    const input = "tommy"
+    const switchWithExplicitInput = SwitchWithExplicitInput(input);
+
+    when("I have an empty SwitchWithExplicitInput", () => {
+        it("yields None", () => {
+            expect(switchWithExplicitInput.get().isNone).to.be.true
+        });
+    });
+
+    when("I have an empty SwitchWithoutInput with default", () => {
+        it("equals the default value", () => {
+            itExpects(() => switchWithExplicitInput.getOrDefault(42)).toEqual(42);
+        });
+    });
+
+    const switchWithExplicitInputMatchesLazy = switchWithExplicitInput
+        .case("mike", 9)
+        .caseLazy("swenu", () => true)
+        .matchesLazy(i => i == "tommy", () => "swenu!!!")
+        .matches(i => i == "hewwo", "nope")
+
+    whenValues({theSwitch: switchWithExplicitInputMatchesLazy}, ({theSwitch}) =>
+        itExpects(() => theSwitch.get().value).toEqual("swenu!!!")
+    )
+});
 
 describe("SwitchWithoutInput", () => {
     when("I have an empty SwitchWithoutInput", () => {
