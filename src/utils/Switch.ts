@@ -1,10 +1,8 @@
 import { Maybe, None } from "./maybe";
 import { Provider } from "./provider";
-import * as _ from "lodash";
 import { first, zip } from "./list";
 import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate } from "./predicate";
 import { Mapper, combineMappers } from "./mapper";
-import { NotImplementedError } from "./NotImplementedError";
 
 interface ISwitch<T, V> extends ICaseMatch<T, V> {
     get<Q extends T>(input:Q):Maybe<V>;
