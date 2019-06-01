@@ -5,16 +5,57 @@ import { first, zip } from "./list";
 import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate } from "./predicate";
 import { Mapper, combineMappers } from "./mapper";
 
-interface ISwitch<T, V> {
+interface ISwitch<T, V> extends ICaseMatch<T, V> {
+    get<Q extends T>(input:Q):Maybe<V>;
+    getOrDefault<Q extends T, D>(input:Q, defaultValue:D):V | D;
+}
+
+interface ICaseMatch<T, V> {
     case<S, R>(possiblyEqualValue:S, resultToUseIfMatch:R):ISwitch<T | S, V | R>
     cases<S, R>(possiblyEqualValues:S[], mapperToUseIfMatch:Mapper<S, R>):ISwitch<T | S, V | R>
     caseLazy<S, R>(possiblyEqualValue:S, resultProviderToUseIfMatch:Provider<R>):ISwitch<T | S, V | R>
     matches<S, R>(predicate:Predicate<S>, resultToUseIfMatch:R): ISwitch<T | S, V | R>
     matchesLazy<S, R>(predicate:Predicate<S>, mapperToUseIfMatch:Mapper<S, R>): ISwitch<T | S, V | R>
     matchesType<S, R, L extends S>(predicate:TypePredicate<S, L>, mapperToUseIfMatch:Mapper<L, R>): ISwitch<T | S, V | R>
-    get<Q extends T>(input:Q):Maybe<V>;
-    getOrDefault<Q extends T, D>(input:Q, defaultValue:D):V | D;
 }
+
+interface ICaseMatchWithoutInput<V> {
+    case<R>(condition:boolean, resultToUseIfMatch:R):ISwitch<V | R>
+    caseLazy<R>(condition:boolean, resultProviderToUseIfMatch:Provider<R>):ISwitch<V | R>
+    matches<R>(predicate:Provider<boolean>, resultToUseIfMatch:R): ISwitch<V | R>
+    matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitch<V | R>
+}
+
+interface ISwitchWithoutInput<V> extends ICaseMatchWithoutInput<V> {
+    get():Maybe<V>;
+    getOrDefault<D>(defaultValue:D):V | D;
+}
+
+//todo: logic to combine two switches into a larger switch
+//todo: build a switch that accepts a param
+
+export const SwitchWithoutInput = ():ISwitchWithoutInput<never> => EmptySwitchWithoutInput();
+export const EmptySwitchWithoutInput = ():ISwitchWithoutInput<never> => ({
+    case<R>(condition:boolean, resultToUseIfMatch:R):ISwitch<V | R> {
+
+    },
+    caseLazy<R>(condition:boolean, resultProviderToUseIfMatch:Provider<R>):ISwitch<V | R> {
+        throw new NotImplementedError();
+    }
+    matches<R>(predicate:Provider<boolean>, resultToUseIfMatch:R): ISwitch<V | R>
+    matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitch<V | R> {
+
+    }
+})
+
+export const NonEmptySwitchWithoutInput = ():ISwitchWithoutInput<never> => ({
+    case<R>(condition:boolean, resultToUseIfMatch:R):ISwitch<V | R> {
+        
+    },
+    caseLazy<R>(condition:boolean, resultProviderToUseIfMatch:Provider<R>):ISwitch<V | R>
+    matches<R>(predicate:Provider<boolean>, resultToUseIfMatch:R): ISwitch<V | R>
+    matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitch<V | R>
+})
 
 export const Switch = ():ISwitch<never, never> => EmptySwitch();
 
