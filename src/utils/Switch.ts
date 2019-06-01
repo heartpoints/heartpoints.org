@@ -1,4 +1,4 @@
-import { Maybe, None } from "./maybe";
+import { Maybe, None, NoneType } from "./maybe";
 import { Provider } from "./provider";
 import { first, zip } from "./list";
 import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate } from "./predicate";
@@ -106,7 +106,7 @@ const EmptySwitchWithoutInput = ():ISwitchWithoutInput<never> => ({
     matchesLazy<R>(predicate:Provider<boolean>, resultProviderToUseIfMatch:Provider<R>): ISwitchWithoutInput<R> {
         return NonEmptySwitchWithoutInput([[predicate, resultProviderToUseIfMatch]])
     },
-    get result():Maybe<never> {
+    get result():NoneType {
         return None
     },
 })
@@ -160,7 +160,7 @@ const EmptySwitch = ():ISwitchWithLateInput<never,never> => ({
     matchesType(predicate:TypePredicate<any,any>, mapperToUseIfMatch:Mapper<any,any>) {
         return NonEmptySwitch([predicate], [mapperToUseIfMatch])
     },
-    resultWhen(input:any):never { return None },
+    resultWhen(input:any):Maybe<never> { return None },
 });
 
 const NonEmptySwitch = <PossibleInputTypes, PossibleOutputTypes>(typePredicates:Array<TypePredicate<PossibleInputTypes, any>>, resultMappers:Array<Mapper<PossibleInputTypes, PossibleOutputTypes>>):ISwitchWithLateInput<PossibleInputTypes, PossibleOutputTypes> => ({
@@ -210,8 +210,8 @@ const NonEmptySwitch = <PossibleInputTypes, PossibleOutputTypes>(typePredicates:
 
 export interface ISwitch {
     when<T>(value:T): ISwitchWithEarlyInput<T, never>,
-    withoutInput: ISwitchWithoutInput,
-    that: ISwitchWithLateInput
+    withoutInput: ISwitchWithoutInput<never>,
+    that: ISwitchWithLateInput<never, never>
 }
 
 export const Switch:ISwitch = {

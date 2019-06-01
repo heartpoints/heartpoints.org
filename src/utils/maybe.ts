@@ -11,7 +11,9 @@ export interface Maybe<T = any> {
     isNone:boolean,
 }
 
-export const None:Maybe<never> = {
+export type NoneType = Maybe<never> 
+
+export const None:NoneType = {
     map: (f) => None,
     flatMap: (f) => None,
     get value():never { throw new Error("Cannot get value for type none") },
