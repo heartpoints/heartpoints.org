@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { Provider } from "../utils/provider";
 import { Consumer } from "../utils/consumer";
 
+export const describeFunction = (functionReference, block) => describe(`function ${functionReference.name}`, block);
 export const when = (description, block) => context(`when ${description}`, block);
 export const and = when;
 export const whenValues = <T>(obj:T, block:(t:T)=>void) => context(`when:\n${objectAsKeyValueString(obj)}\n${whenSpacing}...\n\n`, () => block(obj));

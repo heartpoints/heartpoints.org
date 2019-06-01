@@ -1,9 +1,48 @@
-import { when, whenValues, itExpects } from "./expect";
+import { describeFunction, when, whenValues, itExpects } from "./expect";
 import * as _ from "lodash";
 import { expect } from "chai";
-import { Switch } from "../utils/Switch";
+import { Switch, SwitchWithoutInput } from "../utils/Switch";
+import { None } from "../utils/Maybe";
 
-describe("Switch", () => {
+describeFunction("SwitchWithoutInput", () => {
+    when("I have an empty SwitchWithoutInput", () => {
+        const result = SwitchWithoutInput();
+        it("yields None", () => {
+            expect(result.get().isNone).to.be.true
+        });
+    });
+
+    when("I have an empty SwitchWithoutInput with default", () => {
+        const result = SwitchWithoutInput();
+        it("equals the default value", () => {
+            itExpects(() => result.getOrDefault(42)).toEqual(42);
+        });
+    });
+
+    const switchWithoutInputMatchesLazy = SwitchWithoutInput()
+        .matchesLazy(() => false, () => 3)
+        .matchesLazy(() => false, () => "tommy")
+        .matchesLazy(() => true, () => [1,2,3])
+
+    whenValues({theSwitch: switchWithoutInputMatchesLazy}, ({theSwitch}) =>
+        itExpects(() => theSwitch.get().value).toBehaveAsFollows(
+            result => expect(result).to.deep.equal([1,2,3])
+        )
+    )
+
+    const switchWithoutInputCases = SwitchWithoutInput()
+        .case(3 == 2, () => 3)
+        .matchesLazy(() => false, () => "tommy")
+        .caseLazy(4 == 4, () => [2,3,4])
+
+    whenValues({theSwitch: switchWithoutInputCases}, ({theSwitch}) =>
+        itExpects(() => theSwitch.get().value).toBehaveAsFollows(
+            result => expect(result).to.deep.equal([2,3,4])
+        )
+    )
+});
+
+describeFunction("Switch", () => {
 
     when("I have an empty switch", () => {
         const result = Switch();

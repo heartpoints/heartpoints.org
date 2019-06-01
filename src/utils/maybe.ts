@@ -8,6 +8,7 @@ export interface Maybe<T = any> {
     hasValue:boolean,
     value:T,
     valueOrDefault<S>(someDefault:S):T | S,
+    isNone:boolean,
 }
 
 export const None:Maybe<never> = {
@@ -16,6 +17,7 @@ export const None:Maybe<never> = {
     get value():never { throw new Error("Cannot get value for type none") },
     hasValue: false,
     valueOrDefault: <S>(someDefault:S):S => someDefault,
+    isNone: true,
 }
 
 export type MaybeFlatmapper<T, S> = Mapper<T, Maybe<S>>
@@ -29,6 +31,7 @@ export const Some = <T>(value:T):Maybe<T> => ({
     value,
     hasValue: true,
     valueOrDefault: () => value,
+    isNone: false,
 });
 
 export const maybeIf = <T>(predicate:boolean, valueIfTrue:T):Maybe<T> => predicate ? Some(valueIfTrue) : None;
