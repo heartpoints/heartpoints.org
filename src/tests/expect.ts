@@ -8,7 +8,7 @@ export const and = when;
 export const whenValues = <T>(obj:T, block:(t:T)=>void) => context(`when:\n${objectAsKeyValueString(obj)}\n${whenSpacing}...\n\n`, () => block(obj));
 const whenSpacing = "             ";
 
-export const itExpects = <T>(resultProvider:Provider<T>) => (
+export const itIsExpected = <T>(resultProvider:Provider<T>) => (
     { 
         toEqual: expectedValue => 
             it(`it expects ${resultProvider} to be ${expectedValue}`, () =>

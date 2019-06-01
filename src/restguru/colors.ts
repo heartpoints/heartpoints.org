@@ -2,15 +2,18 @@ import { Maybe } from "../utils/maybe";
 import { Switch } from "../utils/Switch";
 
 export const colors = ({url, contentType}):Maybe<string> => {
-    return Switch()
+    return Switch
+        .when(colorFromUrl(url))
         .cases(supportedColors, match => colorForContentType(contentType, match))
-        .get(colorFromUrl(url))
+        .result
 }
 
 const colorForContentType = (contentType, color) =>
-    Switch()
+    Switch
+        .when(contentType)
         .caseLazy("text/html", () => colorHTMLString(color))
-        .getOrDefault(contentType, color)
+        .result
+        .valueOrDefault(color)
 
 const colorHTMLString = (color) => `<html><body><h1>${color}</h1><p>${color} is a color</body></html>`
 

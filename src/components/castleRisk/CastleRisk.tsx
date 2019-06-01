@@ -4,11 +4,12 @@ import { Switch } from '../../utils/Switch';
 
 export const CastleRisk = (props) => {
     const { classes, phase, updateState, player } = props
-    const phaseName = Switch()
+    const phaseName = Switch
+        .when(phase)
         .case(Phase.Welcome, "Welcome")
         .case(Phase.Rules, "Rules")
         .case(Phase.AddPlayer, "Add a Player")
-        .get(phase)
+        .result
         .value;
 
     return <div className={classes.content}>

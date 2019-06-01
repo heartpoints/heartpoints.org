@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { whenValues, itExpects } from "./expect";
+import { whenValues, itIsExpected } from "./expect";
 import { theInternet } from "../restguru/theInternet";
 import { expect } from "chai";
 import { getCompleteProjection } from "../restguru/getCompleteProjection";
@@ -10,7 +10,7 @@ describe("restful-json", () => {
         const simpleResourceTest = ({url,contentType,expectedValue}) => 
             whenValues({url, contentType}, () => {
                 const result = () => theInternet({url, contentType})
-                itExpects(result).toBehaveAsFollows(maybeRepresentation => {
+                itIsExpected(result).toBehaveAsFollows(maybeRepresentation => {
                     expect(maybeRepresentation.value).to.equal(expectedValue);
                 });
             });
@@ -39,7 +39,7 @@ describe("restful-json", () => {
         const contentType="http://exampleRecordToStoreAsRestfulJSON"
         whenValues({url, contentType}, () => {
             const result = () => getCompleteProjection({url, contentType})
-            itExpects(result).toBehaveAsFollows(projection => {
+            itIsExpected(result).toBehaveAsFollows(projection => {
                 expect(jsonString(projection.value))
                     .to.equal(jsonString(expectedProjection));
             });
