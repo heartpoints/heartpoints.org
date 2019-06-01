@@ -2,7 +2,7 @@ import { when, whenValues, itIsExpected } from "./expect";
 import * as _ from "lodash";
 import { expect } from "chai";
 import { Switch } from "../utils/Switch";
-import { None } from "../utils/Maybe";
+import { None } from "../utils/maybe";
 
 describe("Switch", () => {
     describe(".when(value)", () => {
