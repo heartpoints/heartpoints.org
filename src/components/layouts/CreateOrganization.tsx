@@ -44,25 +44,35 @@ export const CreateOrganization = (props) => {
         return Object.assign({}, ...styles);
     }
 
-    const updateNewOrgLogo = (image) => {
-        props.updateNewOrgLogo(image);
+    //todo: force single image not working?
+
+    const updateNewOrgLogo = async (image) => {
+        const reader = new FileReader();
+        const file = image[0]
+        reader.onload = function(e:any) {
+            if(e.target) {
+                const src = e.target.result; 
+                file.src = src;
+                console.log({file});
+                props.updateNewOrgLogo(file);
+            } 
+        };
+        reader.readAsDataURL(file);
     }
 
-    return(
-        <React.Fragment>
-           <ImageUploader
-                singleImage={true}
-                withPreview={true}
-                fileContainerStyle={combineStyles(fieldSetChildStyle, inputStyle)}
-                withLabel={false}
-                buttonText="Upload Organization Logo"
-                onChange={updateNewOrgLogo}
-                imgExtension={['.jpg', '.gif', '.png']}
-            />
-            <input style={combineStyles(fieldSetChildStyle, inputStyle)} id="orgName" type="text" placeholder="Organization Name" onChange={updateNewOrgTitle} value={props.newOrgTitle}/>
-            <input style={combineStyles(fieldSetChildStyle, inputStyle)} id="orgUrl" type="text" placeholder="Organization Webpage" onChange={updateNewOrgUrl} value={props.newOrgUrl}/>
-            <textarea style={combineStyles(fieldSetChildStyle, inputStyle)} id="orgMission" rows={5} cols={50} placeholder="Mission Statement" onChange={updateNewOrgMission} value={props.newOrgMission}></textarea>
-            <button style={combineStyles(fieldSetChildStyle, inputStyle, submitButtonStyle)} onClick={props.addNewOrganization}>Submit</button>
-        </React.Fragment>
-    );
+    return <React.Fragment>
+        <ImageUploader
+            singleImage={true}
+            withPreview={true}
+            fileContainerStyle={combineStyles(fieldSetChildStyle, inputStyle)}
+            withLabel={false}
+            buttonText="Upload Organization Logo"
+            onChange={updateNewOrgLogo}
+            imgExtension={['.jpg', '.gif', '.png']}
+        />
+        <input style={combineStyles(fieldSetChildStyle, inputStyle)} id="orgName" type="text" placeholder="Organization Name" onChange={updateNewOrgTitle} value={props.newOrgTitle}/>
+        <input style={combineStyles(fieldSetChildStyle, inputStyle)} id="orgUrl" type="text" placeholder="Organization Webpage" onChange={updateNewOrgUrl} value={props.newOrgUrl}/>
+        <textarea style={combineStyles(fieldSetChildStyle, inputStyle)} id="orgMission" rows={5} cols={50} placeholder="Mission Statement" onChange={updateNewOrgMission} value={props.newOrgMission}></textarea>
+        <button style={combineStyles(fieldSetChildStyle, inputStyle, submitButtonStyle)} onClick={props.addNewOrganization}>Submit</button>
+    </React.Fragment>
 }

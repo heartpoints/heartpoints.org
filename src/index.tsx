@@ -90,9 +90,16 @@ const renderApp = (state) => {
         });
     }
 
+    const updateNewOrgLogo = (newOrgLogo) => {
+        renderApp({
+            ...state,
+            newOrgLogo,
+        });
+    }
+
     const addNewOrganization = () => {
         const newOrganization = {
-            imageThumbnailURL: state.newOrgLogo.name,
+            imageThumbnailURL: state.newOrgLogo.src,
             title: state.newOrgTitle,
             statement: state.newOrgMission,
             orgURL: state.newOrgUrl
@@ -105,14 +112,6 @@ const renderApp = (state) => {
             newOrgMission: '',
             newOrgUrl: '',
             newOrgLogo: []
-        });
-    }
-
-    const updateNewOrgLogo = (newOrgLogo) => {
-        console.log("LOGO", newOrgLogo)
-        renderApp({
-            ...state,
-            newOrgLogo: [newOrgLogo]
         });
     }
 
