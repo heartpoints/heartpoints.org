@@ -83,17 +83,36 @@ const renderApp = (state) => {
         });
     }
 
+    const updateNewOrgUrl = (newOrgUrl) => {
+        renderApp({
+            ...state,
+            newOrgUrl
+        });
+    }
+
     const addNewOrganization = () => {
         const newOrganization = {
-            imageThumbnailURL: "images/demo_icon.png",
+            imageThumbnailURL: state.newOrgLogo.name,
             title: state.newOrgTitle,
             statement: state.newOrgMission,
-            orgURL: "https:heartpoints.org"
+            orgURL: state.newOrgUrl
         };
 
         renderApp({
             ...state,
-            organizations: [...state.organizations, newOrganization]
+            organizations: [...state.organizations, newOrganization],
+            newOrgTitle: '',
+            newOrgMission: '',
+            newOrgUrl: '',
+            newOrgLogo: []
+        });
+    }
+
+    const updateNewOrgLogo = (newOrgLogo) => {
+        console.log("LOGO", newOrgLogo)
+        renderApp({
+            ...state,
+            newOrgLogo: [newOrgLogo]
         });
     }
 
@@ -117,7 +136,9 @@ const renderApp = (state) => {
         onSearchBarValueChange,
         updateNewOrgTitle,
         updateNewOrgMission,
-        addNewOrganization
+        addNewOrganization,
+        updateNewOrgUrl,
+        updateNewOrgLogo
     }
 
     ReactDOM.render(
@@ -140,13 +161,7 @@ const defaultOrganizations = [
         imageThumbnailURL: "images/demo_icon.png",
         title: 'Heartpoints',
         statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        orgURL: "https://heartpoints.org"
-    },
-    {
-        imageThumbnailURL: "images/demo_icon.png",
-        title: 'Hard Points',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
-        orgURL: "https://google.com"
+        orgURL: "http://heartpoints.org"
     },
     {
         imageThumbnailURL: "images/demo_icon.png",
@@ -175,7 +190,9 @@ const initialState = {
     shouldShowSearch: true,
     newOrgTitle: '',
     newOrgMission: '',
-    organizations: defaultOrganizations
+    newOrgUrl: '',
+    organizations: defaultOrganizations,
+    newOrgLogo: []
 }
 
 renderApp(initialState);

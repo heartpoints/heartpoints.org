@@ -3,6 +3,7 @@ import * as React from "react";
 export interface IOrganizationSearchResult {
     title: string,
     imageThumbnailURL: string,
+    organizationURL: string,
     statement: string
 }
 
@@ -14,6 +15,13 @@ export const headerContainerChildStyle = {
 export const statementStyle = {
     "font-size": "12px",
     "color": "#888",
+    "font-style": "italic",
+    "padding-left": "60px"
+}
+
+export const urlStyle ={
+    "font-size": "15px",
+    "color": "#99bdf7",
     "font-style": "italic",
     "padding-left": "60px"
 }
@@ -34,6 +42,7 @@ export const OrganizationSearchResult = (props:IOrganizationSearchResult) => {
                 <h3 style={headerContainerChildStyle}>{props.title}</h3>
             </div>
             <div>
+                <a style = {urlStyle} href={props.organizationURL} target="_blank">{props.organizationURL}</a>
                 <p style={statementStyle}>{determineLengthOfStatementToDisplay()}</p>
             </div>
         </div>

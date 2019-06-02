@@ -23,7 +23,8 @@ export const SearchBar = (props) => {
         <OrganizationSearchResult
             imageThumbnailURL={suggestion.imageThumbnailURL}
             title={suggestion.title}
-            statement={suggestion.statement} />
+            statement={suggestion.statement}
+            organizationURL={suggestion.orgURL} />
     );
 
     const onSearchBarValueChange = (event:React.ChangeEvent<HTMLInputElement>) => {
