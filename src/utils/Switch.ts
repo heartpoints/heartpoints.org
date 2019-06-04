@@ -1,6 +1,6 @@
 import { Maybe, None, NoneType } from "./maybe";
 import { Provider } from "./provider";
-import { first, zip } from "./list";
+import { first, zip, List } from "./list";
 import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate, anyOf } from "./predicate";
 import { Mapper, combineMappers } from "./mapper";
 import { Pair } from "./pair";
@@ -57,8 +57,7 @@ const SwitchWithExplicitInputImpl = <T, V>(input:T, predicateMapperPairs:Explici
     },
     cases<R>(possiblyEqualValues:T[], mapperToUseIfMatch:Mapper<T, R>):ISwitchWithEarlyInput<T, V | R> {
         return this.matchesLazy(
-            item => anyOf(possiblyEqualValues, equals(item)),
-            // item => possiblyEqualValues.includes(item),
+            item => List(possiblyEqualValues).any(equals(item)),
             mapperToUseIfMatch
         )
     },
@@ -84,12 +83,9 @@ const SwitchWithExplicitInputImpl = <T, V>(input:T, predicateMapperPairs:Explici
         )
     },
     get result():Maybe<V> {
-        return first(
-            predicateMapperPairs,
-            ([predicate]) => predicate(input)
-        ).map(
-            ([_, mapper]) => mapper(input)
-        )
+        return List(predicateMapperPairs)
+            .first(([predicate]) => predicate(input))
+            .map(([_, mapper]) => mapper(input))
     },
 })
 

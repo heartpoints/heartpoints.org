@@ -1,9 +1,15 @@
-import { List } from "../utils/list";
-import { itExpects } from "./expect";
+import { ListOfLiterals } from "../utils/list";
+import { itIsExpected } from "./expect";
+import { expect } from "chai";
 
-
-describe(List.name, () => {
+describe(ListOfLiterals.name, () => {
     const plus = (a,b) => a + b
-    itExpects(() => List().reduce(plus, 0)).toEqual(0);
-    itExpects(() => List(1,2,3).reduce(plus, 0)).toEqual(6);
+    const isEven = a => a % 2 == 0
+    itIsExpected(() => ListOfLiterals().reduce(plus, 0)).toEqual(0)
+    itIsExpected(() => ListOfLiterals(1,2,3).reduce(plus, 0)).toEqual(6)
+    itIsExpected(() => ListOfLiterals(1,2,3).first(isEven).value).toEqual(2)
+    itIsExpected(() => ListOfLiterals(1,5,3).first(isEven).isNone).toEqual(true)
+    itIsExpected(() => [...ListOfLiterals(1,2,3), 4, 5]).toBehaveAsFollows(
+        result => expect(result).to.deep.equal([1,2,3,4,5])
+    )
 })
