@@ -1,11 +1,11 @@
 import * as React from "react";
 import { HPSearchResult } from "../search/HPSearchResult";
 import { HPSearchBar } from "../search/HPSearchBar";
-import { organizations } from "../../data/organizations";
 import { Page } from "../layouts/Page"
+import { JSONText } from "../json/JSONText";
 
 export const SearchBar = (props) => {
-    const { searchBarValue, onSearchBarValueChange } = props;
+    const { searchBarValue, onSearchBarValueChange, organizations } = props;
 
     const getSuggestions = (searchBarValue) => {
         const inputValue = (searchBarValue || "").trim().toLowerCase();
@@ -34,5 +34,6 @@ export const SearchBar = (props) => {
     return <Page>
         <h1>Organization Search...</h1>
         <HPSearchBar {...hpSearchBarProps} />
+        <JSONText json={organizations} />
     </Page>
 }

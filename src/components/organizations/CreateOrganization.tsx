@@ -53,12 +53,14 @@ export const CreateOrganization = (props) => {
             if(e.target) {
                 const src = e.target.result; 
                 file.src = src;
-                console.log({file});
                 props.updateNewOrgLogo(file);
             } 
         };
         reader.readAsDataURL(file);
     }
+
+    //todo: ideally the state for this component is associated with the instance of it
+    console.log({addNewOrganization: props.addNewOrganization});
 
     return <React.Fragment>
         <ImageUploader

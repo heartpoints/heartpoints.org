@@ -7,27 +7,33 @@ import { StatefulController } from "./components/state/StatefulController";
 import { CastleRisk } from "./components/castleRisk/CastleRisk";
 import { CastleRiskInitialState } from "./components/castleRisk/game";
 import { StatefulControllerByProperty } from "./components/state/StatefulControllerByProperty";
+import { defaultOrganizations } from "./data/defaultOrganizations";
 
 const renderApp = (state) => {
+
     window.onhashchange = (event) => {
         const { newURL:currentUrl } = event;
         renderApp({...state, currentUrl });
     }
+
     window.onresize = () => {
         renderApp(state);
     }
 
     const navigateToSimpleModel = () => renderApp({...state, showSimpleModel: true});
+
     const onFacebookLoginComplete = (facebookUserSession) => {
         Cookies.set(facebookUserSessionCookieKey, facebookUserSession);
         const inDevMode = isDeveloper(facebookUserSession);
         renderApp({...state, inDevMode, facebookUserSession, shouldShowCelebration: true});
     }
+
     const onLogoutRequested = () => {
         const {facebookUserSession, ...remainingState} = state;
         deleteSessionCookie();
         renderApp({...remainingState, inDevMode: isLocalhost() });
     }
+
     const onSideNavCollapseRequested = () => {
         renderApp({
             ...state,
@@ -95,6 +101,7 @@ const renderApp = (state) => {
     }
 
     const addNewOrganization = () => {
+        console.log("MYES")
         const newOrganization = {
             imageThumbnailURL: state.newOrgLogo.src,
             title: state.newOrgTitle,
@@ -102,14 +109,19 @@ const renderApp = (state) => {
             organizationURL: state.newOrgUrl
         };
 
-        renderApp({
+        const newState = {
             ...state,
             organizations: [...state.organizations, newOrganization],
             newOrgTitle: '',
             newOrgMission: '',
             newOrgUrl: '',
             newOrgLogo: []
-        });
+        }
+
+        console.log({newOrganization});
+        console.log({newState});
+
+        renderApp(newState);
     }
 
     const statefulController = StatefulController(renderApp, state);
@@ -131,6 +143,8 @@ const renderApp = (state) => {
         CastleRisk: castleRiskController(CastleRisk),
         onFacebookLoginFailure,
         onSearchBarValueChange,
+        searchBarValue,
+        volunteeringSearchBarValue,
         updateNewOrgTitle,
         updateNewOrgMission,
         addNewOrganization,
@@ -152,27 +166,6 @@ const isLocalhost = () => window.location.hostname == "localhost";
 const developers = ['tom@tommysullivan.me','mrcorn123@yahoo.com','tastulae@mail.usf.edu',"aashreya.isforever@gmail.com", 'patmetsch@roadrunner.com', 'nishijain2512@gmail.com']
 const isDeveloper = facebookUserSession => facebookUserSession && developers.includes(facebookUserSession.email);
 const inDevMode = isLocalhost() || isDeveloper(facebookUserSession);
-
-const defaultOrganizations = [
-    {
-        imageThumbnailURL: "images/demo_icon.png",
-        title: 'Heartpoints',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        organizationURL: "http://heartpoints.org"
-    },
-    {
-        imageThumbnailURL: "images/demo_icon.png",
-        title: 'Some Organization',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo',
-        organizationURL: "https://bing.com"
-    },
-    {
-        imageThumbnailURL: "images/demo_icon.png",
-        title: 'Altruistic Company',
-        statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-        organizationURL: "https://yahoo.com"
-    }
-];
 
 const initialState = {
     showSimpleModel: false, 

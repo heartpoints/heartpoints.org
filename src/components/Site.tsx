@@ -12,7 +12,7 @@ import { SearchBar as OrgSearchBar } from "./organizations/SearchBar";
 import { SearchBar as VolunteeringSearchBar } from "./volunteering/SearchBar";
 import { CelebrationModal } from "./modals/CelebrationModal";
 import { FacebookLoginLogout } from "./facebook/FacebookLoginLogout";
-import { CreateOrganization } from "./CreateOrganization";
+import { CreateOrganization } from "./organizations/CreateOrganization";
 import classNames from 'classnames';
 
 export const SiteWithoutStyle = (props) => {

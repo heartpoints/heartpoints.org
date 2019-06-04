@@ -1,4 +1,4 @@
-export const organizations = [
+export const defaultOrganizations = [
     {
         href: "/organizations/1",
         imageThumbnailURL: "/images/demo_icon.png",
