@@ -1,7 +1,7 @@
 import { Maybe, None, NoneType } from "./maybe";
 import { Provider } from "./provider";
 import { first, zip } from "./list";
-import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate } from "./predicate";
+import { Predicate, TypePredicate, combineTypePredicates, asTypePredicate, anyOf } from "./predicate";
 import { Mapper, combineMappers } from "./mapper";
 import { Pair } from "./pair";
 import { equals } from "./equals";
@@ -57,7 +57,8 @@ const SwitchWithExplicitInputImpl = <T, V>(input:T, predicateMapperPairs:Explici
     },
     cases<R>(possiblyEqualValues:T[], mapperToUseIfMatch:Mapper<T, R>):ISwitchWithEarlyInput<T, V | R> {
         return this.matchesLazy(
-            item => possiblyEqualValues.includes(item),
+            item => anyOf(possiblyEqualValues, equals(item)),
+            // item => possiblyEqualValues.includes(item),
             mapperToUseIfMatch
         )
     },
@@ -92,7 +93,6 @@ const SwitchWithExplicitInputImpl = <T, V>(input:T, predicateMapperPairs:Explici
     },
 })
 
-const SwitchWithoutInput = ():ISwitchWithoutInput<never> => EmptySwitchWithoutInput();
 const EmptySwitchWithoutInput = ():ISwitchWithoutInput<never> => ({
     case<R>(condition:boolean, resultToUseIfMatch:R):ISwitchWithoutInput<R> {
         return this.matchesLazy(Constant(condition), Constant(resultToUseIfMatch))
