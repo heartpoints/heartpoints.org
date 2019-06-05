@@ -1,8 +1,7 @@
 import * as React from "react";
 import { HPSearchResult } from "../search/HPSearchResult";
 import { HPSearchBar } from "../search/HPSearchBar";
-import { Page } from "../layouts/Page"
-import { JSONText } from "../json/JSONText";
+import { Page } from "../layouts/Page";
 
 export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange, organizations } = props;
@@ -34,6 +33,14 @@ export const SearchBar = (props) => {
     return <Page>
         <h1>Organization Search...</h1>
         <HPSearchBar {...hpSearchBarProps} />
-        <JSONText json={organizations} />
     </Page>
 }
+
+/*
+    import { JSONText } from "../json/JSONText";
+
+    ---------
+
+    <JSONText json={organizations} /> was included in the return statement for the component, and was causing the JSON to render to the page. 
+    Removing this component does not appear to affect functionality.
+*/

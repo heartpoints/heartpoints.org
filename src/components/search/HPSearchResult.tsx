@@ -25,12 +25,18 @@ export const urlStyle ={
     "padding-left": "60px"
 }
 
+export const imageStyle = {
+    "width": "50px",
+    "height": "50px",
+    ...headerContainerChildStyle,
+}
+
 const maxStatementLength = 125;
 
-export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = undefined, organizationURL = undefined}) =>
-    <Fragment>
-        <div>
-            <img style={headerContainerChildStyle} src={imageThumbnailURL} />
+export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = undefined, organizationURL = undefined}) => {
+    return  <Fragment>
+        <div style={{display: "inline"}}>
+            <img style={imageStyle} src={imageThumbnailURL} />
             <h3 style={headerContainerChildStyle}>{title}</h3>
         </div>
         <div>
@@ -39,3 +45,6 @@ export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = 
             <p style={statementStyle}>{ellipsis(statement, maxStatementLength)}</p>
         </div>
     </Fragment>
+}
+
+
