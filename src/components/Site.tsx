@@ -12,6 +12,7 @@ import { SearchBar as OrgSearchBar } from "./organizations/SearchBar";
 import { SearchBar as VolunteeringSearchBar } from "./volunteering/SearchBar";
 import { CelebrationModal } from "./modals/CelebrationModal";
 import { FacebookLoginLogout } from "./facebook/FacebookLoginLogout";
+import { CreateOrganization } from "./organizations/CreateOrganization";
 import classNames from 'classnames';
 
 export const SiteWithoutStyle = (props) => {
@@ -30,6 +31,7 @@ export const SiteWithoutStyle = (props) => {
                     <Route path="/castleRisk" component={routerProps => <CastleRisk {...routerProps} {...props} />} />
                     <Route path="/organizations/search" render={() => <OrgSearchBar {...props} />} />
                     <Route path="/volunteering/search" render={() => <VolunteeringSearchBar {...props} />} />
+                    <Route path="/createOrganization" render={() => <div style={{margin: "150px auto"}}><CreateOrganization {...props} /></div>} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }

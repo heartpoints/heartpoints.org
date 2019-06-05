@@ -43,7 +43,7 @@ export const SideNavUnstyled = ({history, isSideNavOpen, isSideNavExpanded, onSi
             </ListItem>
             <Collapse in={isSideNavExpanded} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-             <ListItem button className={classes.nested}>
+             <ListItem button className={classes.nested} onClick={() => history.push("/createOrganization")}>
               <ListItemIcon>
                 <AddCircleOutline />
               </ListItemIcon>
