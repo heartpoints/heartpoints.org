@@ -16,25 +16,28 @@ export interface ThenLike<T> {
     shouldEventually(block:Consumer<T>):void
 }
 
-export const then = <T>(resultProvider:Provider<T>) => (
+const thenable = (prexixWord:string) => <T>(resultProvider:Provider<T>) => (
     { 
         shouldEqual: (expectedValue) => 
-            it(`then ${resultProvider} should be ${expectedValue}`, () =>
+            it(`${prexixWord} ${resultProvider} should be ${expectedValue}`, () =>
                 expect(resultProvider()).to.equal(expectedValue)
             ),
-        shouldBeFalse: () => it(`then ${resultProvider} should be false`, () =>
+        shouldBeFalse: () => it(`${prexixWord} ${resultProvider} should be false`, () =>
             expect(resultProvider()).to.be.false
         ),
-        shouldBeTrue: () => it(`then ${resultProvider} should be true`, () =>
+        shouldBeTrue: () => it(`${prexixWord} ${resultProvider} should be true`, () =>
             expect(resultProvider()).to.be.true
         ),
         shouldEventually: (block:Consumer<T>) =>
-            it(`then ${resultProvider} should eventually behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, async () => block(await resultProvider())),
+            it(`${prexixWord} ${resultProvider} should eventually behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, async () => block(await resultProvider())),
 
         shouldBehaveAsFollows: (block:Consumer<T>) =>
-            it(`then ${resultProvider} should behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, () => block(resultProvider())),
+            it(`${prexixWord} ${resultProvider} should behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, () => block(resultProvider())),
     }
 );
+
+export const then = thenable("then")
+export const theExpression = thenable("the expression");
 
 export const objectAsKeyValueString = (obj) => 
     Object
