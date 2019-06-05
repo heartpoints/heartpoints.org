@@ -1,1 +1,1 @@
-export const Constant = <T>(c:T) => (...ignored:any) => c;
+export const Constant = <T>(c:T) => () => c;
