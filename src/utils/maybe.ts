@@ -3,19 +3,25 @@ import { first } from "./list";
 import { Mapper } from "./mapper";
 
 export interface Maybe<T = any> {
-    map<S>(f:Mapper<T, S>):Maybe<S>,
-    flatMap<S>(f:MaybeFlatmapper<T, S>):Maybe<S>,
-    hasValue:boolean,
-    value:T,
-    valueOrDefault<S>(someDefault:S):T | S,
+    map<S>(f:Mapper<T, S>):Maybe<S>
+    flatMap<S>(f:MaybeFlatmapper<T, S>):Maybe<S>
+    hasValue:boolean
+    value:T
+    valueOrDefault<S>(someDefault:S):T | S
+    isNone:boolean
+    ifElse<S, R>(valueIfSomeObject:S, valueIfNone:R):S | R
 }
 
-export const None:Maybe<never> = {
+export type NoneType = Maybe<never> 
+
+export const None:NoneType = {
     map: (f) => None,
     flatMap: (f) => None,
     get value():never { throw new Error("Cannot get value for type none") },
     hasValue: false,
     valueOrDefault: <S>(someDefault:S):S => someDefault,
+    isNone: true,
+    ifElse: (_, valueIfNone) => valueIfNone,
 }
 
 export type MaybeFlatmapper<T, S> = Mapper<T, Maybe<S>>
@@ -29,6 +35,8 @@ export const Some = <T>(value:T):Maybe<T> => ({
     value,
     hasValue: true,
     valueOrDefault: () => value,
+    isNone: false,
+    ifElse: valueIfSomeObject => valueIfSomeObject,
 });
 
 export const maybeIf = <T>(predicate:boolean, valueIfTrue:T):Maybe<T> => predicate ? Some(valueIfTrue) : None;
