@@ -2,16 +2,16 @@ import * as React from "react";
 import { Fragment } from "react";
 import { ellipsis } from "../../utils/ellipsis";
 
-const headerContainerChildStyle = {
+export const headerContainerChildStyle = {
     "display": "inline",
     "margin": "3px 10px 3px 0px"
 }
 
-const padLeft = {
+export const padLeft = {
     "paddingLeft": "60px"
 }
 
-const statementStyle = {
+export const statementStyle = {
     "font-size": "12px",
     "color": "#888",
     "font-style": "italic",

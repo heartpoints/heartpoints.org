@@ -15,8 +15,9 @@ export const SearchBar = (props) => {
             );
     }
 
-    const onSuggestionSelected = ({title, imageThumbnailURL, statement, organizationURL}) =>
-        alert(`You Selected the Organization Titled "${organizationURL}"`)
+    const onSuggestionSelected = ({organizationURL, href}) => {
+        props.history.push(href);
+    }
 
     const placeholder = "Search by organization name..."
     const suggestions = getSuggestions(searchBarValue);
