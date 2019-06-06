@@ -35,12 +35,3 @@ export const SearchBar = (props) => {
         <HPSearchBar {...hpSearchBarProps} />
     </Page>
 }
-
-/*
-    import { JSONText } from "../json/JSONText";
-
-    ---------
-
-    <JSONText json={organizations} /> was included in the return statement for the component, and was causing the JSON to render to the page. 
-    Removing this component does not appear to affect functionality.
-*/
