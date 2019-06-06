@@ -103,7 +103,7 @@ const renderApp = (state) => {
     }
 
     const addNewOrganization = () => {
-        console.log("MYES")
+        // console.log("MYES")
         const newOrganization = {
             imageThumbnailURL: state.newOrgLogo.src,
             title: state.newOrgTitle,
@@ -120,8 +120,8 @@ const renderApp = (state) => {
             newOrgLogo: []
         } 
 
-        console.log({newOrganization});
-        console.log({newState});
+        // console.log({newOrganization});
+        // console.log({newState});
 
         renderApp(newState);
     }
