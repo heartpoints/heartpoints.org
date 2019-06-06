@@ -14,6 +14,7 @@ import { CelebrationModal } from "./modals/CelebrationModal";
 import { FacebookLoginLogout } from "./facebook/FacebookLoginLogout";
 import { CreateOrganization } from "./organizations/CreateOrganization";
 import classNames from 'classnames';
+import { ViewOrganization } from "./organizations/ViewOrganization";
 
 export const SiteWithoutStyle = (props) => {
     const theme = createMuiTheme(Theme);
@@ -29,9 +30,10 @@ export const SiteWithoutStyle = (props) => {
                     <Route exact path="/" component={HomePage} />
                     <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
                     <Route path="/castleRisk" component={routerProps => <CastleRisk {...routerProps} {...props} />} />
-                    <Route path="/organizations/search" render={() => <OrgSearchBar {...props} />} />
+                    <Route path="/organizations/search" render={routerProps => <OrgSearchBar {...routerProps} {...props} />} />
                     <Route path="/volunteering/search" render={() => <VolunteeringSearchBar {...props} />} />
-                    <Route path="/createOrganization" render={() => <div style={{margin: "150px auto"}}><CreateOrganization {...props} /></div>} />
+                    <Route path="/createOrganization" render={routerProps => <CreateOrganization {...routerProps} {...props} />} />
+                    <Route path="/organizatizations/viewOrganization" render={() => <ViewOrganization {...props} />} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }

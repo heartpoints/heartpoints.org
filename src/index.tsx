@@ -66,11 +66,13 @@ const renderApp = (state) => {
             ...state
         });
 
-    const onSearchBarValueChange = (searchBarValue) =>
+    const onSearchBarValueChange = (searchBarValue) => {
+        const value = searchBarValue === undefined || searchBarValue === 0 ? '' : searchBarValue;
         renderApp({
             ...state,
-            searchBarValue,
+            searchBarValue: value
         });
+    }
 
     const updateNewOrgTitle = (newOrgTitle) => {
         renderApp({
@@ -116,7 +118,7 @@ const renderApp = (state) => {
             newOrgMission: '',
             newOrgUrl: '',
             newOrgLogo: []
-        }
+        } 
 
         console.log({newOrganization});
         console.log({newState});
@@ -149,7 +151,7 @@ const renderApp = (state) => {
         updateNewOrgMission,
         addNewOrganization,
         updateNewOrgUrl,
-        updateNewOrgLogo
+        updateNewOrgLogo,
     }
 
     ReactDOM.render(
