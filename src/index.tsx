@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Site } from "./components/Site";
+import { Site, history } from "./components/Site";
 import Cookies from "js-cookie";
 import { StatefulController } from "./components/state/StatefulController";
 import { CastleRisk } from "./components/castleRisk/CastleRisk";
@@ -104,7 +104,11 @@ const renderApp = (state) => {
 
     const addNewOrganization = () => {
         // console.log("MYES")
+        const { organizations } = state;
+        const href = `/organizations/${organizations.length + 1}`
+
         const newOrganization = {
+            href,
             imageThumbnailURL: state.newOrgLogo.src,
             title: state.newOrgTitle,
             statement: state.newOrgMission,
@@ -118,12 +122,15 @@ const renderApp = (state) => {
             newOrgMission: '',
             newOrgUrl: '',
             newOrgLogo: []
-        } 
+        }
+
+        // window.location.assign(href)
 
         // console.log({newOrganization});
         // console.log({newState});
-
-        renderApp(newState);
+        
+        renderApp(newState)
+        setTimeout(() => history.push(href), 1);
     }
 
     const statefulController = StatefulController(renderApp, state);

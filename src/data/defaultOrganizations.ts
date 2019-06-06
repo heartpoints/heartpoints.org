@@ -1,4 +1,6 @@
-export const defaultOrganizations = [
+import { Organization } from "../models/organization";
+
+export const defaultOrganizations:Array<Organization> = [
     {
         href: "/organizations/1",
         imageThumbnailURL: "/images/demo_icon.png",

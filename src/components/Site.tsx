@@ -15,11 +15,18 @@ import { FacebookLoginLogout } from "./facebook/FacebookLoginLogout";
 import { CreateOrganization } from "./organizations/CreateOrganization";
 import classNames from 'classnames';
 import { ViewOrganization } from "./organizations/ViewOrganization";
+import { createBrowserHistory } from 'history';
+
+export const history = createBrowserHistory();
+
+export default class YourBrowserRouter extends BrowserRouter {
+  history;
+}
 
 export const SiteWithoutStyle = (props) => {
     const theme = createMuiTheme(Theme);
-    const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen, onSearchBarValueChange } = props;
-    return <BrowserRouter>
+    const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen } = props;
+    return <YourBrowserRouter>
         <React.Fragment>
             <CssBaseline />
             <div className={classes.root}>
@@ -33,7 +40,7 @@ export const SiteWithoutStyle = (props) => {
                     <Route path="/organizations/search" render={routerProps => <OrgSearchBar {...routerProps} {...props} />} />
                     <Route path="/volunteering/search" render={() => <VolunteeringSearchBar {...props} />} />
                     <Route path="/createOrganization" render={routerProps => <CreateOrganization {...routerProps} {...props} />} />
-                    <Route path="/organizatizations/viewOrganization" render={() => <ViewOrganization {...props} />} />
+                    <Route path="/organizations/:orgId" render={({match: { params: { orgId }}}) => <ViewOrganization {...{...props, orgId}} />} />
                     <Route component={NotFound} />
                 </Switch>    
                 { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
@@ -41,7 +48,7 @@ export const SiteWithoutStyle = (props) => {
             </main>
             </div>
         </React.Fragment>
-    </BrowserRouter>
+    </YourBrowserRouter>
 }
 
 const drawerWidth = 240;
