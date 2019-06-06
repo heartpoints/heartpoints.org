@@ -3,7 +3,7 @@ export const volunteeringOpportunities = [
         imageThumbnailURL: "/images/demo_icon.png",
         title: 'Heartpoints',
         statement: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-        organizationURL: "https:heartpoints.org",
+        organizationURL: "https://heartpoints.org",
         jobTitle: 'job 1',
         jobDescription: 'abcdefghijklmnopqrstuvwxyz'
     },
