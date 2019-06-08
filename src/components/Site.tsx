@@ -15,18 +15,11 @@ import { FacebookLoginLogout } from "./facebook/FacebookLoginLogout";
 import { CreateOrganization } from "./organizations/CreateOrganization";
 import classNames from 'classnames';
 import { ViewOrganization } from "./organizations/ViewOrganization";
-import { createBrowserHistory } from 'history';
-
-export const history = createBrowserHistory();
-
-export default class YourBrowserRouter extends BrowserRouter {
-  history;
-}
 
 export const SiteWithoutStyle = (props) => {
     const theme = createMuiTheme(Theme);
     const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen } = props;
-    return <YourBrowserRouter>
+    return <BrowserRouter>
         <React.Fragment>
             <CssBaseline />
             <div className={classes.root}>
@@ -48,7 +41,7 @@ export const SiteWithoutStyle = (props) => {
             </main>
             </div>
         </React.Fragment>
-    </YourBrowserRouter>
+    </BrowserRouter>
 }
 
 const drawerWidth = 240;
