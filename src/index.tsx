@@ -118,8 +118,8 @@ const renderApp = (state) => {
             newOrgLogo: []
         }
 
+        //todo: figure out how to nav here
         renderApp(newState)
-        setTimeout(() => history.push(href), 1);
     }
 
     const statefulController = StatefulController(renderApp, state);
