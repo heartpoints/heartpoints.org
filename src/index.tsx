@@ -97,7 +97,7 @@ const renderApp = (state) => {
         });
     }
 
-    const addNewOrganization = () => {
+    const addNewOrganization = (creatorEmail) => {
         const { organizations } = state;
         const href = `/organizations/${organizations.length + 1}`
 
@@ -106,7 +106,8 @@ const renderApp = (state) => {
             imageThumbnailURL: state.newOrgLogo.src,
             title: state.newOrgTitle,
             statement: state.newOrgMission,
-            organizationURL: state.newOrgUrl
+            organizationURL: state.newOrgUrl,
+            creatorEmail
         };
 
         const newState = {

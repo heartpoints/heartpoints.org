@@ -52,7 +52,9 @@ export const CreateOrganization = (props) => {
     }
 
     const addNewOrganization = () => {
-        props.addNewOrganization();
+        props.facebookUserSession 
+            ? props.addNewOrganization(props.facebookUserSession.email) 
+            : alert("You must be logged in to create an Organization!");
     }
 
     //todo: ideally the state for this component is associated with the instance of it
