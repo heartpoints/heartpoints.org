@@ -1,8 +1,7 @@
-import { when, whenValues, itIsExpected } from "./expect";
+import { when, whenValues, then } from "./expect";
 import * as _ from "lodash";
 import { expect } from "chai";
 import { Switch } from "../utils/Switch";
-import { None } from "../utils/maybe";
 
 describe("Switch", () => {
     describe(".when(value)", () => {
@@ -22,9 +21,10 @@ describe("Switch", () => {
             .matchesLazy(i => i == input, () => "swenu!!!")
     
         whenValues({theSwitch: switchWhenInputIsTommyMatchesLazy}, ({theSwitch}) =>
-            itIsExpected(() => theSwitch.result.value).toEqual("swenu!!!")
+            then(() => theSwitch.result.value).shouldEqual("swenu!!!")
         )
     });
+
     describe(".withoutInput", () => {
         const switchWithoutInput = Switch.withoutInput
         when("I have an empty SwitchWithoutInput", () => {
@@ -39,7 +39,7 @@ describe("Switch", () => {
             .matchesLazy(() => true, () => [1,2,3])
     
         whenValues({theSwitch: switchWithoutInputMatchesLazy}, ({theSwitch}) =>
-            itIsExpected(() => theSwitch.result.value).toBehaveAsFollows(
+            then(() => theSwitch.result.value).shouldBehaveAsFollows(
                 result => expect(result).to.deep.equal([1,2,3])
             )
         )
@@ -50,7 +50,7 @@ describe("Switch", () => {
             .caseLazy(4 == 4, () => [2,3,4])
     
         whenValues({theSwitch: switchWithoutInputCases}, ({theSwitch}) =>
-            itIsExpected(() => theSwitch.result.value).toBehaveAsFollows(
+            then(() => theSwitch.result.value).shouldBehaveAsFollows(
                 result => expect(result).to.deep.equal([2,3,4])
             )
         )
@@ -58,7 +58,7 @@ describe("Switch", () => {
     describe(".that", () => {
         const switchThat = Switch.that
         when("no matches / cases are added", () => {
-            itIsExpected(()=>switchThat.resultWhen(5 as never).isNone).toBeTrue()
+            then(()=>switchThat.resultWhen(5 as never).isNone).shouldBeTrue()
         });
     
         const switchWithOnlyCases = () => switchThat
@@ -68,11 +68,11 @@ describe("Switch", () => {
     
         whenValues({theSwitch: switchWithOnlyCases}, ({theSwitch}) => {
             whenValues({inputValue: 9}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).hasValue).toBeFalse()
+                then(() => theSwitch().resultWhen(inputValue).hasValue).shouldBeFalse()
             })
     
             whenValues({inputValue: 7}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).value).toEqual("myrrr")
+                then(() => theSwitch().resultWhen(inputValue).value).shouldEqual("myrrr")
             })
         });
     
@@ -82,15 +82,15 @@ describe("Switch", () => {
     
         whenValues({theSwitch: switchWithLazyCase}, ({theSwitch}) => {
             whenValues({inputValue: "nonMatchingInputValue"}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).hasValue).toBeFalse()
+                then(() => theSwitch().resultWhen(inputValue).hasValue).shouldBeFalse()
             })
     
             whenValues({inputValue: "tommy"}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).value).toBeTrue()
+                then(() => theSwitch().resultWhen(inputValue).value).shouldBeTrue()
             })
     
             whenValues({inputValue: true}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).value).toEqual("myes")
+                then(() => theSwitch().resultWhen(inputValue).value).shouldEqual("myes")
             })
         });
     
@@ -113,19 +113,19 @@ describe("Switch", () => {
     
         whenValues({theSwitch: switchWithMatchesOnly}, ({theSwitch}) => {
             whenValues({inputValue: "sidfusidufhsidu"}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).hasValue).toBeFalse()
+                then(() => theSwitch().resultWhen(inputValue).hasValue).shouldBeFalse()
             })
     
             whenValues({inputValue: 6}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).value).toEqual("oooo even number")
+                then(() => theSwitch().resultWhen(inputValue).value).shouldEqual("oooo even number")
             })
     
             whenValues({inputValue: "tommy"}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).value).toEqual("yay tommy")
+                then(() => theSwitch().resultWhen(inputValue).value).shouldEqual("yay tommy")
             })
     
             whenValues({inputValue: 7}, ({inputValue}) => {
-                itIsExpected(() => theSwitch().resultWhen(inputValue).value).toEqual("oooo odd number 7")
+                then(() => theSwitch().resultWhen(inputValue).value).shouldEqual("oooo odd number 7")
             })
         });
     })

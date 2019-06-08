@@ -8,22 +8,36 @@ export const and = when;
 export const whenValues = <T>(obj:T, block:(t:T)=>void) => context(`when:\n${objectAsKeyValueString(obj)}\n${whenSpacing}...\n\n`, () => block(obj));
 const whenSpacing = "             ";
 
-export const itIsExpected = <T>(resultProvider:Provider<T>) => (
+export interface ThenLike<T> {
+    shouldEqual(expectedValue:T):void
+    shouldBeFalse():void
+    shouldBeTrue():void
+    shouldBehaveAsFollows(block:Consumer<T>):void
+    shouldEventually(block:Consumer<T>):void
+}
+
+const thenable = (prexixWord:string) => <T>(resultProvider:Provider<T>) => (
     { 
-        toEqual: expectedValue => 
-            it(`it expects ${resultProvider} to be ${expectedValue}`, () =>
+        shouldEqual: (expectedValue) => 
+            it(`${prexixWord} ${resultProvider} should be ${expectedValue}`, () =>
                 expect(resultProvider()).to.equal(expectedValue)
             ),
-        toBeFalse: () => it(`it expects ${resultProvider} to be false`, () =>
+        shouldBeFalse: () => it(`${prexixWord} ${resultProvider} should be false`, () =>
             expect(resultProvider()).to.be.false
         ),
-        toBeTrue: () => it(`it expects ${resultProvider} to be true`, () =>
+        shouldBeTrue: () => it(`${prexixWord} ${resultProvider} should be true`, () =>
             expect(resultProvider()).to.be.true
         ),
-        toBehaveAsFollows: (block:Consumer<T>) =>
-            it(`it expects ${resultProvider} to behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, () => block(resultProvider())),
+        shouldEventually: (block:Consumer<T>) =>
+            it(`${prexixWord} ${resultProvider} should eventually behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, async () => block(await resultProvider())),
+
+        shouldBehaveAsFollows: (block:Consumer<T>) =>
+            it(`${prexixWord} ${resultProvider} should behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, () => block(resultProvider())),
     }
 );
+
+export const then = thenable("then")
+export const theExpression = thenable("the expression");
 
 export const objectAsKeyValueString = (obj) => 
     Object

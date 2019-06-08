@@ -1,32 +1,27 @@
-import { TypeSwitch, TypeMatch, TypeDefault } from "../utils/TypeSwitch";
 import { theInternet } from "./theInternet";
-import { Maybe } from "../utils/maybe";
 import { mapDictionary } from "../utils/list";
-import { RGSONValue, IsRJSONArray, IsRJSONDictionary, RGSONDictionary } from "./rgson";
+import { RGSONValue, IsRJSONArray, IsRJSONDictionary, RGSONDictionary, RGSONArray } from "./rgson";
 import { JSONValue, JSONArray, JSONObject } from "./plainJson";
+import { Switch } from "../utils/Switch";
 
 export type HttpRequestArgs = {
     url:string,
     contentType:string,
 }
 
-export const getCompleteProjection = ({url, contentType}:HttpRequestArgs):Maybe<JSONValue> => {
-    const maybeRepresentation = theInternet({url, contentType});
-    return maybeRepresentation.flatMap(representation => TypeSwitch<RGSONValue,any,JSONValue>(representation,
-        TypeMatch(IsRJSONArray, mapArrayToCompleteProjection),
-        TypeMatch(IsRJSONDictionary, mapDictionaryToCompleteProject),
-        TypeDefault(representation),
-    ));
-}
+export const getCompleteProjection = (rgson:RGSONValue):JSONValue => 
+    Switch.that
+        .matchesType(IsRJSONArray, mapArrayToCompleteProjection)
+        .matchesType(IsRJSONDictionary, mapDictionaryToCompleteProjection)
+        .resultWhen(rgson)
+        .valueOrDefault(rgson)
 
-const mapArrayToCompleteProjection = (arrayRepresentation:string[]):JSONArray => 
-    arrayRepresentation.map(
-        url => getCompleteProjection({url, contentType: "sdfsdf" }).value
-    )
+const mapArrayToCompleteProjection = (arrayRepresentation:RGSONArray):JSONArray => 
+    arrayRepresentation.map(url => theInternet({url, contentType: "http://rest.guru/rgson/completeProjection"}).value)
 
-const mapDictionaryToCompleteProject = (dictionary:RGSONDictionary):JSONObject => 
+const mapDictionaryToCompleteProjection = (dictionary:RGSONDictionary):JSONObject => 
     mapDictionary(
         dictionary, 
-        k => getCompleteProjection({url: k, contentType: "sdfasfsfd"}).value!.toString(),
-        v => getCompleteProjection({url: v, contentType: "asfdsfd"}).value,
+        k => theInternet({url: k, contentType: "http://rest.guru/jsonHashKey"}).value!.toString(),
+        v => theInternet({url: v, contentType: "http://rest.guru/rgson/completeProjection"}).value,
     );

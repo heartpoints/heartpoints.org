@@ -1,16 +1,15 @@
-import { Some, None, reduceMaybe } from "../utils/maybe";
-import { whenValues, itIsExpected } from "./expect";
+import { Some, reduceMaybe } from "../utils/maybe";
+import { whenValues, then } from "./expect";
+import { add3ToEvens, doubleOdds } from "./helpers";
 
 describe("Maybe", () => {
-    const doubleOdds = (x:number) => x % 2 == 1 ? Some(x * 2) : None
-    const add3ToEvens = (x:number) => x % 2 == 0 ? Some(x + 3) : None
     whenValues({add3ToEvens, doubleOdds}, () => {
-        itIsExpected(
+        then(
             () => Some(5).flatMap(doubleOdds).flatMap(add3ToEvens).valueOrDefault(2)
-        ).toEqual(13);
+        ).shouldEqual(13);
 
-        itIsExpected(
+        then(
             () => reduceMaybe(5, doubleOdds, add3ToEvens, doubleOdds, add3ToEvens).valueOrDefault(2)
-        ).toEqual(29);
+        ).shouldEqual(29);
     });
 })

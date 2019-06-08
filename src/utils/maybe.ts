@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 import { first } from "./list";
 import { Mapper } from "./mapper";
+import { Provider } from "./provider";
 
 export interface Maybe<T = any> {
     map<S>(f:Mapper<T, S>):Maybe<S>
@@ -39,13 +40,15 @@ export const Some = <T>(value:T):Maybe<T> => ({
     ifElse: valueIfSomeObject => valueIfSomeObject,
 });
 
+export const If = (predicate:Boolean):Maybe<boolean> => predicate ? Some(true) : None
 export const maybeIf = <T>(predicate:boolean, valueIfTrue:T):Maybe<T> => predicate ? Some(valueIfTrue) : None;
-export const maybe = <T>(valueIfTrue?:T):Maybe<T> => valueIfTrue !== null && valueIfTrue !== undefined ? Some(valueIfTrue) : None;
+export const maybeIfLazy = <T>(predicate:boolean, valueProviderIfTrue:Provider<T>):Maybe<T> => predicate ? Some(valueProviderIfTrue()) : None;
+export const maybe = <T>(possiblyNullOrUndefinedValue?:T):Maybe<T> => possiblyNullOrUndefinedValue !== null && possiblyNullOrUndefinedValue !== undefined ? Some(possiblyNullOrUndefinedValue) : None;
 
 export const reduceMaybe = <T>(inputVal:T, ...ops:Array<MaybeFlatmapper<T, T>>):Maybe<T> => 
     ops.reduce((acc, current) => acc.flatMap(current), Some(inputVal));
 
-export const firstMaybe = <T, S>(inputVal:T, ...ops:Array<MaybeFlatmapper<T, S>>):Maybe<S> => {
+export const firstLegitValue = <T, S>(inputVal:T, ...ops:Array<MaybeFlatmapper<T, S>>):Maybe<S> => {
     const opThatReturnedSomeValue = _.find(ops, op => op(inputVal).hasValue);
     return opThatReturnedSomeValue == undefined
         ? None
