@@ -11,11 +11,6 @@ import { defaultOrganizations } from "./data/defaultOrganizations";
 
 const renderApp = (state) => {
 
-    window.onhashchange = (event) => {
-        const { newURL:currentUrl } = event;
-        renderApp({...state, currentUrl });
-    }
-
     window.onresize = () => {
         renderApp(state);
     }
@@ -66,11 +61,13 @@ const renderApp = (state) => {
             ...state
         });
 
-    const onSearchBarValueChange = (searchBarValue) =>
+    const onSearchBarValueChange = (searchBarValue) => {
+        const value = searchBarValue === undefined || searchBarValue === 0 ? '' : searchBarValue;
         renderApp({
             ...state,
-            searchBarValue,
+            searchBarValue: value
         });
+    }
 
     const updateNewOrgTitle = (newOrgTitle) => {
         renderApp({
@@ -101,8 +98,11 @@ const renderApp = (state) => {
     }
 
     const addNewOrganization = () => {
-        console.log("MYES")
+        const { organizations } = state;
+        const href = `/organizations/${organizations.length + 1}`
+
         const newOrganization = {
+            href,
             imageThumbnailURL: state.newOrgLogo.src,
             title: state.newOrgTitle,
             statement: state.newOrgMission,
@@ -118,10 +118,8 @@ const renderApp = (state) => {
             newOrgLogo: []
         }
 
-        console.log({newOrganization});
-        console.log({newState});
-
-        renderApp(newState);
+        //todo: figure out how to nav here
+        renderApp(newState)
     }
 
     const statefulController = StatefulController(renderApp, state);
@@ -149,7 +147,7 @@ const renderApp = (state) => {
         updateNewOrgMission,
         addNewOrganization,
         updateNewOrgUrl,
-        updateNewOrgLogo
+        updateNewOrgLogo,
     }
 
     ReactDOM.render(
@@ -170,7 +168,6 @@ const inDevMode = isLocalhost() || isDeveloper(facebookUserSession);
 const initialState = {
     showSimpleModel: false, 
     facebookUserSession, 
-    currentUrl: window.location.href,
     isSideNavOpen: false,
     shouldShowCelebration: false,
     isSideNavExpanded: false,

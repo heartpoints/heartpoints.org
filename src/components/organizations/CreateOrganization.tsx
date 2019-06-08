@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Page } from '../layouts/Page';
 
 import ImageUploader from 'react-images-upload';
 
@@ -50,11 +51,13 @@ export const CreateOrganization = (props) => {
         reader.readAsDataURL(file);
     }
 
-    //todo: ideally the state for this component is associated with the instance of it
-    console.log({addNewOrganization: props.addNewOrganization});
+    const addNewOrganization = () => {
+        props.addNewOrganization();
+    }
 
+    //todo: ideally the state for this component is associated with the instance of it
     //todo: force single image not working?
-    return <React.Fragment>
+    return <Page>
         <ImageUploader
             singleImage={true}
             withPreview={true}
@@ -67,6 +70,6 @@ export const CreateOrganization = (props) => {
         <input style={fieldSetChildStyle} id="orgName" type="text" placeholder="Organization Name" onChange={updateNewOrgTitle} value={props.newOrgTitle}/>
         <input style={fieldSetChildStyle} id="orgUrl" type="text" placeholder="Organization Webpage" onChange={updateNewOrgUrl} value={props.newOrgUrl}/>
         <textarea style={fieldSetChildStyle} id="orgMission" rows={5} cols={50} placeholder="Mission Statement" onChange={updateNewOrgMission} value={props.newOrgMission}></textarea>
-        <button style={{...fieldSetChildStyle, ...submitButtonStyle}} onClick={props.addNewOrganization}>Submit</button>
-    </React.Fragment>
+        <button style={{...fieldSetChildStyle, ...submitButtonStyle}} onClick={addNewOrganization}>Submit</button>
+    </Page>
 }
