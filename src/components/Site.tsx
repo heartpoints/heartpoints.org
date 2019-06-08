@@ -1,6 +1,5 @@
 import * as React from "react";
 import { HomePage } from "./welcome/HomePage";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { NotFound } from "./nav/NotFound";
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -12,36 +11,46 @@ import { SearchBar as OrgSearchBar } from "./organizations/SearchBar";
 import { SearchBar as VolunteeringSearchBar } from "./volunteering/SearchBar";
 import { CelebrationModal } from "./modals/CelebrationModal";
 import { FacebookLoginLogout } from "./facebook/FacebookLoginLogout";
-import { CreateOrganization } from "./organizations/CreateOrganization";
 import classNames from 'classnames';
 import { ViewOrganization } from "./organizations/ViewOrganization";
+import { Switch, regexMatch } from "../utils/Switch";
+import { Url } from "../utils/url";
+import { EmptyList } from "../utils/list";
+import { CreateOrganization } from "./organizations/CreateOrganization";
 
-export const SiteWithoutStyle = (props) => {
-    const theme = createMuiTheme(Theme);
-    const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen } = props;
-    return <BrowserRouter>
-        <React.Fragment>
-            <CssBaseline />
-            <div className={classes.root}>
-            <main className={classNames(classes.content, { [classes.contentShift]: isSideNavOpen,})}>
-            <MuiThemeProvider {...{theme}}>
-                <Route path="/" component={routerProps => <PossibleNavBars {...routerProps} {...props} />} />
-                <Switch>
-                    <Route exact path="/" component={HomePage} />
-                    <Route path="/dev" component={() => <FacebookLoginLogout {...props} />} />
-                    <Route path="/castleRisk" component={routerProps => <CastleRisk {...routerProps} {...props} />} />
-                    <Route path="/organizations/search" render={routerProps => <OrgSearchBar {...routerProps} {...props} />} />
-                    <Route path="/volunteering/search" render={() => <VolunteeringSearchBar {...props} />} />
-                    <Route path="/createOrganization" render={routerProps => <CreateOrganization {...routerProps} {...props} />} />
-                    <Route path="/organizations/:orgId" render={({match: { params: { orgId }}}) => <ViewOrganization {...{...props, orgId}} />} />
-                    <Route component={NotFound} />
-                </Switch>    
-                { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
-            </MuiThemeProvider>
-            </main>
-            </div>
-        </React.Fragment>
-    </BrowserRouter>
+type Props = {
+  url:Url,
+  [others:string]:any,
+}
+
+export const SiteWithoutStyle = (props:Props) => {
+  const theme = createMuiTheme(Theme);
+  const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen, organizations, url} = props;
+  const mainPageProps = {...props, history}
+  const mainPage = Switch
+    .when(url.path)
+    .case("/", <HomePage />)
+    .case("/dev", <FacebookLoginLogout {...props} />)
+    .case("/castleRisk", <CastleRisk {...mainPageProps} />)
+    .case("/organizations/search", <OrgSearchBar {...props} />)
+    .case("/volunteering/search", <VolunteeringSearchBar {...props} />)
+    .case("/organizations/new", <CreateOrganization {...props} />)
+    .matches(regexMatch("/organizations/.+"), <ViewOrganization href={url.path} {...props} {...{organizations}} />)
+    .result
+    .valueOrDefault(<NotFound />)
+
+  return <React.Fragment>
+    <CssBaseline />
+    <div className={classes.root}>
+      <main className={classNames(classes.content, { [classes.contentShift]: isSideNavOpen,})}>
+      <MuiThemeProvider {...{theme}}>
+        <PossibleNavBars {...{history}} {...props} />} />
+        {mainPage}
+        { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
+      </MuiThemeProvider>
+      </main>
+    </div>
+  </React.Fragment>
 }
 
 const drawerWidth = 240;

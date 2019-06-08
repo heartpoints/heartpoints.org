@@ -69,7 +69,7 @@ export const EmptyList:List<never> = {
 
 export const NonEmptyList = <T, S>(head:T, tail:List<S>):List<T | S> => ({
     map: f => NonEmptyList(f(head), tail.map(f)),
-    push(i) { return NonEmptyList(i, this) },
+    push(i) { return NonEmptyList(head, tail.push(i)) },
     get head() { return Some(head) },
     get tail() { return Some(tail) },
     reduce: (reducer, startingPoint) => tail.reduce(reducer, reducer(startingPoint, head)),
@@ -78,7 +78,7 @@ export const NonEmptyList = <T, S>(head:T, tail:List<S>):List<T | S> => ({
     notEmpty: true,
     get asArray() { 
         return this.reduce(
-            (arraySoFar, item) => [item, ...arraySoFar],
+            (arraySoFar, item) => [...arraySoFar, item],
             [] as Array<T | S>
         )
     },

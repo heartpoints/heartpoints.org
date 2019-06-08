@@ -8,147 +8,138 @@ import { CastleRisk } from "./components/castleRisk/CastleRisk";
 import { CastleRiskInitialState } from "./components/castleRisk/game";
 import { StatefulControllerByProperty } from "./components/state/StatefulControllerByProperty";
 import { defaultOrganizations } from "./data/defaultOrganizations";
+import { createBrowserHistory } from "history";
+import { Url } from "./utils/url";
+import { identity } from "./utils/identity";
+
+const history = createBrowserHistory()
+
+const navTo = (state, path: string) => {
+    const url = state.url.setPath(path)
+    history.push(path)
+    return {...state, url}
+}
+
+const navigateToSimpleModel = (state) => ({...state, showSimpleModel: true})
+
+const onFacebookLoginComplete = (state, facebookUserSession) => {
+    Cookies.set(facebookUserSessionCookieKey, facebookUserSession);
+    const inDevMode = isDeveloper(facebookUserSession);
+    return {...state, inDevMode, facebookUserSession, shouldShowCelebration: true};
+}
+
+const onLogoutRequested = (state) => {
+    const {facebookUserSession, ...remainingState} = state;
+    deleteSessionCookie();
+    return {...remainingState, inDevMode: isLocalhost()};
+}
+
+const onSideNavExpandRequested = (state) => ({
+    ...state,
+    isSideNavExpanded: !state.isSideNavExpanded
+})
+
+const onSideNavCollapseRequested = (state) => ({
+    ...state,
+    isSideNavOpen: false
+})
+
+const onSearchBarValueChange = (state, searchBarValue) => {
+    const value = searchBarValue === undefined || searchBarValue === 0 ? '' : searchBarValue;
+    return {
+        ...state,
+        searchBarValue: value
+    }
+}
+
+const onCelebrationXClicked = (state) => ({
+    ...state,
+    shouldShowCelebration: false
+})
+
+const onHamburgerClicked = (state) => ({
+    ...state,
+    isSideNavOpen: true
+})
+
+const updateNewOrgTitle = (state, newOrgTitle) => ({
+    ...state,
+    newOrgTitle
+})
+
+const updateNewOrgMission = (state, newOrgMission) => ({
+    ...state,
+    newOrgMission
+})
+
+const updateNewOrgUrl = (state, newOrgUrl) => ({
+    ...state,
+    newOrgUrl
+})
+
+const updateNewOrgLogo = (state, newOrgLogo) => ({
+    ...state,
+    newOrgLogo,
+})
+
+const addNewOrganization = (state, creatorEmail) => {
+    const { organizations } = state;
+    const href = `/organizations/${organizations.length + 1}`
+
+    const newOrganization = {
+        href,
+        imageThumbnailURL: state.newOrgLogo.src,
+        title: state.newOrgTitle,
+        statement: state.newOrgMission,
+        organizationURL: state.newOrgUrl,
+        creatorEmail,
+    };
+    
+    const stateWithNewOrg = {
+        ...state,
+        organizations: [...state.organizations, newOrganization],
+        newOrgTitle: '',
+        newOrgMission: '',
+        newOrgUrl: '',
+        newOrgLogo: [],
+    }
+
+    return navTo(stateWithNewOrg, href)
+}
 
 const renderApp = (state) => {
 
+    const action = (stateHandler) => (...args) => {
+        const newState = stateHandler(state, ...args)
+        renderApp(newState);
+    }
+
     window.onresize = () => {
         renderApp(state);
-    }
-
-    const navigateToSimpleModel = () => renderApp({...state, showSimpleModel: true});
-
-    const onFacebookLoginComplete = (facebookUserSession) => {
-        Cookies.set(facebookUserSessionCookieKey, facebookUserSession);
-        const inDevMode = isDeveloper(facebookUserSession);
-        renderApp({...state, inDevMode, facebookUserSession, shouldShowCelebration: true});
-    }
-
-    const onLogoutRequested = () => {
-        const {facebookUserSession, ...remainingState} = state;
-        deleteSessionCookie();
-        renderApp({...remainingState, inDevMode: isLocalhost() });
-    }
-
-    const onSideNavCollapseRequested = () => {
-        renderApp({
-            ...state,
-            isSideNavOpen: false
-        });
-    }
-
-    const onSideNavExpandRequested = () => {
-        renderApp({
-            ...state,
-            isSideNavExpanded: !state.isSideNavExpanded
-        });
-    }
-
-    const onHamburgerClicked = () => {
-        renderApp({
-            ...state,
-            isSideNavOpen: true
-        });
-    }
-    const onCelebrationXClicked = () => {
-        renderApp({
-            ...state,
-            shouldShowCelebration: false
-        });
-    }
-
-    const onFacebookLoginFailure = () =>
-        renderApp({
-            ...state
-        });
-
-    const onSearchBarValueChange = (searchBarValue) => {
-        const value = searchBarValue === undefined || searchBarValue === 0 ? '' : searchBarValue;
-        renderApp({
-            ...state,
-            searchBarValue: value
-        });
-    }
-
-    const updateNewOrgTitle = (newOrgTitle) => {
-        renderApp({
-            ...state,
-            newOrgTitle
-        });
-    }
-
-    const updateNewOrgMission = (newOrgMission) => {
-        renderApp({
-            ...state,
-            newOrgMission
-        });
-    }
-
-    const updateNewOrgUrl = (newOrgUrl) => {
-        renderApp({
-            ...state,
-            newOrgUrl
-        });
-    }
-
-    const updateNewOrgLogo = (newOrgLogo) => {
-        renderApp({
-            ...state,
-            newOrgLogo,
-        });
-    }
-
-    const addNewOrganization = (creatorEmail) => {
-        const { organizations } = state;
-        const href = `/organizations/${organizations.length + 1}`
-
-        const newOrganization = {
-            href,
-            imageThumbnailURL: state.newOrgLogo.src,
-            title: state.newOrgTitle,
-            statement: state.newOrgMission,
-            organizationURL: state.newOrgUrl,
-            creatorEmail
-        };
-
-        const newState = {
-            ...state,
-            organizations: [...state.organizations, newOrganization],
-            newOrgTitle: '',
-            newOrgMission: '',
-            newOrgUrl: '',
-            newOrgLogo: []
-        }
-
-        //todo: figure out how to nav here
-        renderApp(newState)
     }
 
     const statefulController = StatefulController(renderApp, state);
     const statefulControllerByProperty = StatefulControllerByProperty(statefulController);
     const castleRiskController = statefulControllerByProperty('castleRisk', CastleRiskInitialState);
 
-    const {searchBarValue} = state;
-    const {volunteeringSearchBarValue} = state;
-
     const siteProps = {
         ...state, 
-        navigateToSimpleModel,
-        onFacebookLoginComplete,
-        onLogoutRequested,
-        onSideNavCollapseRequested,
-        onHamburgerClicked,
-        onCelebrationXClicked,
-        onSideNavExpandRequested,
         CastleRisk: castleRiskController(CastleRisk),
-        onFacebookLoginFailure,
-        onSearchBarValueChange,
-        searchBarValue,
-        volunteeringSearchBarValue,
-        updateNewOrgTitle,
-        updateNewOrgMission,
-        addNewOrganization,
-        updateNewOrgUrl,
-        updateNewOrgLogo,
+        addNewOrganization: action(addNewOrganization),
+        navTo: action(navTo),
+        navigateToSimpleModel: action(navigateToSimpleModel),
+        onCelebrationXClicked: action(onCelebrationXClicked),
+        onFacebookLoginComplete: action(onFacebookLoginComplete),
+        onFacebookLoginFailure: action(identity),
+        onHamburgerClicked: action(onHamburgerClicked),
+        onLogoutRequested: action(onLogoutRequested),
+        onSearchBarValueChange: action(onSearchBarValueChange),
+        onSideNavCollapseRequested: action(onSideNavCollapseRequested),
+        onSideNavExpandRequested: action(onSideNavExpandRequested),
+        updateNewOrgLogo: action(updateNewOrgLogo),
+        updateNewOrgMission: action(updateNewOrgMission),
+        updateNewOrgTitle: action(updateNewOrgTitle),
+        updateNewOrgUrl: action(updateNewOrgUrl),
     }
 
     ReactDOM.render(
@@ -167,22 +158,23 @@ const isDeveloper = facebookUserSession => facebookUserSession && developers.inc
 const inDevMode = isLocalhost() || isDeveloper(facebookUserSession);
 
 const initialState = {
-    showSimpleModel: false, 
     facebookUserSession, 
-    isSideNavOpen: false,
-    shouldShowCelebration: false,
-    isSideNavExpanded: false,
     inDevMode,
-    searchBarValue: '',
-    searchBarSuggestions: [],
-    shouldShowSearch: true,
-    volunteeringSearchBarValue: '',
-    volunteeringSearchBarSuggestions: [],
-    newOrgTitle: '',
+    isSideNavExpanded: false,
+    isSideNavOpen: false,
+    newOrgLogo: [],
     newOrgMission: '',
+    newOrgTitle: '',
     newOrgUrl: '',
     organizations: defaultOrganizations,
-    newOrgLogo: [],
+    searchBarSuggestions: [],
+    searchBarValue: '',
+    shouldShowCelebration: false,
+    shouldShowSearch: true,
+    showSimpleModel: false, 
+    url: Url(window.location.href),
+    volunteeringSearchBarSuggestions: [],
+    volunteeringSearchBarValue: '',
 }
 
 renderApp(initialState);

@@ -1,4 +1,4 @@
-import { when, whenValues, then } from "./expect";
+import { when, whenValues, then, theExpression } from "./expect";
 import * as _ from "lodash";
 import { expect } from "chai";
 import { Switch } from "../utils/Switch";
@@ -23,7 +23,15 @@ describe("Switch", () => {
         whenValues({theSwitch: switchWhenInputIsTommyMatchesLazy}, ({theSwitch}) =>
             then(() => theSwitch.result.value).shouldEqual("swenu!!!")
         )
-    });
+
+        theExpression(
+            () => switchWhenInputIsTommy
+                .case("tommy", 0)
+                .case("tommy", 1)
+                .result
+                .value
+        ).shouldEqual(0)
+    })
 
     describe(".withoutInput", () => {
         const switchWithoutInput = Switch.withoutInput
