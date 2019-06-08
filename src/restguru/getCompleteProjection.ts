@@ -12,14 +12,14 @@ export type HttpRequestArgs = {
 export const getCompleteProjection = (rgson:RGSONValue):JSONValue => 
     Switch.that
         .matchesType(IsRJSONArray, mapArrayToCompleteProjection)
-        .matchesType(IsRJSONDictionary, mapDictionaryToCompleteProject)
+        .matchesType(IsRJSONDictionary, mapDictionaryToCompleteProjection)
         .resultWhen(rgson)
         .valueOrDefault(rgson)
 
 const mapArrayToCompleteProjection = (arrayRepresentation:RGSONArray):JSONArray => 
     arrayRepresentation.map(url => theInternet({url, contentType: "http://rest.guru/rgson/completeProjection"}).value)
 
-const mapDictionaryToCompleteProject = (dictionary:RGSONDictionary):JSONObject => 
+const mapDictionaryToCompleteProjection = (dictionary:RGSONDictionary):JSONObject => 
     mapDictionary(
         dictionary, 
         k => theInternet({url: k, contentType: "http://rest.guru/jsonHashKey"}).value!.toString(),
