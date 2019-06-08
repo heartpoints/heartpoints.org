@@ -53,12 +53,9 @@ export const CreateOrganization = (props) => {
 
     const addNewOrganization = () => {
         props.addNewOrganization();
-        //props.history.push('/organizatizations/viewOrganization');
     }
 
     //todo: ideally the state for this component is associated with the instance of it
-    console.log({addNewOrganization: props.addNewOrganization});
-
     //todo: force single image not working?
     return <Page>
         <ImageUploader

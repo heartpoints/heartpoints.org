@@ -11,11 +11,6 @@ import { defaultOrganizations } from "./data/defaultOrganizations";
 
 const renderApp = (state) => {
 
-    window.onhashchange = (event) => {
-        const { newURL:currentUrl } = event;
-        renderApp({...state, currentUrl });
-    }
-
     window.onresize = () => {
         renderApp(state);
     }
@@ -103,7 +98,6 @@ const renderApp = (state) => {
     }
 
     const addNewOrganization = () => {
-        // console.log("MYES")
         const { organizations } = state;
         const href = `/organizations/${organizations.length + 1}`
 
@@ -124,11 +118,6 @@ const renderApp = (state) => {
             newOrgLogo: []
         }
 
-        // window.location.assign(href)
-
-        // console.log({newOrganization});
-        // console.log({newState});
-        
         renderApp(newState)
         setTimeout(() => history.push(href), 1);
     }
@@ -179,7 +168,6 @@ const inDevMode = isLocalhost() || isDeveloper(facebookUserSession);
 const initialState = {
     showSimpleModel: false, 
     facebookUserSession, 
-    currentUrl: window.location.href,
     isSideNavOpen: false,
     shouldShowCelebration: false,
     isSideNavExpanded: false,
