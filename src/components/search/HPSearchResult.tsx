@@ -41,7 +41,7 @@ export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = 
         </div>
         <div>
             {subtitle && <h5 style={padLeft}>{subtitle}</h5>}
-            {organizationURL && <a style = {urlStyle} href={organizationURL} target="_blank">{organizationURL}</a>}
+            {organizationURL && <a onClick={e => e.stopPropagation() } style ={urlStyle} href={organizationURL} target="_blank">{organizationURL}</a>}
             <p style={statementStyle}>{ellipsis(statement, maxStatementLength)}</p>
         </div>
     </Fragment>

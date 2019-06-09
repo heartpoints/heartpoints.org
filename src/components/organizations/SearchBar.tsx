@@ -4,7 +4,7 @@ import { HPSearchBar } from "../search/HPSearchBar";
 import { Page } from "../layouts/Page";
 
 export const SearchBar = (props) => {
-    const { searchBarValue, onSearchBarValueChange, organizations } = props;
+    const { searchBarValue, onSearchBarValueChange, organizations, navTo } = props;
 
     const getSuggestions = (searchBarValue) => {
         const inputValue = (searchBarValue || "").trim().toLowerCase();
@@ -15,9 +15,7 @@ export const SearchBar = (props) => {
             );
     }
 
-    const onSuggestionSelected = ({organizationURL, href}) => {
-        props.history.push(href);
-    }
+    const onSuggestionSelected = ({href}) => navTo(href)
 
     const placeholder = "Search by organization name..."
     const suggestions = getSuggestions(searchBarValue);

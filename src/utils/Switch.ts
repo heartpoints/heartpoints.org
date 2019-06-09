@@ -215,3 +215,5 @@ export const Switch:ISwitch = {
     withoutInput: EmptySwitchWithoutInput(),
     that: EmptySwitch()
 }
+
+export const regexMatch = (regex: string | RegExp) => (actual:string) => actual.match(regex) != null

@@ -10,16 +10,17 @@ export const viewOrgStatementStyle = {
     "width": "400px"
 }
 
-interface Props { organizations: Organization[], orgId:string }
-export const ViewOrganization = ({orgId, organizations}:Props) => {
-    const desiredOrgURL = `/organizations/${orgId}`
-    const matchingOrganization = List(organizations).first(o => o.href == desiredOrgURL)
+interface Props { organizations: Organization[], href:string }
+export const ViewOrganization = ({href, organizations}:Props) => {
+    const matchingOrganization = List(organizations).first(o => o.href == href)
     
     const content = matchingOrganization.hasValue
         ? <LoadedOrganization {...matchingOrganization.value } />
         : <MissingOrganization />
 
-    return <Page>{content}</Page>
+    return <Page>
+        {content}
+    </Page>
 }
 
 const MissingOrganization = () => <p>Organization Not Found!</p>

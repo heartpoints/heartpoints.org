@@ -28,11 +28,17 @@ const thenable = (prexixWord:string) => <T>(resultProvider:Provider<T>) => (
         shouldBeTrue: () => it(`${prexixWord} ${resultProvider} should be true`, () =>
             expect(resultProvider()).to.be.true
         ),
-        shouldEventually: (block:Consumer<T>) =>
-            it(`${prexixWord} ${resultProvider} should eventually behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, async () => block(await resultProvider())),
-
-        shouldBehaveAsFollows: (block:Consumer<T>) =>
-            it(`${prexixWord} ${resultProvider} should behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`, () => block(resultProvider())),
+        shouldDeepEqual: (expectedValue) => it(`${prexixWord} ${resultProvider} should deep equal`, () =>
+            expect(resultProvider()).to.deep.equal(expectedValue)
+        ),
+        shouldEventually: (block:Consumer<T>) => it(
+            `${prexixWord} ${resultProvider} should eventually behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`,
+            async () => block(await resultProvider())
+        ),
+        shouldBehaveAsFollows: (block:Consumer<T>) => it(
+            `${prexixWord} ${resultProvider} should behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`,
+            () => block(resultProvider())
+        ),
     }
 );
 

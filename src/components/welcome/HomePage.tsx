@@ -11,9 +11,6 @@ export const HomePage = () => {
                 <h2 style={{textAlign: "center", marginTop: "10px"}}>
                     <a href="mailto:info@heartpoints.org">info@heartpoints.org</a> 
                 </h2>
-                <p style={{textAlign: "center", marginBottom: "0px", marginTop: "25px"}}>
-                    <a href=""></a>
-                </p>
             </div>
         </div>
     </div>
