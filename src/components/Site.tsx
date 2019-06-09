@@ -15,17 +15,18 @@ import classNames from 'classnames';
 import { ViewOrganization } from "./organizations/ViewOrganization";
 import { Switch, regexMatch } from "../utils/Switch";
 import { Url } from "../utils/url";
-import { EmptyList } from "../utils/list";
 import { CreateOrganization } from "./organizations/CreateOrganization";
+import { Organization } from "../models/organization";
 
 type Props = {
-  url:Url,
-  [others:string]:any,
+  url:Url
+  organizations: Organization[]
+  [others:string]:any
 }
 
 export const SiteWithoutStyle = (props:Props) => {
   const theme = createMuiTheme(Theme);
-  const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen, organizations, url} = props;
+  const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen, url} = props;
   const mainPageProps = {...props, history}
   const mainPage = Switch
     .when(url.path)
@@ -35,7 +36,7 @@ export const SiteWithoutStyle = (props:Props) => {
     .case("/organizations/search", <OrgSearchBar {...props} />)
     .case("/volunteering/search", <VolunteeringSearchBar {...props} />)
     .case("/organizations/new", <CreateOrganization {...props} />)
-    .matches(regexMatch("/organizations/.+"), <ViewOrganization href={url.path} {...props} {...{organizations}} />)
+    .matches(regexMatch("/organizations/.+"), <ViewOrganization href={url.path} {...props} />)
     .result
     .valueOrDefault(<NotFound />)
 
