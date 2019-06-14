@@ -12,7 +12,7 @@ import Favorite from '@material-ui/icons/Favorite';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSideNavExpandRequested, classes, theme, onSideNavCollapseRequested}) => {
+export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSideNavExpandRequested, classes, onSideNavCollapseRequested}) => {
     return <Drawer
           className={classes.drawer}
           variant="persistent"

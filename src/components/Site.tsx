@@ -17,6 +17,7 @@ import { Switch, regexMatch } from "../utils/Switch";
 import { Url } from "../utils/url";
 import { CreateOrganization } from "./organizations/CreateOrganization";
 import { Organization } from "../models/organization";
+import { CastleRisk } from "./castleRisk/CastleRisk";
 
 type Props = {
   url:Url
@@ -26,13 +27,13 @@ type Props = {
 
 export const SiteWithoutStyle = (props:Props) => {
   const theme = createMuiTheme(Theme);
-  const {classes, shouldShowCelebration, onCelebrationXClicked, CastleRisk, isSideNavOpen, url} = props;
-  const mainPageProps = {...props, history}
+  const {classes, shouldShowCelebration, onCelebrationXClicked, isSideNavOpen, url} = props;
+  const { castleRisk } = props
   const mainPage = Switch
     .when(url.path)
     .case("/", <HomePage />)
     .case("/dev", <FacebookLoginLogout {...props} />)
-    .case("/castleRisk", <CastleRisk {...mainPageProps} />)
+    .case("/castleRisk", <CastleRisk {...castleRisk} {...props} />)
     .case("/organizations/search", <OrgSearchBar {...props} />)
     .case("/volunteering/search", <VolunteeringSearchBar {...props} />)
     .case("/organizations/new", <CreateOrganization {...props} />)
