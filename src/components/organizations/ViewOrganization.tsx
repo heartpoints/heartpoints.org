@@ -6,15 +6,16 @@ import { Organization } from './organization';
 import { findOrgByHref } from './findOrgByHref';
 
 interface Props {
-    organizations: Organization[];
-    href: string;
+    organizations: Organization[]
+    href: string
+    navTo
 }
 
-export const ViewOrganization = ({href, organizations}:Props) =>
+export const ViewOrganization = ({href, organizations, navTo}:Props) =>
     <Page>
     {
         findOrgByHref(organizations, href)
-            .map(props => <LoadedOrganization {...props} />)
+            .map(organization => <LoadedOrganization {...{...organization, navTo}} />)
             .valueOrDefault(<MissingOrganization />)
     }
     </Page>

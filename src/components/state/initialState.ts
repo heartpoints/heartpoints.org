@@ -1,26 +1,18 @@
-import { defaultOrganizations } from "../organizations/defaultOrganizations";
-import { Url } from "../../utils/url";
-import { inDevMode } from "../developers/inDevMode";
-import { facebookUserSession } from "../facebook/facebookUserSession";
-import { CastleRiskInitialState } from "../castleRisk/game";
+import { initialOrgsState } from "../organizations/initialOrgsState";
+import { initialDevelopersState } from "../developers/initialDevelopersState";
+import { initialFacebookState } from "../facebook/intialFacebookState";
+import { initialNavState } from "../nav/initialNavState";
+import { initialModalsState } from "../modals/initialModalsState";
+import { initialSearchBarState } from "../search/initalSearchBarState";
+import { initialCastleRiskState } from "../castleRisk/initialCastleRiskState";
+import { combineStateProviders } from "./combineStateProviders";
 
-export const initialState = () => ({
-    facebookUserSession: facebookUserSession(),
-    inDevMode: inDevMode(),
-    isSideNavExpanded: false,
-    isSideNavOpen: false,
-    newOrgLogo: [],
-    newOrgMission: '',
-    newOrgTitle: '',
-    newOrgUrl: '',
-    organizations: defaultOrganizations,
-    searchBarSuggestions: [],
-    searchBarValue: '',
-    shouldShowCelebration: false,
-    shouldShowSearch: true,
-    showSimpleModel: false,
-    url: Url(window.location.href),
-    volunteeringSearchBarSuggestions: [],
-    volunteeringSearchBarValue: '',
-    castleRisk: CastleRiskInitialState,
-});
+export const initialState = combineStateProviders([
+    initialOrgsState,
+    initialDevelopersState,
+    initialFacebookState,
+    initialNavState,
+    initialModalsState,
+    initialSearchBarState,
+    initialCastleRiskState
+])

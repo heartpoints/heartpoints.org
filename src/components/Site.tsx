@@ -22,6 +22,7 @@ type Props = {
   url:Url
   organizations: Organization[]
   [others:string]:any
+  navTo
 }
 
 export const SiteWithoutStyle = (props:Props) => {

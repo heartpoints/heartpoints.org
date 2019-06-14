@@ -1,11 +1,11 @@
-export const tap = (name, tappedFunction) => (...args) => {
+export const tap = (tappedFunction) => (...args) => {
     try {
         const returnVal = tappedFunction(...args)
-        console.log({name, tappedFunction, args, returnVal})
+        console.log({tappedFunction, args, returnVal})
         return returnVal
     }
     catch(error) {
-        console.log({name, args, error})
+        console.log({tappedFunction, args, error})
         throw error;
     }
 }

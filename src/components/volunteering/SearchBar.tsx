@@ -10,8 +10,8 @@ export const SearchBar = (props) => {
     const onSuggestionSelected = ({ jobTitle }) =>
         alert(`You Selected the job titled "${jobTitle}"`);
 
-    const renderSuggestion = ({imageThumbnailURL, jobTitle: title, jobDescription: statement, title: subtitle}) =>
-        <HPSearchResult {...{imageThumbnailURL, title, statement, subtitle}} />
+    const renderSuggestion = ({imageThumbnailURL, jobTitle: title, jobDescription: description, title: subtitle}) =>
+        <HPSearchResult {...{imageThumbnailURL, title, description, subtitle}} />
 
     const hpSearchBarProps = {
         placeholder: "Search by organization name or job title...",

@@ -1,7 +1,9 @@
 import { theInternet } from "./theInternet";
 import { mapDictionary } from "../utils/list";
 import { RGSONValue, IsRJSONArray, IsRJSONDictionary, RGSONDictionary, RGSONArray } from "./rgson";
-import { JSONValue, JSONArray, JSONObject } from "./plainJson";
+import { JSONArray } from "./JSONArray";
+import { JSONValue } from "./JSONValue";
+import { JSONObject } from "./JSONObject";
 import { Switch } from "../utils/Switch";
 
 export type HttpRequestArgs = {
