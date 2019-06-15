@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Page } from "../layouts/Page";
+import { Page } from "../page/Page";
 import { List } from '../../utils/list';
 import { Organization } from './organization';
 
