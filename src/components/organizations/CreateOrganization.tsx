@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Page } from '../page/Page';
 
 import ImageUploader from 'react-images-upload';
+import { fileUploadHandler } from '../forms/fileUploadHandler';
+import { textChangeHandler } from '../forms/textChangeHandler';
 
 export const fieldSetChildStyle = {
     "display": "block",
@@ -22,40 +24,11 @@ export const submitButtonStyle = {
 }
 
 export const CreateOrganization = (props) => {
-
-    const updateNewOrgTitle = (event:React.ChangeEvent<HTMLInputElement>) => {
-        const newOrgTitle = event.target.value;
-        props.updateNewOrgTitle(newOrgTitle);
-    }
-
-    const updateNewOrgMission = (event:React.ChangeEvent<HTMLTextAreaElement>) => {
-        const newOrgMission = event.target.value;
-        props.updateNewOrgMission(newOrgMission);
-    }
-
-    const updateNewOrgUrl = (event:React.ChangeEvent<HTMLInputElement>) => {
-        const newOrgUrl = event.target.value;
-        props.updateNewOrgUrl(newOrgUrl);
-    }
-
-    const updateNewOrgLogo = async (image) => {
-        const reader = new FileReader();
-        const file = image[0]
-        reader.onload = function(e:any) {
-            if(e.target) {
-                const src = e.target.result; 
-                file.src = src;
-                props.updateNewOrgLogo(file);
-            } 
-        };
-        reader.readAsDataURL(file);
-    }
-
-    const addNewOrganization = () => {
-        props.facebookUserSession 
-            ? props.addNewOrganization(props.facebookUserSession.email) 
-            : alert("You must be logged in to create an Organization!");
-    }
+    const updateNewOrgLogo = fileUploadHandler(props.updateNewOrgLogo)
+    const updateNewOrgTitle = textChangeHandler(props.updateNewOrgTitle)
+    const updateNewOrgUrl = textChangeHandler(props.updateNewOrgUrl)
+    const updateNewOrgMission = textChangeHandler(props.updateNewOrgMission)
+    const addNewOrganization = () => props.addNewOrganization(props.facebookUserSession.email)
 
     //todo: ideally the state for this component is associated with the instance of it
     //todo: force single image not working?
@@ -69,6 +42,7 @@ export const CreateOrganization = (props) => {
             onChange={updateNewOrgLogo}
             imgExtension={['.jpg', '.gif', '.png']}
         />
+        {/* todo: use material ui inputs that look nice! */}
         <input style={fieldSetChildStyle} id="orgName" type="text" placeholder="Organization Name" onChange={updateNewOrgTitle} value={props.newOrgTitle}/>
         <input style={fieldSetChildStyle} id="orgUrl" type="text" placeholder="Organization Webpage" onChange={updateNewOrgUrl} value={props.newOrgUrl}/>
         <textarea style={fieldSetChildStyle} id="orgMission" rows={5} cols={50} placeholder="Mission Statement" onChange={updateNewOrgMission} value={props.newOrgMission}></textarea>

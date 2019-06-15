@@ -12,17 +12,17 @@ export const padLeft = {
 }
 
 export const statementStyle = {
-    "font-size": "12px",
+    "fontSize": "12px",
     "color": "#888",
-    "font-style": "italic",
+    "fontStyle": "italic",
     ...padLeft,
 }
 
 export const urlStyle ={
-    "font-size": "15px",
+    "fontSize": "15px",
     "color": "#99bdf7",
-    "font-style": "italic",
-    "padding-left": "60px"
+    "fontStyle": "italic",
+    "paddingLeft": "60px"
 }
 
 export const imageStyle = {

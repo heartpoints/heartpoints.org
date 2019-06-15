@@ -1,4 +1,5 @@
 import { navTo } from "../nav/navTo";
+import { tap } from "../../utils/tap";
 
 export const addNewOrganization = (state, creatorEmail) => {
     const { organizations } = state;
@@ -19,5 +20,6 @@ export const addNewOrganization = (state, creatorEmail) => {
         newOrgUrl: '',
         newOrgLogo: [],
     };
-    return navTo(stateWithNewOrg, href);
+    console.log("Hey");
+    return tap(navTo)(stateWithNewOrg, href);
 };
