@@ -1,5 +1,5 @@
-import { anyOf } from "../utils/predicate";
-import { volunteeringOpportunities } from "../data/volunteeringOpportunities";
+import { volunteeringOpportunities } from "./volunteeringOpportunities";
+import { anyOf } from "../../utils/predicate";
 
 export const findVolunteeringOpportunities = (orgOrJobTitle) => {
     const inputValue = (orgOrJobTitle || "").trim().toLowerCase();

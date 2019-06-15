@@ -1,5 +1,5 @@
 import * as React from "react";
-import { HomePage } from "./welcome/HomePage";
+import { HomePage } from "./homePage/HomePage";
 import { NotFound } from "./nav/NotFound";
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -14,9 +14,9 @@ import { ViewOrganization } from "./organizations/ViewOrganization";
 import { Switch, regexMatch } from "../utils/Switch";
 import { Url } from "../utils/url";
 import { CreateOrganization } from "./organizations/CreateOrganization";
-import { Organization } from "../models/organization";
+import { Organization } from "./organizations/organization";
 import { CastleRisk } from "./castleRisk/CastleRisk";
-import { PossibleNavBars } from "./PossibleNavBars";
+import { PossibleNavBars } from "./nav/PossibleNavBars";
 
 type Props = {
   url:Url

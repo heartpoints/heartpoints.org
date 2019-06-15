@@ -1,6 +1,6 @@
 import * as React from "react";
-import { TopNav } from "./nav/TopNav";
-import { SideNav } from "./nav/SideNav";
+import { TopNav } from "./TopNav";
+import { SideNav } from "./SideNav";
 import { Fragment } from "react";
 
 export const PossibleNavBars = (props) => {

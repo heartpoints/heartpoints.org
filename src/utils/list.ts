@@ -17,6 +17,7 @@ export const firstTypeMatch = <T, S extends T>(array:T[], predicate:TypePredicat
     return None
 }
 
+
 export const mapProperties = <T, S>(obj:Dictionary<T>, valueMapper:Mapper<T, S>):Dictionary<S> => mapDictionary(obj, identity, valueMapper)
 
 export const mapDictionary = <T, S>(obj:Dictionary<T>, keyMapper:Mapper<string, string>, valueMapper:Mapper<T, S>):{[k:string]:S} =>

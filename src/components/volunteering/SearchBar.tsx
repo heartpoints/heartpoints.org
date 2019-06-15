@@ -1,7 +1,7 @@
 import * as React from "react";
 import { HPSearchBar } from "../search/HPSearchBar";
 import { HPSearchResult } from "../search/HPSearchResult";
-import { findVolunteeringOpportunities } from "../../models/volunteeringOpportunities";
+import { findVolunteeringOpportunities } from "./findVolunteeringOpportunities";
 import { Page } from "../layouts/Page"
 
 export const SearchBar = (props) => {

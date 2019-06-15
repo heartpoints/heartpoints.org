@@ -1,4 +1,4 @@
-import { facebookUserSession } from "./facebookUserSession";
+import { facebookUserSession } from "../facebook/facebookUserSession";
 import { isLocalhost } from "./isLocalhost";
 import { isDeveloper } from "./isDeveloper";
 

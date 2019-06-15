@@ -1,14 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Site } from "./components/Site";
+import { Site } from "../Site";
 import { rootSiteElement } from "./rootSiteElement";
-import { newSiteProps } from "./newSiteProps";
+import { newSitePropsFromState } from "./newSiteProps";
 
 export const renderApp = (state) => {
     window.onresize = () => renderApp(state)
     ReactDOM.render(
-        <Site {...newSiteProps(state)} />,
+        <Site {...newSitePropsFromState(state)} />,
         rootSiteElement()
     );
 };

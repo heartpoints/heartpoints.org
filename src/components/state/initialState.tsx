@@ -1,8 +1,8 @@
-import { defaultOrganizations } from "./data/defaultOrganizations";
-import { Url } from "./utils/url";
-import { inDevMode } from "./inDevMode";
-import { facebookUserSession } from "./facebookUserSession";
-import { CastleRiskInitialState } from "./components/castleRisk/game";
+import { defaultOrganizations } from "../organizations/defaultOrganizations";
+import { Url } from "../../utils/url";
+import { inDevMode } from "../developers/inDevMode";
+import { facebookUserSession } from "../facebook/facebookUserSession";
+import { CastleRiskInitialState } from "../castleRisk/game";
 
 export const initialState = () => ({
     facebookUserSession: facebookUserSession(),

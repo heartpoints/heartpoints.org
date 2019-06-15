@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Page } from "../layouts/Page";
 import { List } from '../../utils/list';
-import { Organization } from '../../models/organization';
+import { Organization } from './organization';
 
 import { headerContainerChildStyle, statementStyle, urlStyle, imageStyle} from '../search/HPSearchResult';
 
