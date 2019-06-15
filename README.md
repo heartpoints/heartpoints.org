@@ -254,6 +254,10 @@ Themes can be updated [here](https://in-your-saas.github.io/material-ui-theme-ed
 
 Icons can be browsed visually [here](https://material.io/tools/icons/?style=baseline)
 
+### React Material UI Documentation
+
+[Material UI Documentation](https://material-ui.com/getting-started/installation/)
+
 ## Next Steps
 
 accounts, accounting equation checks for validity
