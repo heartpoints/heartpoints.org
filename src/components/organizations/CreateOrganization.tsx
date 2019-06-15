@@ -14,8 +14,6 @@ export const CreateOrganization = (props) => {
     const updateNewOrgMission = textChangeHandler(props.updateNewOrgMission)
     const addNewOrganization = () => props.addNewOrganization(props.facebookUserSession.email)
 
-    //todo: ideally the state for this component is associated with the instance of it
-    //todo: force single image not working?
     return <Page>
         <ImageUploader
             singleImage={true}
@@ -26,7 +24,6 @@ export const CreateOrganization = (props) => {
             onChange={updateNewOrgLogo}
             imgExtension={['.jpg', '.gif', '.png']}
         />
-        {/* todo: use material ui inputs that look nice! */}
         <input style={fieldSetChildStyle} id="orgName" type="text" placeholder="Organization Name" onChange={updateNewOrgTitle} value={props.newOrgTitle}/>
         <input style={fieldSetChildStyle} id="orgUrl" type="text" placeholder="Organization Webpage" onChange={updateNewOrgUrl} value={props.newOrgUrl}/>
         <textarea style={fieldSetChildStyle} id="orgMission" rows={5} cols={50} placeholder="Mission Statement" onChange={updateNewOrgMission} value={props.newOrgMission}></textarea>
