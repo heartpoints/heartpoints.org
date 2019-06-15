@@ -4,24 +4,8 @@ import { Page } from '../page/Page';
 import ImageUploader from 'react-images-upload';
 import { fileUploadHandler } from '../forms/fileUploadHandler';
 import { textChangeHandler } from '../forms/textChangeHandler';
-
-export const fieldSetChildStyle = {
-    "display": "block",
-    "padding": "10px",
-    "margin": "10px auto 0",
-    "border-radius": "5px",
-    "border": "1px solid #a0a0a0",
-    "width": "400px",
-    "text-align": "center"
-}
-
-export const submitButtonStyle = { 
-    "color": "white",
-    "background-color": "rgba(255, 0, 0, 0.5)",
-    "font-weight": "bold",
-    "font-size": "20px",
-    "cursor": "pointer"
-}
+import { fieldSetChildStyle } from '../forms/fieldSetChildStyle';
+import { submitButtonStyle } from '../forms/submitButtonStyle';
 
 export const CreateOrganization = (props) => {
     const updateNewOrgLogo = fileUploadHandler(props.updateNewOrgLogo)
