@@ -7,8 +7,9 @@ import { identity } from "../../utils/identity";
 //TODO: Note HPSearchBar is sharing its searchBarValue between screens.
 export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange}) => {
     const getSuggestionValue = identity
+
     const onChange = ({target: { value }}:React.ChangeEvent<HTMLInputElement>) => 
-        onSearchBarValueChange(value)
+        (value as any !== 0) && onSearchBarValueChange(value || '')
 
     const inputProps = {
         placeholder,

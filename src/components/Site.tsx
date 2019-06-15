@@ -5,8 +5,6 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Theme } from "../style/theme";
 import { CssBaseline, withStyles } from "@material-ui/core";
-import { TopNav } from "./nav/TopNav";
-import { SideNav } from "./nav/SideNav";
 import { SearchBar as OrgSearchBar } from "./organizations/SearchBar";
 import { SearchBar as VolunteeringSearchBar } from "./volunteering/SearchBar";
 import { CelebrationModal } from "./modals/CelebrationModal";
@@ -18,6 +16,7 @@ import { Url } from "../utils/url";
 import { CreateOrganization } from "./organizations/CreateOrganization";
 import { Organization } from "../models/organization";
 import { CastleRisk } from "./castleRisk/CastleRisk";
+import { PossibleNavBars } from "./PossibleNavBars";
 
 type Props = {
   url:Url
@@ -46,7 +45,7 @@ export const SiteWithoutStyle = (props:Props) => {
     <div className={classes.root}>
       <main className={classNames(classes.content, { [classes.contentShift]: isSideNavOpen,})}>
       <MuiThemeProvider {...{theme}}>
-        <PossibleNavBars {...{history}} {...props} />} />
+        <PossibleNavBars {...{history}} {...props} />
         {mainPage}
         { shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} /> }
       </MuiThemeProvider>
@@ -78,13 +77,4 @@ const styles = theme => ({
       },
 })
 
-
 export const Site = withStyles(styles)(SiteWithoutStyle);
-
-const PossibleNavBars = (props) => {
-    const { inDevMode } = props;
-    return inDevMode ? <React.Fragment>
-        <TopNav {...props} />
-        <SideNav {...props} />
-    </React.Fragment> : null;
-}

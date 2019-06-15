@@ -5,8 +5,8 @@ import { facebookUserSession } from "./facebookUserSession";
 import { CastleRiskInitialState } from "./components/castleRisk/game";
 
 export const initialState = () => ({
-    facebookUserSession,
-    inDevMode,
+    facebookUserSession: facebookUserSession(),
+    inDevMode: inDevMode(),
     isSideNavExpanded: false,
     isSideNavOpen: false,
     newOrgLogo: [],

@@ -1,4 +1,4 @@
-import { navTo } from "./models/navTo";
+import { navTo } from "../../models/navTo";
 export const addNewOrganization = (state, creatorEmail) => {
     const { organizations } = state;
     const href = `/organizations/${organizations.length + 1}`;

@@ -11,7 +11,7 @@ import { updateNewOrgTitle } from "./updateNewOrgTitle";
 import { updateNewOrgMission } from "./updateNewOrgMission";
 import { updateNewOrgUrl } from "./updateNewOrgUrl";
 import { updateNewOrgLogo } from "./updateNewOrgLogo";
-import { addNewOrganization } from "./addNewOrganization";
+import { addNewOrganization } from "./components/organizations/addNewOrganization";
 import { onFacebookLoginFailure } from "./onFacebookLoginFailure";
 import { updateState } from "./updateState";
 
