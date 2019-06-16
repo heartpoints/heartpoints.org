@@ -3,14 +3,15 @@ import * as ReactDOM from "react-dom";
 
 import { Site } from "../Site";
 import { rootSiteElement } from "./rootSiteElement";
-import { newSitePropsFromState } from "./newSiteProps";
+import { sitePropsFromState } from "./sitePropsFromState";
 import { updateStateToUseOnBackAndForwardNav } from "../nav/updateStateToUseOnBackAndForwardNav";
 
 export const renderApp = (state) => {
+    console.log({state})
     window.onresize = () => renderApp(state)
     updateStateToUseOnBackAndForwardNav(state)
     ReactDOM.render(
-        <Site {...newSitePropsFromState(state)} />,
+        <Site {...sitePropsFromState(state, renderApp)} />,
         rootSiteElement()
     );
 };

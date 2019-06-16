@@ -4,5 +4,5 @@ export const initialOrganization = () => ({
     imageThumbnailURL: undefined,
     title: undefined,
     statement: undefined,
-    organizationURL: undefined
+    homepage: undefined
 })

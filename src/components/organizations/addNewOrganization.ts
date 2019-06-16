@@ -1,24 +1,19 @@
 import { navTo } from "../nav/navTo";
-import { tap } from "../../utils/tap";
+import { initialOrganization } from "./initialOrganization";
 
 export const addNewOrganization = (state, creatorEmail) => {
-    const { organizations } = state;
+    const { organizations, possibleNewOrganization } = state;
     const href = `/organizations/${organizations.length + 1}`;
     const newOrganization = {
+        ...possibleNewOrganization,
         href,
-        imageThumbnailURL: state.newOrgLogo && state.newOrgLogo.src,
-        title: state.newOrgTitle,
-        statement: state.newOrgMission,
-        organizationURL: state.newOrgUrl,
         creatorEmail,
+        // imageThumbnailURL: state.newOrgLogo && state.newOrgLogo.src,
     };
     const stateWithNewOrg = {
         ...state,
         organizations: [...state.organizations, newOrganization],
-        newOrgTitle: '',
-        newOrgMission: '',
-        newOrgUrl: '',
-        newOrgLogo: [],
+        possibleNewOrganization: initialOrganization(),
     };
     return navTo(stateWithNewOrg, href);
 };
