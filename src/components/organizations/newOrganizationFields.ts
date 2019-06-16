@@ -15,4 +15,3 @@ export const newOrganizationFields = () => {
     
     return mapProperties(orgFields, possibleNewOrganizationField)
 }
-
