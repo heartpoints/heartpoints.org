@@ -1,5 +1,5 @@
-export const field = (selector, reducer, placeholder) => state => ({
-    get value() { return selector(state); },
+export const field = (selector, reducer, placeholder) => ({
+    get value() { return selector(); },
     setValue(newValue) { reducer(newValue); },
     placeholder,
 });

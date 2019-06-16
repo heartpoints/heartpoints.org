@@ -6,7 +6,7 @@ export const addNewOrganization = (state, creatorEmail) => {
     const href = `/organizations/${organizations.length + 1}`;
     const newOrganization = {
         href,
-        imageThumbnailURL: state.newOrgLogo.src,
+        imageThumbnailURL: state.newOrgLogo && state.newOrgLogo.src,
         title: state.newOrgTitle,
         statement: state.newOrgMission,
         organizationURL: state.newOrgUrl,
@@ -20,6 +20,5 @@ export const addNewOrganization = (state, creatorEmail) => {
         newOrgUrl: '',
         newOrgLogo: [],
     };
-    console.log("Hey");
-    return tap(navTo)(stateWithNewOrg, href);
+    return navTo(stateWithNewOrg, href);
 };
