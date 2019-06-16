@@ -2,6 +2,7 @@ import * as React from "react";
 import { HPSearchResult } from "../search/HPSearchResult";
 import { HPSearchBar } from "../search/HPSearchBar";
 import { Page } from "../page/Page";
+import { Organization } from "./organization";
 
 export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange, organizations, navTo } = props;
@@ -23,12 +24,12 @@ export const SearchBar = (props) => {
     const hpSearchBarProps = { 
         placeholder,
         suggestions,
-        renderSuggestion: HPSearchResult,
+        renderSuggestion: ({mission: description, ...rest}:Organization) => <HPSearchResult {...{description, ...rest}} />,
         onSuggestionSelected,
         searchBarValue,
         onSearchBarValueChange,
     }
-
+    
     return <Page>
         <h1>Organization Search...</h1>
         <HPSearchBar {...hpSearchBarProps} />

@@ -6,7 +6,6 @@ import { fileUploadHandler } from '../forms/fileUploadHandler';
 import { fieldSetChildStyle } from '../forms/fieldSetChildStyle';
 import { submitButtonStyle } from '../forms/submitButtonStyle';
 import { InputForField } from '../forms/InputForField';
-import { field } from '../forms/field';
 import { TextAreaForField } from '../forms/TextAreaForField';
 
 export const CreateOrganization = (props) => {

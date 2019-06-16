@@ -33,7 +33,7 @@ export const imageStyle = {
 
 const maxStatementLength = 125;
 
-export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = undefined, homepage = undefined}) => {
+export const HPSearchResult = ({imageThumbnailURL, title, description, subtitle = undefined, homepage = ""}) => {
     return  <Fragment>
         <div style={{display: "inline"}}>
             <img style={imageStyle} src={imageThumbnailURL} />
@@ -42,7 +42,7 @@ export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = 
         <div>
             {subtitle && <h5 style={padLeft}>{subtitle}</h5>}
             {homepage && <a onClick={e => e.stopPropagation() } style ={urlStyle} href={homepage} target="_blank">{homepage}</a>}
-            <p style={statementStyle}>{ellipsis(statement, maxStatementLength)}</p>
+            <p style={statementStyle}>{ellipsis(description, maxStatementLength)}</p>
         </div>
     </Fragment>
 }

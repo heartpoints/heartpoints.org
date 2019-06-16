@@ -1,15 +1,14 @@
+import { Mapper } from "../../utils/mapper";
+import { Reducer } from "../../utils/Reducer";
 import { Consumer } from "../../utils/consumer";
+import { Field } from "./types/Field";
+import { FieldBinder } from "./types/FieldBinder";
 
-export const field = (selector, reducer, placeholder):Field<any> => ({
-    get value() { return selector(); },
-    setValue(newValue) { reducer(newValue); },
-    placeholder,
-});
-
-export type FieldBinder<S, T> = (state: S, renderApp: Consumer<S>) => Field<T>
-
-export type Field<T> = {
-    value:T,
-    setValue(t:T):void,
-    placeholder:string
-}
+export const field = 
+    <S, T>(selector: Mapper<S, T>, reducer: Reducer<S, T>, placeholder: string):FieldBinder<S, T> => 
+    (state: S, renderApp: Consumer<S>): Field<T> => 
+    ({
+        get value() { return selector(state); },
+        setValue(newValue) { renderApp(reducer(state, newValue)) },
+        placeholder,
+    });

@@ -1,4 +1,5 @@
-import { FieldBinder, Field } from "./field";
+import { Field } from "./types/Field";
+import { FieldBinder } from "./types/FieldBinder";
 import { Mapper } from "../../utils/mapper";
 import { Consumer } from "../../utils/consumer";
 import { Reducer } from "../../utils/Reducer";
