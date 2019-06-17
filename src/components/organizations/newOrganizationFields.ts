@@ -11,6 +11,7 @@ export const newOrganizationFields = () => {
         title: fieldNamed("title", "Organization Title"),
         homepage: fieldNamed("homepage", "Organization Home Page"),
         mission: fieldNamed("mission", "Mission Statement / Summary"),
+        imageThumbnailURL: fieldNamed("imageThumbnailURL", "Organization Logo"),
     }
     
     return mapProperties(orgFields, possibleNewOrganizationField)

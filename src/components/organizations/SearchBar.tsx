@@ -13,7 +13,7 @@ export const SearchBar = (props) => {
             ? [] 
             : organizations.filter(org =>
                 org.title.toLowerCase().includes(inputValue)
-            );
+            )
     }
 
     const onSuggestionSelected = ({href}) => navTo(href)

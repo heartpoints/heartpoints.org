@@ -8,8 +8,9 @@ import { submitButtonStyle } from '../forms/submitButtonStyle';
 import { InputForField } from '../forms/InputForField';
 import { TextAreaForField } from '../forms/TextAreaForField';
 
+//todo: these four props (amd any callback based stuff which derives from / updates state) should not be added to the global state, only to the props
 export const CreateOrganization = (props) => {
-    const { title, homepage, mission, updateNewOrgLogo } = props
+    const { title, homepage, mission, imageThumbnailURL } = props
 
     //todo: move this into the model logic
     const addNewOrganization = () => props.addNewOrganization(props.facebookUserSession.email)
@@ -22,7 +23,7 @@ export const CreateOrganization = (props) => {
             fileContainerStyle={fieldSetChildStyle}
             withLabel={false}
             buttonText="Upload Organization Logo"
-            onChange={fileUploadHandler(updateNewOrgLogo)}
+            onChange={fileUploadHandler(imageThumbnailURL.setValue)}
             imgExtension={['.jpg', '.gif', '.png']}
         />
         <InputForField {...title} />

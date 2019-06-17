@@ -5,7 +5,7 @@ export const fileUploadHandler = handlerFromProps => async (image) => {
         if (e.target) {
             const src = e.target.result;
             file.src = src;
-            handlerFromProps(file);
+            handlerFromProps(src);
         }
     };
     reader.readAsDataURL(file);
