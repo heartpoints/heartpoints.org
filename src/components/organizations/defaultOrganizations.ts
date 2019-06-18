@@ -1,4 +1,4 @@
-import { Organization } from "../models/organization";
+import { Organization } from "./organization";
 
 export const defaultOrganizations:Array<Organization> = [
     {

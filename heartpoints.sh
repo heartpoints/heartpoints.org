@@ -659,11 +659,6 @@ hp_minikube_isRunning() {
     hp_minikube status | grep "host: Running"
 }
 
-hp_model() {
-    hp_yarn_global install
-    hp_yarn_global ts-node src/heartpoints-cli.ts
-}
-
 hp_g() { local message=$@ 
     hp_git add -A
     hp_git commit -m "${message}"

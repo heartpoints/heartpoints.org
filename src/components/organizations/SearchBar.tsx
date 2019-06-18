@@ -1,7 +1,7 @@
 import * as React from "react";
 import { HPSearchResult } from "../search/HPSearchResult";
 import { HPSearchBar } from "../search/HPSearchBar";
-import { Page } from "../layouts/Page";
+import { Page } from "../page/Page";
 
 export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange, organizations, navTo } = props;
