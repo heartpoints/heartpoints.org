@@ -18,16 +18,16 @@
   },
   "homepage": "https://github.com/in-need-org/hrtz.io#readme",
   "dependencies": {
-    "@material-ui/core": "^3.9.2",
-    "@material-ui/icons": "^3.0.2",
+    "@material-ui/core": "^4.1.1",
+    "@material-ui/icons": "^4.2.0",
     "@types/chai": "^4.1.7",
     "@types/history": "^4.7.2",
     "@types/lodash": "^4.14.117",
     "@types/mocha": "^5.2.6",
     "@types/moment": "^2.13.0",
-    "@types/react": "^16.4.18",
+    "@types/react": "^16.8.22",
     "@types/react-autosuggest": "^9.3.7",
-    "@types/react-dom": "^16.0.9",
+    "@types/react-dom": "^16.8.4",
     "@types/victory": "^0.9.20",
     "awesome-typescript-loader": "^5.2.1",
     "chai": "^4.2.0",
@@ -42,10 +42,10 @@
     "mocha": "^6.0.2",
     "moment": "^2.22.2",
     "node-sass": "^4.12.0",
-    "react": "^16.6.0",
+    "react": "^16.8.6",
     "react-autosuggest": "^9.4.3",
     "react-confetti": "^2.3.0",
-    "react-dom": "^16.6.0",
+    "react-dom": "^16.8.6",
     "react-facebook-login": "^4.1.1",
     "react-images-upload": "^1.2.6",
     "react-router-dom": "^4.3.1",
@@ -70,5 +70,8 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "resolutions": {
+    "@types/react": "^16.8.22"
   }
 }
