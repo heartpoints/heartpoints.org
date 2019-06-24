@@ -8,5 +8,7 @@ export const TextAreaForField =
         style={fieldSetChildStyle} 
         rows={5} 
         cols={50} 
-        {...{ placeholder, value, onChange: textChangeHandler(setValue) }}
+        onChange={textChangeHandler(setValue)}
+        value={value === undefined || value === null ? "" : value}
+        placeholder={placeholder}
     />

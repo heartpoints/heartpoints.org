@@ -7,7 +7,7 @@ export const InputForField =
     <input style={fieldSetChildStyle} 
         type="text" 
         {...{ 
-            value, 
+            value: value === undefined || value === null ? "" : value, 
             onChange: textChangeHandler(setValue),
             placeholder 
         }} 

@@ -1,7 +1,9 @@
-export const submitButtonStyle = {
+import { CSSProperties } from "react";
+
+export const submitButtonStyle:CSSProperties = {
     "color": "white",
-    "background-color": "rgba(255, 0, 0, 0.5)",
-    "font-weight": "bold",
-    "font-size": "20px",
+    "backgroundColor": "rgba(255, 0, 0, 0.5)",
+    "fontWeight": "bold",
+    "fontSize": "20px",
     "cursor": "pointer"
 };
