@@ -7,11 +7,12 @@ import { sitePropsFromState } from "./sitePropsFromState";
 import { updateStateToUseOnBackAndForwardNav } from "../nav/updateStateToUseOnBackAndForwardNav";
 
 export const renderApp = (state) => {
-    console.log({state})
     window.onresize = () => renderApp(state)
     updateStateToUseOnBackAndForwardNav(state)
+    const siteProps = sitePropsFromState(state, renderApp)
+    console.log({state, siteProps})
     ReactDOM.render(
-        <Site {...sitePropsFromState(state, renderApp)} />,
+        <Site {...siteProps} />,
         rootSiteElement()
     );
 };
