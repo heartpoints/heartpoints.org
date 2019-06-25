@@ -1,8 +1,8 @@
-import { stateBuilders } from "./stateBuilders";
+import { statefulCallbacks } from "./statefulCallbacks";
 
 export const sitePropsFromState = 
     (state, renderApp) => 
-    stateBuilders.reduce(
-        (totalState, currentBuilder) => ({...totalState, ...currentBuilder(state, renderApp) }),
-        state
-    )
+    ({
+        ...state,
+        ...statefulCallbacks(state, renderApp)
+    })

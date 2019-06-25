@@ -3,10 +3,10 @@ import { generalOrgFields } from "./generalOrgFields";
 import { nestedFieldInArray } from "../forms/nestedFieldInArray";
 
 export const editOrganizationFields = 
-    () => 
+    matchingHref => 
     mapProperties(
         generalOrgFields,
         nestedFieldInArray(
             "organizations",
-            (o: any) => o.href == "/organizations/2")
+            (o: any) => o.href == matchingHref)
         );

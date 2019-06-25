@@ -1,11 +1,17 @@
 import * as React from 'react';
 import { OrgAddEdit } from './OrgAddEdit';
+import { editOrganizationFields } from './editOrganizationFields';
+import { Page } from '../page/Page';
+import { HPButton } from '../forms/HPButton';
 
-//todo: make the fields associated with the particular org being edited
+const orgHrefFromEditUrl = editUrl => editUrl.path.substring(0, editUrl.path.indexOf("/edit"))
+
 export const EditOrganization = (props) => {
-    const { addNewOrganization, facebookUserSession: { email }} = props;
-    return <OrgAddEdit 
-        {...props} 
-        onSaveClicked={() => addNewOrganization(email)}
-    />
+    const { bindFields, url } = props;
+    const orgFields = bindFields(editOrganizationFields(orgHrefFromEditUrl(url)))
+    return <Page>
+        <h1>Edit Organization &quot;{orgFields.title.value}&quot;</h1>
+        <OrgAddEdit {...orgFields} />
+        <HPButton label="Done Editing" onClick={() => history.back()} />
+    </Page>
 }

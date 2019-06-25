@@ -17,7 +17,7 @@ type Props = {
 
 export const SiteWithoutStyle = (props:Props) => {
   const { shouldShowCelebration, onCelebrationXClicked, isSideNavOpen, url} = props;
-  const {classes, ...propsWithoutClasses} = props;
+  const { classes, ...propsWithoutClasses } = props;
   return <React.Fragment>
     <main className={classNames(classes.content, { [classes.contentShift]: isSideNavOpen })}>
       <PossibleNavBars {...{history}} {...propsWithoutClasses} />

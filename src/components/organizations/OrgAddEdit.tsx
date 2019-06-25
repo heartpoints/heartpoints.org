@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { Page } from '../page/Page';
 
 import ImageUploader from 'react-images-upload';
 import { fileUploadHandler } from '../forms/fileUploadHandler';
 import { fieldSetChildStyle } from '../forms/fieldSetChildStyle';
-import { submitButtonStyle } from '../forms/submitButtonStyle';
 import { InputForField } from '../forms/InputForField';
 import { TextAreaForField } from '../forms/TextAreaForField';
 
 export const OrgAddEdit = (props) => {
-    const { title, homepage, mission, imageThumbnailURL, onSaveClicked } = props
-    return <Page>
+    const { title, homepage, mission, imageThumbnailURL } = props
+    return <React.Fragment>
         {/* todo: edit needs to show image thats already there, lets replace this imageuploader with our own */}
         <ImageUploader
             singleImage={true}
@@ -24,6 +22,5 @@ export const OrgAddEdit = (props) => {
         <InputForField {...title} />
         <InputForField {...homepage} />
         <TextAreaForField {...mission} />
-        <button style={{...fieldSetChildStyle, ...submitButtonStyle}} onClick={onSaveClicked}>Submit</button>
-    </Page>
+    </React.Fragment>
 }

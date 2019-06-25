@@ -5,12 +5,23 @@ import { Site } from "../Site";
 import { rootSiteElement } from "./rootSiteElement";
 import { sitePropsFromState } from "./sitePropsFromState";
 import { updateStateToUseOnBackAndForwardNav } from "../nav/updateStateToUseOnBackAndForwardNav";
+import { FieldBinder } from "../forms/types/FieldBinder";
+import { Dictionary } from "lodash";
+import { mapProperties } from "../../utils/list";
 
 export const renderApp = (state) => {
     window.onresize = () => renderApp(state)
     updateStateToUseOnBackAndForwardNav(state)
-    const siteProps = sitePropsFromState(state, renderApp)
-    console.log({state, siteProps})
+    
+    const bindField = (fieldBinder:FieldBinder<any,any>) => fieldBinder(state, renderApp)
+    const bindFields = (fieldBinders:Dictionary<FieldBinder<any,any>>) => mapProperties(fieldBinders, fieldBinder => fieldBinder(state, renderApp))
+
+    const siteProps = {
+        ...sitePropsFromState(state, renderApp),
+        bindField,
+        bindFields
+    }
+
     ReactDOM.render(
         <Site {...siteProps} />,
         rootSiteElement()
