@@ -1,5 +1,3 @@
-import { addLeadingSlash } from "history/PathUtils";
-
 export const theme = {
     container: {
         width: '60%',
