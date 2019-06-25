@@ -3,8 +3,7 @@ import { OrgAddEdit } from './OrgAddEdit';
 import { editOrganizationFields } from './editOrganizationFields';
 import { Page } from '../page/Page';
 import { HPButton } from '../forms/HPButton';
-
-const orgHrefFromEditUrl = editUrl => editUrl.path.substring(0, editUrl.path.indexOf("/edit"))
+import { orgHrefFromEditUrl } from './orgHrefFromEditUrl';
 
 export const EditOrganization = (props) => {
     const { bindFields, url } = props;
