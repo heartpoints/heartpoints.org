@@ -1,6 +1,11 @@
 import * as React from 'react';
-import { Page } from '../page/Page';
+import { OrgAddEdit } from './OrgAddEdit';
 
-export const EditOrganization = ({href, organizations}) => <Page>
-    <p>EditOrganization</p>
-</Page>
+//todo: make the fields associated with the particular org being edited
+export const EditOrganization = (props) => {
+    const { addNewOrganization, facebookUserSession: { email }} = props;
+    return <OrgAddEdit 
+        {...props} 
+        onSaveClicked={() => addNewOrganization(email)}
+    />
+}
