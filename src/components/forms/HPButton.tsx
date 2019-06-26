@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { submitButtonStyle } from './submitButtonStyle';
-import { fieldSetChildStyle } from './fieldSetChildStyle';
+import { Fab } from '@material-ui/core';
 
 export const HPButton = ({ onClick, label }) => {
-    const style = { ...fieldSetChildStyle, ...submitButtonStyle };
-    const props = { style, onClick };
-    return <button {...props}>{label}</button>;
+    return <Fab onClick={onClick} variant="extended" style={{marginLeft: "10px", marginTop: "10px", backgroundColor: "red", color: "white"}}>
+        {label}
+    </Fab>
 };

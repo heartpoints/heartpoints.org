@@ -10,6 +10,6 @@ export const CreateOrganization = (props) => {
     return <Page>
         <h1>Create Organization</h1>
         <OrgAddEdit {...fields} />
-        <HPButton label="Create" onClick={() => addNewOrganization(email)} />
+        <HPButton label="Create Organization" onClick={() => addNewOrganization(email)} />
     </Page>
 }

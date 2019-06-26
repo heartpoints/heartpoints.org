@@ -1,26 +1,16 @@
 import * as React from 'react';
 
-import ImageUploader from 'react-images-upload';
-import { fileUploadHandler } from '../forms/fileUploadHandler';
-import { fieldSetChildStyle } from '../forms/fieldSetChildStyle';
 import { InputForField } from '../forms/InputForField';
 import { TextAreaForField } from '../forms/TextAreaForField';
+import { FilePicker } from '../forms/FilePicker';
 
 export const OrgAddEdit = (props) => {
     const { title, homepage, mission, imageThumbnailURL } = props
     return <React.Fragment>
-        {/* todo: edit needs to show image thats already there, lets replace this imageuploader with our own */}
-        <ImageUploader
-            singleImage={true}
-            withPreview={true}
-            fileContainerStyle={fieldSetChildStyle}
-            withLabel={false}
-            buttonText="Upload Organization Logo"
-            onChange={fileUploadHandler(imageThumbnailURL.setValue)}
-            imgExtension={['.jpg', '.gif', '.png']}
-        />
-        <InputForField {...title} />
-        <InputForField {...homepage} />
-        <TextAreaForField {...mission} />
+        <img style={{width: "50px", maxWidth: "50px"}} src={imageThumbnailURL.value || "/images/demo_icon.png"} />
+        <FilePicker label="Upload Company Logo" onChange={imageThumbnailURL.setValue} /><br />
+        <InputForField {...title} /><br />
+        <InputForField {...homepage} /><br />
+        <TextAreaForField {...mission} /><br />
     </React.Fragment>
 }
