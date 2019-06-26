@@ -6,19 +6,15 @@ import { onSideNavExpandRequested } from "../nav/onSideNavExpandRequested";
 import { onSideNavCollapseRequested } from "../nav/onSideNavCollapseRequested";
 import { onSearchBarValueChange } from "../search/onSearchBarValueChange";
 import { onCelebrationXClicked } from "../modals/onCelebrationXClicked";
-import { updateNewOrgTitle } from "../organizations/updateNewOrgTitle";
-import { updateNewOrgMission } from "../organizations/updateNewOrgMission";
-import { updateNewOrgUrl } from "../organizations/updateNewOrgUrl";
-import { updateNewOrgLogo } from "../organizations/updateNewOrgLogo";
-import { addNewOrganization } from "../organizations/addNewOrganization";
 import { onFacebookLoginFailure } from "../facebook/onFacebookLoginFailure";
 import { updateState } from "../castleRisk/updateState";
 import { Dictionary } from "lodash";
+import { orgCallbacks } from "../organizations/orgCallbacks";
 
 type StateUpdatingCallback = (state:any, ...args:any[]) => any
 
 export const stateUpdatingCallbacks:Dictionary<StateUpdatingCallback> = {
-    addNewOrganization,
+    ...orgCallbacks(),
     navTo,
     onCelebrationXClicked,
     onFacebookLoginComplete,
@@ -28,9 +24,5 @@ export const stateUpdatingCallbacks:Dictionary<StateUpdatingCallback> = {
     onSearchBarValueChange,
     onSideNavCollapseRequested,
     onSideNavExpandRequested,
-    updateNewOrgLogo,
-    updateNewOrgMission,
-    updateNewOrgTitle,
-    updateNewOrgUrl,
     updateState,
 };

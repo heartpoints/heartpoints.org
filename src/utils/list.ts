@@ -6,6 +6,7 @@ import { Mapper } from "./mapper";
 import { Pair } from "./pair";
 import { False } from "./False";
 import { identity } from "./identity";
+import { Reducer } from "./Reducer";
 
 export const first = <T>(array:T[], predicate:Predicate<T>):Maybe<T> => 
     maybe(array.find(predicate))
@@ -39,8 +40,6 @@ export const ListOfLiterals = <T>(...items:Array<T>):List<T> =>
 export const List = <T>(array:Array<T>):List<T> => ListOfLiterals(...array)
 
 export const L = ListOfLiterals
-
-export type Reducer<Accumulator, CurrentItem> = (acc:Accumulator, c:CurrentItem) => Accumulator
 
 export interface List<T> extends Iterable<T> {
     map<S>(f:Mapper<T, S>):List<S>

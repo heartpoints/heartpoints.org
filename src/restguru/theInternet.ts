@@ -8,7 +8,7 @@ import { Maybe, firstLegitValue, maybeValueForKey, maybe, maybeIf, maybeIfLazy, 
 import { Dictionary } from "lodash";
 import { HttpRequestArgs, getCompleteProjection } from "./getCompleteProjection";
 import { RGSONValue } from "./rgson";
-import { JSONValue } from "./plainJson";
+import { JSONValue } from "./JSONValue";
 
 export const theInternet = ({url, contentType}:HttpRequestArgs):Maybe<RGSONValue> | Maybe<JSONValue> =>
     firstLegitValue(

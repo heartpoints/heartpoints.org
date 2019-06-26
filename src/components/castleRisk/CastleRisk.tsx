@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Phase } from './game';
 import { Switch } from '../../utils/Switch';
+import { Page } from '../page/Page';
 
 export const CastleRisk = (props) => {
-    const { classes, phase, updateState, player } = props
+    const { phase, updateState, player } = props
     const phaseName = Switch
         .when(phase)
         .case(Phase.Welcome, "Welcome")
@@ -12,7 +13,7 @@ export const CastleRisk = (props) => {
         .result
         .value;
 
-    return <div className={classes.content}>
+    return <Page>
         <h1>Castle Risk</h1>
         <hr></hr>
         <p>Phase {phaseName}</p>
@@ -24,5 +25,5 @@ export const CastleRisk = (props) => {
                 <li>{player}</li>
             </ul>
         </div>}
-    </div>
+    </Page>
 }

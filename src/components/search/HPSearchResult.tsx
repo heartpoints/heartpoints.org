@@ -12,17 +12,17 @@ export const padLeft = {
 }
 
 export const statementStyle = {
-    "font-size": "12px",
+    "fontSize": "12px",
     "color": "#888",
-    "font-style": "italic",
+    "fontStyle": "italic",
     ...padLeft,
 }
 
 export const urlStyle ={
-    "font-size": "15px",
+    "fontSize": "15px",
     "color": "#99bdf7",
-    "font-style": "italic",
-    "padding-left": "60px"
+    "fontStyle": "italic",
+    "paddingLeft": "60px"
 }
 
 export const imageStyle = {
@@ -33,7 +33,7 @@ export const imageStyle = {
 
 const maxStatementLength = 125;
 
-export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = undefined, organizationURL = undefined}) => {
+export const HPSearchResult = ({imageThumbnailURL, title, description, subtitle = undefined, homepage = ""}) => {
     return  <Fragment>
         <div style={{display: "inline"}}>
             <img style={imageStyle} src={imageThumbnailURL} />
@@ -41,8 +41,8 @@ export const HPSearchResult = ({imageThumbnailURL, title, statement, subtitle = 
         </div>
         <div>
             {subtitle && <h5 style={padLeft}>{subtitle}</h5>}
-            {organizationURL && <a onClick={e => e.stopPropagation() } style ={urlStyle} href={organizationURL} target="_blank">{organizationURL}</a>}
-            <p style={statementStyle}>{ellipsis(statement, maxStatementLength)}</p>
+            {homepage && <a onClick={e => e.stopPropagation() } style ={urlStyle} href={homepage} target="_blank">{homepage}</a>}
+            <p style={statementStyle}>{ellipsis(description, maxStatementLength)}</p>
         </div>
     </Fragment>
 }
