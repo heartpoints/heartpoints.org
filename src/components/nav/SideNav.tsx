@@ -44,13 +44,13 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
               <ListItemIcon>
                 <AddCircleOutline />
               </ListItemIcon>
-              <ListItemText inset primary="Create New" />
+              <ListItemText primary="Create New" />
              </ListItem>
              <ListItem button className={classes.nested} onClick={() => navTo("/organizations/search")}>
               <ListItemIcon>
                 <Search />
               </ListItemIcon>
-              <ListItemText inset primary="Search" />
+              <ListItemText primary="Search" />
              </ListItem>
             </List>
             </Collapse>
@@ -89,7 +89,7 @@ const styles = theme => ({
     justifyContent: 'flex-end',
   },
   nested: {
-    paddingLeft: theme.spacing.unit * 4,
+    paddingLeft: theme.spacing(4),
   },
 });
 
