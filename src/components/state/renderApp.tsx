@@ -14,7 +14,7 @@ export const renderApp = (state) => {
     updateStateToUseOnBackAndForwardNav(state)
     
     const bindField = (fieldBinder:FieldBinder<any,any>) => fieldBinder(state, renderApp)
-    const bindFields = (fieldBinders:Dictionary<FieldBinder<any,any>>) => mapProperties(fieldBinders, fieldBinder => fieldBinder(state, renderApp))
+    const bindFields = (fieldBinders:Dictionary<FieldBinder<any,any>>) => mapProperties(fieldBinders, bindField)
 
     const siteProps = {
         ...sitePropsFromState(state, renderApp),
