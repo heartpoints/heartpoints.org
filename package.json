@@ -70,8 +70,5 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "resolutions": {
-    "@types/react": "^16.8.22"
   }
 }
