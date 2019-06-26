@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { OrgAddEdit } from './OrgAddEdit';
 import { editOrganizationFields } from './editOrganizationFields';
 import { Page } from '../page/Page';
-import { HPButton } from '../forms/HPButton';
 import { orgHrefFromEditUrl } from './orgHrefFromEditUrl';
+import { findOrgByHref } from './findOrgByHref';
+import { MissingOrganization } from './MissingOrganization';
+import { EditLoadedOrganization } from './EditLoadedOrganization';
 
 export const EditOrganization = (props) => {
-    const { bindFields, url } = props;
-    const orgFields = bindFields(editOrganizationFields(orgHrefFromEditUrl(url)))
+    const { bindFields, url, organizations } = props;
+    const orgHref = orgHrefFromEditUrl(url)
+    const content = findOrgByHref(organizations, orgHref)
+        .map(org => <EditLoadedOrganization orgFields={bindFields(editOrganizationFields(org.href))} />)
+        .valueOrDefault(<MissingOrganization />)
+    
     return <Page>
-        <h1>Edit Organization &quot;{orgFields.title.value}&quot;</h1>
-        <OrgAddEdit {...orgFields} />
-        <HPButton label="Done Editing" onClick={() => history.back()} />
+        {content}
     </Page>
 }

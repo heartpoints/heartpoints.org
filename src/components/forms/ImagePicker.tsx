@@ -3,5 +3,5 @@ import { FilePicker } from './FilePicker';
 
 export const ImagePicker = ({ imageField, imagePlaceholderSrc }) => <React.Fragment>
     <img style={{ width: "50px", maxWidth: "50px" }} src={imageField.value || imagePlaceholderSrc} />
-    <FilePicker label="Upload Company Logo" onChange={imageField.setValue} /><br />
+    <FilePicker label="Upload Company Logo" onChange={imageField.setValue} acceptedContentTypes="image/*" /><br />
 </React.Fragment>;

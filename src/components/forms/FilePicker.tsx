@@ -13,9 +13,9 @@ const classes = makeStyles((theme:Theme) => ({
     },
 }))
 
-export const FilePicker = ({label, onChange}) => <Fragment>
+export const FilePicker = ({label, onChange, acceptedContentTypes = "*"}) => <Fragment>
     <input
-        accept="image/*"
+        accept={acceptedContentTypes}
         style={{display: "none"}}
         id="contained-button-file"
         multiple={false}
