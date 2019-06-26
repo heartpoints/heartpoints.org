@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { OrgAddEdit } from './OrgAddEdit';
 import { HPButton } from '../forms/HPButton';
+import { PageTitle } from '../page/PageTitle';
+import { Space } from '../page/Space';
 
 export const EditLoadedOrganization = ({ orgFields }) => <React.Fragment>
-    <h1>Edit Organization &quot;{orgFields.title.value}&quot;</h1>
+    <PageTitle>{orgFields.title.value} <small style={{color: "lightgray"}}>(editing)</small></PageTitle>
     <OrgAddEdit {...orgFields} />
     <HPButton label="Done Editing" onClick={() => history.back()} />
+    <Space />
 </React.Fragment>

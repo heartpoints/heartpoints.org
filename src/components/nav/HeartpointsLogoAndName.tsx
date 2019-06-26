@@ -10,7 +10,7 @@ const logoStyle = {
 
 export const HeartpointsLogoAndName = ({ typographyClass, navTo }) => <React.Fragment>
   <img style={logoStyle} src="/images/hand-with-heart.png" onClick={() => navTo("/")} />
-  <Typography style={{cursor: "pointer"}} variant="h4" color="inherit" className={typographyClass} onClick={() => navTo("/")}>
+  <Typography style={{cursor: "pointer"}} variant="h5" color="inherit" className={typographyClass} onClick={() => navTo("/")}>
     heartpoints.org
   </Typography>
 </React.Fragment>

@@ -2,6 +2,9 @@ import * as React from 'react';
 import { Phase } from './game';
 import { Switch } from '../../utils/Switch';
 import { Page } from '../page/Page';
+import { PageTitle } from '../page/PageTitle';
+import { Typography, Input, Button } from '@material-ui/core';
+import { Space } from '../page/Space';
 
 export const CastleRisk = (props) => {
     const { phase, updateState, player } = props
@@ -14,15 +17,16 @@ export const CastleRisk = (props) => {
         .value;
 
     return <Page>
-        <h1>Castle Risk</h1>
-        <hr></hr>
-        <p>Phase {phaseName}</p>
-        {phase == Phase.Welcome && <button onClick={() => updateState({phase: Phase.AddPlayer})}>Begin Game</button>}
+        <PageTitle>Castle Risk</PageTitle>
+        <Space />
+        <Typography variant="h6">Phase: {phaseName}</Typography>
+        {phase == Phase.Welcome && <Button color="primary" onClick={() => updateState({phase: Phase.AddPlayer})}>Begin Game</Button>}
         {phase == Phase.AddPlayer && <div>
-            <input autoFocus type="text" value={player} onChange={e => updateState({player: e.target.value})} />
-            <h3>Players</h3>
+            <Input type="text" value={player} onChange={e => updateState({player: e.target.value})} />
+            <Space />
+            <Typography variant="h6">Players</Typography>
             <ul>
-                <li>{player}</li>
+                <li><Typography variant="body1">{player}</Typography></li>
             </ul>
         </div>}
     </Page>
