@@ -4,14 +4,20 @@ import { numbers } from "./numbers";
 import { names } from "./names";
 import { contentTypes } from "./contentTypes";
 import { colors } from "./colors";
-import { Maybe, firstLegitValue, maybeValueForKey, maybe, maybeIf, maybeIfLazy, If } from "../utils/maybe/maybe";
+import { maybeValueForKey } from "../utils/maybe/maybeValueForKey";
+import { firstLegitValue } from "../utils/maybe/firstLegitValue";
+import { maybe } from "../utils/maybe/maybe";
+import { maybeIfLazy } from "../utils/maybe/maybeIfLazy";
+import { maybeIf } from "../utils/maybe/maybeIf";
+import { If } from "../utils/maybe/If";
+import { IMaybe } from "../utils/maybe/IMaybe";
 import { Dictionary } from "lodash";
 import { getCompleteProjection } from "./getCompleteProjection";
 import { HttpRequestArgs } from "./HttpRequestArgs";
 import { RGSONValue } from "./rgson";
 import { JSONValue } from "./JSONValue";
 
-export const theInternet = ({url, contentType}:HttpRequestArgs):Maybe<RGSONValue> | Maybe<JSONValue> =>
+export const theInternet = ({url, contentType}:HttpRequestArgs):IMaybe<RGSONValue> | IMaybe<JSONValue> =>
     firstLegitValue(
         {url, contentType},
         projectionHandler,
@@ -33,6 +39,6 @@ export const basicResources:Dictionary<RGSONValue> = {
     ...contentTypes,
 }
 
-const oldInternet = ({url}:HttpRequestArgs):Maybe<RGSONValue> => 
+const oldInternet = ({url}:HttpRequestArgs):IMaybe<RGSONValue> => 
     maybeValueForKey(basicResources)(url)
     

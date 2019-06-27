@@ -1,4 +1,4 @@
-import { None } from "../maybe/maybe";
+import { None } from "../maybe/None";
 import { False } from "../axioms/False";
 import { IList } from "./IList";
 import { NonEmptyList } from "./NonEmptyList";

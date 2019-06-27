@@ -1,4 +1,4 @@
-import { Maybe } from "../maybe/maybe";
+import { IMaybe } from "../maybe/IMaybe";
 import { Provider } from "../axioms/Provider";
 import { first } from "../list/first";
 import { Constant } from "../axioms/Constant";
@@ -18,7 +18,7 @@ export const NonEmptySwitchWithoutInput = <V>(predicateProviderPairs: PredicateP
     matchesLazy<R>(predicate: Provider<boolean>, resultProviderToUseIfMatch: Provider<R>): ISwitchWithoutInput<V | R> {
         return NonEmptySwitchWithoutInput<V | R>([...predicateProviderPairs, [predicate, resultProviderToUseIfMatch]]);
     },
-    get result(): Maybe<V> {
+    get result(): IMaybe<V> {
         return first(predicateProviderPairs, ([predicate]) => predicate()).map(([_, provider]) => provider());
     },
 });

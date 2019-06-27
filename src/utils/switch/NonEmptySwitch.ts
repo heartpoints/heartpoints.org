@@ -1,4 +1,4 @@
-import { Maybe } from "../maybe/maybe";
+import { IMaybe } from "../maybe/IMaybe";
 import { Provider } from "../axioms/Provider";
 import { zip } from "../list/zip";
 import { first } from "../list/first";
@@ -35,7 +35,7 @@ export const NonEmptySwitch = <PossibleInputTypes, PossibleOutputTypes>(typePred
     matchesType<NewInputType, NewOutputType>(predicate: TypePredicate<NewInputType, any>, mapperToUseIfMatch: Mapper<any, NewOutputType>): ISwitchWithLateInput<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
         return NonEmptySwitch<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType>(combineTypePredicates(typePredicates, predicate), combineMappers(resultMappers, mapperToUseIfMatch));
     },
-    resultWhen<ActualInputType extends PossibleInputTypes>(input: ActualInputType): Maybe<PossibleOutputTypes> {
+    resultWhen<ActualInputType extends PossibleInputTypes>(input: ActualInputType): IMaybe<PossibleOutputTypes> {
         return zip(typePredicates, resultMappers)
             .flatMap(zipped => first(zipped, ([a,]) => a(input) == true))
             .map(([, b]) => b(input));

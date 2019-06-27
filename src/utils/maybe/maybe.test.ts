@@ -1,4 +1,5 @@
-import { Some, reduceMaybe } from "./maybe";
+import { reduceMaybe } from "./reduceMaybe";
+import { Some } from "./Some";
 import { whenValues, then } from "../../testing/expect";
 import { add3ToEvens, doubleOdds } from "../../testing/helpers";
 

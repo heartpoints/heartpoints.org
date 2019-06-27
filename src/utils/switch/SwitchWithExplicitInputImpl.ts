@@ -1,4 +1,4 @@
-import { Maybe } from "../maybe/maybe";
+import { IMaybe } from "../maybe/IMaybe";
 import { List } from "../list/List";
 import { Predicate } from "../predicates/Predicate";
 import { Mapper } from "../axioms/Mapper";
@@ -26,7 +26,7 @@ export const SwitchWithExplicitInputImpl = <T, V>(input: T, predicateMapperPairs
             [predicate, resultMapperToUseIfMatch]
         ]);
     },
-    get result(): Maybe<V> {
+    get result(): IMaybe<V> {
         return List(predicateMapperPairs)
             .first(([predicate]) => predicate(input))
             .map(([_, mapper]) => mapper(input));

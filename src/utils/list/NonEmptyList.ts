@@ -1,4 +1,4 @@
-import { Some } from "../maybe/maybe";
+import { Some } from "../maybe/Some";
 import { IList } from "./IList";
 
 export const NonEmptyList = <T, S>(head: T, tail: IList<S>): IList<T | S> => ({

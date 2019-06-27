@@ -1,5 +1,5 @@
-import { Maybe } from "../maybe/maybe";
+import { IMaybe } from "../maybe/IMaybe";
 
 export interface ISwitchResult<V> {
-    result: Maybe<V>;
+    result: IMaybe<V>;
 }

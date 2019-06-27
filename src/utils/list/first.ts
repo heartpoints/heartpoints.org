@@ -1,4 +1,5 @@
 import { Predicate } from "../predicates/Predicate";
-import { Maybe, maybe } from "../maybe/maybe";
+import { maybe } from "../maybe/maybe";
+import { IMaybe } from "../maybe/IMaybe";
 
-export const first = <T>(array: T[], predicate: Predicate<T>): Maybe<T> => maybe(array.find(predicate));
+export const first = <T>(array: T[], predicate: Predicate<T>): IMaybe<T> => maybe(array.find(predicate));

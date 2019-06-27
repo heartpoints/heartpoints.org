@@ -1,4 +1,5 @@
-import { Maybe, None } from "../maybe/maybe";
+import { None } from "../maybe/None";
+import { IMaybe } from "../maybe/IMaybe";
 import { Provider } from "../axioms/Provider";
 import { TypePredicate } from "../predicates/TypePredicate";
 import { Predicate } from "../predicates/Predicate";
@@ -31,5 +32,5 @@ export const EmptySwitch = (): ISwitchWithLateInput<never, never> => ({
     matchesType(predicate: TypePredicate<any, any>, mapperToUseIfMatch: Mapper<any, any>) {
         return NonEmptySwitch([predicate], [mapperToUseIfMatch]);
     },
-    resultWhen(input: any): Maybe<never> { return None; },
+    resultWhen(input: any): IMaybe<never> { return None; },
 });

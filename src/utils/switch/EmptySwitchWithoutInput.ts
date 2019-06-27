@@ -1,4 +1,5 @@
-import { None, NoneType } from "../maybe/maybe";
+import { None } from "../maybe/None";
+import { NoneType } from "../maybe/NoneType";
 import { Provider } from "../axioms/Provider";
 import { Constant } from "../axioms/Constant";
 import { ISwitchWithoutInput } from "./ISwitchWithoutInput";
