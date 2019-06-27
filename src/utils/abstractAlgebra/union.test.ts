@@ -4,7 +4,7 @@ import { equatableNumber } from "./equatableNumber";
 
 const s = setContainingOneElement;
 
-describe("Maybe", () => {
+describe("Set#union", () => {
     const e1 = () => equatableNumber(1)
     const e2 = () => equatableNumber(2)
     const s1 = () => s(e1())
