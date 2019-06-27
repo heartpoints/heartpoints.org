@@ -4,6 +4,7 @@ import { first } from "../list/first";
 import { Constant } from "../axioms/Constant";
 import { ISwitchWithoutInput } from "./ISwitchWithoutInput";
 import { PredicateProviderPairs } from "./PredicateProviderPairs";
+
 export const NonEmptySwitchWithoutInput = <V>(predicateProviderPairs: PredicateProviderPairs<V>): ISwitchWithoutInput<V> => ({
     case<R>(condition: boolean, resultToUseIfMatch: R): ISwitchWithoutInput<V | R> {
         return this.matchesLazy(Constant(condition), Constant(resultToUseIfMatch));

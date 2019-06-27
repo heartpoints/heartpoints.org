@@ -2,6 +2,7 @@ import { None } from "../maybe/maybe";
 import { False } from "../axioms/False";
 import { IList } from "./IList";
 import { NonEmptyList } from "./NonEmptyList";
+
 export const EmptyList: IList<never> = {
     map: () => EmptyList,
     push: i => NonEmptyList(i, EmptyList),

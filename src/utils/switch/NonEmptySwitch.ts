@@ -11,6 +11,7 @@ import { combineMappers } from "./combineMappers";
 import { equals } from "../axioms/equals";
 import { Constant } from "../axioms/Constant";
 import { ISwitchWithLateInput } from "./ISwitchWithLateInput";
+
 export const NonEmptySwitch = <PossibleInputTypes, PossibleOutputTypes>(typePredicates: Array<TypePredicate<PossibleInputTypes, any>>, resultMappers: Array<Mapper<PossibleInputTypes, PossibleOutputTypes>>): ISwitchWithLateInput<PossibleInputTypes, PossibleOutputTypes> => ({
     case<NewInputType, NewOutputType>(possiblyEqualValue: NewInputType, resultToUseIfMatch: NewOutputType): ISwitchWithLateInput<PossibleInputTypes | NewInputType, PossibleOutputTypes | NewOutputType> {
         return this.matchesLazy(equals(possiblyEqualValue), Constant(resultToUseIfMatch));

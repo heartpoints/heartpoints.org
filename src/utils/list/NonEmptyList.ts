@@ -1,5 +1,6 @@
 import { Some } from "../maybe/maybe";
 import { IList } from "./IList";
+
 export const NonEmptyList = <T, S>(head: T, tail: IList<S>): IList<T | S> => ({
     map: f => NonEmptyList(f(head), tail.map(f)),
     push(i) { return NonEmptyList(head, tail.push(i)); },

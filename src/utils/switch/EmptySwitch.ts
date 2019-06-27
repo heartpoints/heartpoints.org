@@ -7,6 +7,7 @@ import { equals } from "../axioms/equals";
 import { Constant } from "../axioms/Constant";
 import { ISwitchWithLateInput } from "./ISwitchWithLateInput";
 import { NonEmptySwitch } from "./NonEmptySwitch";
+
 export const EmptySwitch = (): ISwitchWithLateInput<never, never> => ({
     case<S, R>(possiblyEqualValue: S, resultToUseIfMatch: R): ISwitchWithLateInput<S, R> {
         return this.matchesLazy(equals(possiblyEqualValue), Constant(resultToUseIfMatch));

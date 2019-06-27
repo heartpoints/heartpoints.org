@@ -1,6 +1,7 @@
 import { Predicate } from "../predicates/Predicate";
 import { Mapper } from "../axioms/Mapper";
 import { ISwitchResult } from "./ISwitchResult";
+
 export interface ISwitchWithEarlyInput<T, V> extends ISwitchResult<V> {
     case<R>(possiblyEqualValue: T, resultToUseIfMatch: R): ISwitchWithEarlyInput<T, R | V>;
     cases<R>(possiblyEqualValues: T[], mapperToUseIfMatch: Mapper<T, R>): ISwitchWithEarlyInput<T, V | R>;

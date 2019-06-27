@@ -3,6 +3,7 @@ import { TypePredicate } from "../predicates/TypePredicate";
 import { Predicate } from "../predicates/Predicate";
 import { Mapper } from "../axioms/Mapper";
 import { ISwitchWithLateInput } from "./ISwitchWithLateInput";
+
 export interface ICaseMatch<T, V> {
     case<S, R>(possiblyEqualValue: S, resultToUseIfMatch: R): ISwitchWithLateInput<T | S, V | R>;
     cases<S, R>(possiblyEqualValues: S[], mapperToUseIfMatch: Mapper<S, R>): ISwitchWithLateInput<T | S, V | R>;

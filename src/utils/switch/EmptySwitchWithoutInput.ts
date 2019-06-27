@@ -3,6 +3,7 @@ import { Provider } from "../axioms/Provider";
 import { Constant } from "../axioms/Constant";
 import { ISwitchWithoutInput } from "./ISwitchWithoutInput";
 import { NonEmptySwitchWithoutInput } from "./NonEmptySwitchWithoutInput";
+
 export const EmptySwitchWithoutInput = (): ISwitchWithoutInput<never> => ({
     case<R>(condition: boolean, resultToUseIfMatch: R): ISwitchWithoutInput<R> {
         return this.matchesLazy(Constant(condition), Constant(resultToUseIfMatch));

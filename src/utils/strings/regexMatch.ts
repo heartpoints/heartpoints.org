@@ -1,1 +1,4 @@
-export const regexMatch = (regex: string | RegExp) => (actual:string) => actual.match(regex) != null
+export const regexMatch = 
+    (regex: string | RegExp) => 
+    (actual:string) => 
+    actual.match(regex) != null

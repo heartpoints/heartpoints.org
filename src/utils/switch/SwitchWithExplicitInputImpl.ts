@@ -6,6 +6,7 @@ import { equals } from "../axioms/equals";
 import { Constant } from "../axioms/Constant";
 import { ISwitchWithEarlyInput } from "./ISwitchWithEarlyInput";
 import { ExplicitInputPredicateMapperPairs } from "./ExplicitInputPredicateMapperPairs";
+
 export const SwitchWithExplicitInputImpl = <T, V>(input: T, predicateMapperPairs: ExplicitInputPredicateMapperPairs<T, V>): ISwitchWithEarlyInput<T, V> => ({
     case<R>(possiblyEqualValue: T, resultToUseIfMatch: R): ISwitchWithEarlyInput<T, R | V> {
         return this.matchesLazy(equals(possiblyEqualValue), Constant(resultToUseIfMatch));
