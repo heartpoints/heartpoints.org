@@ -35,7 +35,7 @@ const thenable = (prexixWord:string) => <T>(resultProvider:Provider<T>) => (
             `${prexixWord} ${resultProvider} should eventually behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`,
             async () => block(await resultProvider())
         ),
-        should: (block:Consumer<T>) => it(
+        shouldMeetExpectations: (block:Consumer<T>) => it(
             `${prexixWord} ${resultProvider} should behave according to the following block:\n\n${block.toString().replace("\n", "")}\n\n`,
             () => block(resultProvider())
         )

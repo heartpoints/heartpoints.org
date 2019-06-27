@@ -47,7 +47,7 @@ describe("Switch", () => {
             .matchesLazy(() => true, () => [1,2,3])
     
         whenValues({theSwitch: switchWithoutInputMatchesLazy}, ({theSwitch}) =>
-            then(() => theSwitch.result.value).should(
+            then(() => theSwitch.result.value).shouldMeetExpectations(
                 result => expect(result).to.deep.equal([1,2,3])
             )
         )
@@ -58,7 +58,7 @@ describe("Switch", () => {
             .caseLazy(4 == 4, () => [2,3,4])
     
         whenValues({theSwitch: switchWithoutInputCases}, ({theSwitch}) =>
-            then(() => theSwitch.result.value).should(
+            then(() => theSwitch.result.value).shouldMeetExpectations(
                 result => expect(result).to.deep.equal([2,3,4])
             )
         )

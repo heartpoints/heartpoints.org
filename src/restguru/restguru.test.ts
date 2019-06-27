@@ -10,7 +10,7 @@ describe("restful-json", () => {
         const simpleResourceTest = ({url,contentType,expectedValue}) => 
             whenValues({url, contentType}, () => {
                 const result = () => theInternet({url, contentType})
-                then(result).should(maybeRepresentation => {
+                then(result).shouldMeetExpectations(maybeRepresentation => {
                     expect(maybeRepresentation.value).to.deep.equal(expectedValue);
                 });
             });
