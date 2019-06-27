@@ -1,4 +1,4 @@
-import { Switch } from "../../utils/Switch";
+import { Switch } from "../../utils/switch/Switch";
 import { Routes } from "./Routes";
 import { Router } from "./Router";
 

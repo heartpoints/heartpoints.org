@@ -1,5 +1,5 @@
-import { Switch } from "../utils/Switch";
-import { Maybe } from "../utils/maybe";
+import { Switch } from "../utils/switch/Switch";
+import { Maybe } from "../utils/maybe/maybe";
 import { RGSONValue } from "./rgson";
 
 export const people = ({url}):Maybe<RGSONValue> => Switch.when(url)

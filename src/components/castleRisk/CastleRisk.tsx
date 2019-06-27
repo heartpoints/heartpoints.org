@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Phase } from './game';
-import { Switch } from '../../utils/Switch';
+import { Switch } from "../../utils/switch/Switch";
 import { Page } from '../page/Page';
 import { PageTitle } from '../page/PageTitle';
 import { Typography, Input, Button } from '@material-ui/core';

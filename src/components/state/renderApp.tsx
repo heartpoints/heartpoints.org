@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Site } from "../Site";
+import { Site } from "../site/Site";
 import { rootSiteElement } from "./rootSiteElement";
 import { sitePropsFromState } from "./sitePropsFromState";
 import { updateStateToUseOnBackAndForwardNav } from "../nav/updateStateToUseOnBackAndForwardNav";
 import { FieldBinder } from "../forms/types/FieldBinder";
 import { Dictionary } from "lodash";
-import { mapProperties } from "../../utils/list";
+import { mapProperties } from "../../utils/list/mapProperties";
 
 export const renderApp = (state) => {
     window.onresize = () => renderApp(state)

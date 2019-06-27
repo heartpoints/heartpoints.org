@@ -1,4 +1,4 @@
-import { mapProperties } from "../../utils/list";
+import { mapProperties } from "../../utils/list/mapProperties";
 import { generalOrgFields } from "./generalOrgFields";
 import { nestedFieldInArray } from "../forms/nestedFieldInArray";
 

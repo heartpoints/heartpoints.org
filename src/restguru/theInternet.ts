@@ -4,9 +4,10 @@ import { numbers } from "./numbers";
 import { names } from "./names";
 import { contentTypes } from "./contentTypes";
 import { colors } from "./colors";
-import { Maybe, firstLegitValue, maybeValueForKey, maybe, maybeIf, maybeIfLazy, If } from "../utils/maybe";
+import { Maybe, firstLegitValue, maybeValueForKey, maybe, maybeIf, maybeIfLazy, If } from "../utils/maybe/maybe";
 import { Dictionary } from "lodash";
-import { HttpRequestArgs, getCompleteProjection } from "./getCompleteProjection";
+import { getCompleteProjection } from "./getCompleteProjection";
+import { HttpRequestArgs } from "./HttpRequestArgs";
 import { RGSONValue } from "./rgson";
 import { JSONValue } from "./JSONValue";
 

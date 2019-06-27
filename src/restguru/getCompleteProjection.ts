@@ -1,15 +1,8 @@
-import { theInternet } from "./theInternet";
-import { mapDictionary } from "../utils/list";
-import { RGSONValue, IsRJSONArray, IsRJSONDictionary, RGSONDictionary, RGSONArray } from "./rgson";
-import { JSONArray } from "./JSONArray";
+import { RGSONValue, IsRJSONArray, IsRJSONDictionary } from "./rgson";
 import { JSONValue } from "./JSONValue";
-import { JSONObject } from "./JSONObject";
-import { Switch } from "../utils/Switch";
-
-export type HttpRequestArgs = {
-    url:string,
-    contentType:string,
-}
+import { Switch } from "../utils/switch/Switch";
+import { mapArrayToCompleteProjection } from "./mapArrayToCompleteProjection";
+import { mapDictionaryToCompleteProjection } from "./mapDictionaryToCompleteProjection";
 
 export const getCompleteProjection = (rgson:RGSONValue):JSONValue => 
     Switch.that
@@ -17,13 +10,3 @@ export const getCompleteProjection = (rgson:RGSONValue):JSONValue =>
         .matchesType(IsRJSONDictionary, mapDictionaryToCompleteProjection)
         .resultWhen(rgson)
         .valueOrDefault(rgson)
-
-const mapArrayToCompleteProjection = (arrayRepresentation:RGSONArray):JSONArray => 
-    arrayRepresentation.map(url => theInternet({url, contentType: "http://rest.guru/rgson/completeProjection"}).value)
-
-const mapDictionaryToCompleteProjection = (dictionary:RGSONDictionary):JSONObject => 
-    mapDictionary(
-        dictionary, 
-        k => theInternet({url: k, contentType: "http://rest.guru/jsonHashKey"}).value!.toString(),
-        v => theInternet({url: v, contentType: "http://rest.guru/rgson/completeProjection"}).value,
-    );

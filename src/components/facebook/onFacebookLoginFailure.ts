@@ -1,2 +1,2 @@
-import { identity } from "../../utils/identity";
+import { identity } from "../../utils/axioms/identity";
 export const onFacebookLoginFailure = identity;

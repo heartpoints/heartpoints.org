@@ -1,4 +1,4 @@
 import { Router } from "./Router"
-import { Url } from "../../utils/url"
+import { IUrl } from "../../utils/url/IUrl";
 
-export type RouteProvider = (url:Url, props:any, router:Router) => Router
+export type RouteProvider = (url:IUrl, props:any, router:Router) => Router

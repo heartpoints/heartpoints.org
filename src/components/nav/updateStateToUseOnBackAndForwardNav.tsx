@@ -2,7 +2,7 @@ import { history } from "./history";
 import { navTo } from "./navTo";
 import { renderApp } from "../state/renderApp";
 import { UnregisterCallback } from "history";
-import { doNothing } from "../../utils/doNothing";
+import { doNothing } from "../../utils/axioms/doNothing";
 
 //TODO: Undo the global state here
 export let previousHistoryListener:UnregisterCallback = doNothing;

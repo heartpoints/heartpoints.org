@@ -1,4 +1,4 @@
-import { Switch } from "../utils/Switch";
+import { Switch } from "../utils/switch/Switch";
 
 export const fields = ({url, contentType}) => Switch.when(url)
     .case("http://fields/id", "id")

@@ -1,4 +1,4 @@
-import { drawerWidth } from "../../style/drawerWidth";
+import { drawerWidth } from "../site/drawerWidth";
 
 export const styles = theme => ({
   grow: {
