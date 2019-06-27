@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { FilePicker } from './FilePicker';
 import { Typography, Tooltip } from '@material-ui/core';
+import { logoStyle } from './logoStyle';
 
-const imageStyle = { 
-    width: "75px",
-    maxWidth: "75px",
+const logoEditStyle = {
+    ...logoStyle,
     cursor: "pointer",
     borderStyle: "dashed",
     borderWidth: "1px",
@@ -20,7 +20,7 @@ const divStyle = {
 export const ImagePicker = ({ imageField, imagePlaceholderSrc, caption }) => <div style={divStyle}>
     <FilePicker onChange={imageField.setValue} acceptedContentTypes="image/*">
         <Tooltip title="upload image" placement="right">
-            <img style={imageStyle} src={imageField.value || imagePlaceholderSrc} />
+            <img style={logoEditStyle} src={imageField.value || imagePlaceholderSrc} />
         </Tooltip>
         <br />
     </FilePicker>

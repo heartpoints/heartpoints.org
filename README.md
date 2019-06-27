@@ -252,7 +252,16 @@ Themes can be updated [here](https://in-your-saas.github.io/material-ui-theme-ed
 
 ### Icons
 
-Icons can be browsed visually [here](https://material.io/tools/icons/?style=baseline)
+Icons can be browsed visually [here](https://material.io/tools/icons/?style=baseline). When the icon of choice is found,
+take note of the name, and then use the icon by importing the corresponding react component.
+
+For example, if the icon is labeled `domain`, then:
+
+```typescript
+import DomainIcon from '@material-ui/icons/Domain';
+
+const render = () => <DomainIcon />
+```
 
 ### React Material UI Documentation
 
