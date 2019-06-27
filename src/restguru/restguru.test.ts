@@ -3,7 +3,7 @@ import { whenValues, then } from "../testing/expect";
 import { theInternet } from "../restguru/theInternet";
 import { expect } from "chai";
 import { HttpMethod } from "../restguru/HttpMethod";
-import { RestClient } from "./restClient";
+import { RestClient } from "./RestClient";
 
 describe("restful-json", () => {
     describe("theInternet", () => {
