@@ -14,7 +14,6 @@ const classes = makeStyles((theme:Theme) => ({
 export const InputForField = 
     ({ value, setValue, placeholder, multiline = false, rows = 1 }) => 
     <TextField
-        id="filled-required"
         label={placeholder}
         multiline={multiline}
         value={value === undefined || value === null ? "" : value}
