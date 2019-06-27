@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Fragment } from "react";
-import { uuid } from '../../utils/uuid';
+import { uuid } from '../../utils/strings/uuid';
 import { fileUploadHandler } from './fileUploadHandler';
 
 export const FilePicker = ({onChange, acceptedContentTypes = "*", children}) => {

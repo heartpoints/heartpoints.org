@@ -5,6 +5,7 @@ devEnvironment
 
 ## Directory-based project format:
 .idea/
+yarn-error.log
 # if you remove the above rule, at least ignore the following:
 
 # User-specific stuff:

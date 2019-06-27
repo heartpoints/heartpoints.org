@@ -3,8 +3,8 @@ import { SearchBar as OrgSearchBar } from "./SearchBar";
 import { ViewOrganization } from "./ViewOrganization";
 import { CreateOrganization } from "./CreateOrganization";
 import { EditOrganization } from "./EditOrganization";
-import { regexMatch } from "../../utils/Switch";
 import { Router } from "../nav/Router";
+import { regexMatch } from "../../utils/strings/regexMatch";
 
 export const OrgRoutes = (url, props, router:Router) => 
     router

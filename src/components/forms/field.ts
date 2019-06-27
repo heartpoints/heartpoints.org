@@ -1,6 +1,6 @@
-import { Mapper } from "../../utils/mapper";
-import { Reducer } from "../../utils/Reducer";
-import { Consumer } from "../../utils/consumer";
+import { Mapper } from "../../utils/axioms/Mapper";
+import { Reducer } from "../../utils/axioms/Reducer";
+import { Consumer } from "../../utils/axioms/Consumer";
 import { Field } from "./types/Field";
 import { FieldBinder } from "./types/FieldBinder";
 

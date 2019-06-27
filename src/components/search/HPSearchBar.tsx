@@ -1,8 +1,8 @@
-import { doNothing } from "../../utils/doNothing";
+import { doNothing } from "../../utils/axioms/doNothing";
 import * as React from "react";
 import Autosuggest from "react-autosuggest";
 import { theme } from "./theme";
-import { identity } from "../../utils/identity";
+import { identity } from "../../utils/axioms/identity";
 
 //TODO: Note HPSearchBar is sharing its searchBarValue between screens.
 export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange}) => {

@@ -1,4 +1,4 @@
-import { Url } from "../../utils/url";
+import { Url } from "../../utils/url/Url";
 
 export const initialNavState = () => ({
     isSideNavExpanded: false,

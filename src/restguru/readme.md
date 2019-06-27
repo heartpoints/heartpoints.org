@@ -101,3 +101,24 @@ COMMITS
             2. For example, the rest.guru client could:
                 1. OPTIONS https://rest.guru
                 2. ACCEPT: https://rest.guru/content+types/
+
+# Meta Content Types
+
+http://rest.guru/
+    /mime
+        /text
+            /plain
+        /image
+            /jpeg
+            /png
+        /application
+            /json
+    /rgson
+        /immutable
+        /mutable
+        /cyclic
+        /acyclic
+        /withOrWithoutSeveralProperties?immutable=true&otherProp=true&cyclic=false
+        hash-key
+        string
+        boolean

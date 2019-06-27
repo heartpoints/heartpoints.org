@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Fragment } from "react";
-import { ellipsis } from "../../utils/ellipsis";
+import { ellipsis } from "../../utils/strings/ellipsis";
 import { Typography, Grid } from "@material-ui/core";
 
 export const headerContainerChildStyle = {

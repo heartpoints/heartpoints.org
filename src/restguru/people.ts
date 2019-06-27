@@ -1,8 +1,8 @@
-import { Switch } from "../utils/Switch";
-import { Maybe } from "../utils/maybe";
+import { Switch } from "../utils/switch/Switch";
+import { IMaybe } from "../utils/maybe/IMaybe";
 import { RGSONValue } from "./rgson";
 
-export const people = ({url}):Maybe<RGSONValue> => Switch.when(url)
+export const people = ({url}):IMaybe<RGSONValue> => Switch.when(url)
     .case("http://people", [
         "http://people/1",
         "http://people/2",
