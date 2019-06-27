@@ -3,6 +3,9 @@ import { HPSearchResult } from "../search/HPSearchResult";
 import { HPSearchBar } from "../search/HPSearchBar";
 import { Page } from "../page/Page";
 import { Organization } from "./organization";
+import { Typography } from "@material-ui/core";
+import { Space } from "../page/Space";
+import { PageTitle } from "../page/PageTitle";
 
 export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange, organizations, navTo } = props;
@@ -12,7 +15,7 @@ export const SearchBar = (props) => {
         return inputValue.length === 0 
             ? [] 
             : organizations.filter(org =>
-                org.title.toLowerCase().includes(inputValue)
+                (org.title || "").toLowerCase().includes(inputValue)
             )
     }
 
@@ -31,7 +34,8 @@ export const SearchBar = (props) => {
     }
     
     return <Page>
-        <h1>Organization Search...</h1>
+        <PageTitle>Organization Search...</PageTitle>
+        <Space />
         <HPSearchBar {...hpSearchBarProps} />
     </Page>
 }

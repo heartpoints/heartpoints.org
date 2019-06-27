@@ -1,3 +1,4 @@
 import * as React from 'react';
+import { PageTitle } from '../page/PageTitle';
 
-export const MissingOrganization = () => <p>Organization Not Found!</p>
+export const MissingOrganization = () => <PageTitle>Organization Not Found!</PageTitle>

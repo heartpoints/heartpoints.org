@@ -1,18 +1,21 @@
 import * as React from "react";
+import { Typography, Container, Card } from "@material-ui/core";
+import { Space } from "../page/Space";
 
-export const HomePage = () => {
-    return <div className="vertical-center">
-    <div className="container">
-        <div className="row">
-            <div className="col-md-2"> </div>
-            <div className="col-md-8">
-                <img className="center-block" width="100%" src="/images/logo.png" />
-                <p style={{textAlign: "center", marginBottom: "0px", marginTop: "25px"}}>help us build something amazing!</p>
-                <h2 style={{textAlign: "center", marginTop: "10px"}}>
-                    <a href="mailto:info@heartpoints.org">info@heartpoints.org</a> 
-                </h2>
-            </div>
-        </div>
-    </div>
-</div>
+const containerStyle = {
+    minHeight: "90vh",
+    display: "flex",
+    alignItems: "center"
 }
+
+export const HomePage = () => <Container style={containerStyle}>
+    <Card style={{textAlign: "center", verticalAlign: "middle"}}>
+        <img width="100%" src="/images/logo.png" />
+        <Typography variant="h4">help us build something amazing!</Typography>
+        <Space />
+        <Typography variant="h6">
+            <a href="mailto:info@heartpoints.org">info@heartpoints.org</a> 
+        </Typography>
+        <Space />
+    </Card>
+</Container>

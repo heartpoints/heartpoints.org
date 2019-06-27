@@ -3,6 +3,8 @@ import { HPSearchBar } from "../search/HPSearchBar";
 import { HPSearchResult } from "../search/HPSearchResult";
 import { findVolunteeringOpportunities } from "./findVolunteeringOpportunities";
 import { Page } from "../page/Page"
+import { Space } from "../page/Space"
+import { PageTitle } from "../page/PageTitle";
 
 export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange } = props;
@@ -23,7 +25,8 @@ export const SearchBar = (props) => {
     } 
     
     return <Page>
-        <h1>Volunteering Opportunity Search...</h1>
+        <PageTitle>Volunteering Opportunity Search...</PageTitle>
+        <Space />
         <HPSearchBar {...hpSearchBarProps} />
     </Page>
 }

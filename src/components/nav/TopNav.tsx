@@ -1,12 +1,13 @@
 import * as React from "react";
-import { AppBar, Toolbar, IconButton, Typography, withStyles, CssBaseline } from "@material-ui/core";
+import { AppBar, Toolbar, IconButton, withStyles, CssBaseline } from "@material-ui/core";
 import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames';
 import { styles } from "./styles";
+import { HeartpointsLogoAndName } from "./HeartpointsLogoAndName";
 
 export const TopNavUnstyled = props => {
-    const { classes, onHamburgerClicked, isSideNavOpen } = props;
+    const { classes, onHamburgerClicked, isSideNavOpen, navTo } = props;
     const { hide, grow, appBar, appBarShift } = classes
 
     const appBarClassName = classNames(
@@ -21,10 +22,7 @@ export const TopNavUnstyled = props => {
             <IconButton color="inherit" aria-label="Menu" onClick={onHamburgerClicked} className={hamburgerClassName}>
                 <MenuIcon />
             </IconButton>
-            <img style={{width: "35px", height: "21px", margin: "12px 10px"}} src="/images/hand-with-heart.png" />
-            <Typography variant="h4" color="inherit" className={grow}>
-                heartpoints.org
-            </Typography>
+            <HeartpointsLogoAndName typographyClass={grow} navTo={navTo} />
             <FacebookLoginLogout {...props} />
         </Toolbar>
     </AppBar>

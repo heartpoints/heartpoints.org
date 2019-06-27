@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Fragment } from "react";
 import { ellipsis } from "../../utils/ellipsis";
+import { Typography, Grid } from "@material-ui/core";
 
 export const headerContainerChildStyle = {
     "display": "inline",
@@ -28,23 +29,20 @@ export const urlStyle ={
 export const imageStyle = {
     "width": "50px",
     "height": "50px",
-    ...headerContainerChildStyle,
 }
 
 const maxStatementLength = 125;
 
-export const HPSearchResult = ({imageThumbnailURL, title, description, subtitle = undefined, homepage = ""}) => {
-    return  <Fragment>
-        <div style={{display: "inline"}}>
+export const HPSearchResult = ({imageThumbnailURL, title, description, subtitle = undefined, homepage = ""}) =>
+    <Grid container direction="row" justify="flex-start" alignItems="center" wrap="nowrap" spacing={2}>
+        <Grid item>
             <img style={imageStyle} src={imageThumbnailURL} />
-            <h3 style={headerContainerChildStyle}>{title}</h3>
-        </div>
-        <div>
-            {subtitle && <h5 style={padLeft}>{subtitle}</h5>}
-            {homepage && <a onClick={e => e.stopPropagation() } style ={urlStyle} href={homepage} target="_blank">{homepage}</a>}
-            <p style={statementStyle}>{ellipsis(description, maxStatementLength)}</p>
-        </div>
-    </Fragment>
-}
-
-
+        </Grid>
+        <Grid item>
+            <Typography variant="h5"> {title}</Typography>
+            {subtitle && <Typography variant="h6">{subtitle}</Typography>}
+            <Typography variant="caption">
+                {ellipsis(description, maxStatementLength)}
+            </Typography>
+        </Grid>
+    </Grid>
