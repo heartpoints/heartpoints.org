@@ -2,8 +2,8 @@ import * as _ from "lodash";
 import { whenValues, then } from "../testing/expect";
 import { theInternet } from "../restguru/theInternet";
 import { expect } from "chai";
-import { RestClient } from "./RestClient";
 import { HttpMethod } from "../restguru/HttpMethod";
+import { RestClient } from "./restClient";
 
 describe("restful-json", () => {
     describe("theInternet", () => {
