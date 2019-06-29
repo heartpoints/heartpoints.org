@@ -1,5 +1,6 @@
 export type Field<T> = {
-    value: T;
-    setValue(t: T): void;
-    placeholder: string;
+    value: T
+    title: string
+    setValue(t: T): void
+    placeholder: string
 };

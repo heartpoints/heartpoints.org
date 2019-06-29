@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev src/webServer.ts",
-    "watch": "webpack-dev-server --hot --inline --color --open"
+    "watch": "webpack-dev-server --hot --inline --color"
   },
   "repository": {
     "type": "git",

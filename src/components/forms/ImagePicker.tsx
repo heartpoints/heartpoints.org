@@ -17,12 +17,12 @@ const divStyle = {
     paddingBottom: "0px",
 }
 
-export const ImagePicker = ({ imageField, imagePlaceholderSrc, caption }) => <div style={divStyle}>
-    <FilePicker onChange={imageField.setValue} acceptedContentTypes="image/*">
+export const ImagePicker = ({ field, style = {} }) => <div style={divStyle}>
+    <FilePicker onChange={field.setValue} acceptedContentTypes="image/*">
         <Tooltip title="upload image" placement="right">
-            <img style={logoEditStyle} src={imageField.value || imagePlaceholderSrc} />
+            <img style={{...logoEditStyle, ...style}} src={field.value || field.placeholder } />
         </Tooltip>
         <br />
     </FilePicker>
-    <Typography variant="caption">{caption}</Typography>
+    <Typography variant="caption">{field.title}</Typography>
 </div>
