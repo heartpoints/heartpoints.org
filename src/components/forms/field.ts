@@ -8,11 +8,11 @@ import { ToStringable } from "../../utils/strings/ToStringable";
 // import { renderApp } from "../state/renderApp";
 
 export const field = 
-    <S, T extends ToStringable>(selector: Mapper<S, T>, reducer: Reducer<S, T>, placeholder: string, title?:string):FieldBinder<S, T> => 
+    <S, T>(selector: Mapper<S, T>, reducer: Reducer<S, T>, placeholder: string, title?:string):FieldBinder<S, T> => 
     (state: S, renderApp: Consumer<S>): Field<T> => 
     ({
         get value() { return selector(state); },
-        get title() { return title || this.value.toString() },
+        get title() { return title || placeholder },
         setValue(newValue:T) { renderApp(reducer(state, newValue)) },
         placeholder,
     });

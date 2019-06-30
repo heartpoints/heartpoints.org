@@ -1,8 +1,7 @@
 import { Dictionary } from "lodash";
 import { Mapper } from "../axioms/Mapper";
-import { identity } from "../axioms/identity";
-import { mapDictionary } from "./mapDictionary";
+import * as _ from "lodash"
 
 export const mapProperties = 
-    <T, S>(obj: Dictionary<T>, valueMapper: Mapper<T, S>): Dictionary<S> =>
-    mapDictionary(obj, identity, valueMapper)
+    <T, S>(obj:Dictionary<T>, mapper:Mapper<T, S>):Dictionary<S> =>
+    _.mapValues(obj, mapper)
