@@ -1,0 +1,11 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: heartpoints-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: heartpoints-org
+    networking.gke.io/managed-certificates: heartpoints-certificate
+spec:
+  backend:
+    serviceName: heartpoints-org
+    servicePort: 80
