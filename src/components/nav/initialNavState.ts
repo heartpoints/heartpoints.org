@@ -1,7 +1,7 @@
 import { Url } from "../../utils/url/Url";
 
 export const initialNavState = () => ({
-    isSideNavExpanded: false,
-    isSideNavOpen: false,
+    isSideNavExpanded: true,
+    isSideNavOpen: true,
     url: Url(window.location.href),
 })
