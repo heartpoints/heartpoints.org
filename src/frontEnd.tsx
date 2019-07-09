@@ -1,4 +1,4 @@
-import { initialState } from "./components/state/initialState";
-import { renderApp } from "./components/state/renderApp";
+import { initialState } from "./frontEnd/state/initialState";
+import { renderApp } from "./frontEnd/state/renderApp";
 
 renderApp(initialState());
