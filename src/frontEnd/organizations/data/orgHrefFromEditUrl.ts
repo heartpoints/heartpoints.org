@@ -1,4 +1,4 @@
-import { IUrl } from "../../utils/url/IUrl";
+import { IUrl } from "../../../utils/url/IUrl";
 
 export const orgHrefFromEditUrl = 
     (editUrl:IUrl) => 

@@ -1,5 +1,5 @@
-import { navTo } from "../nav/navTo";
-import { initialOrganization } from "./initialOrganization";
+import { navTo } from "../../nav/navTo";
+import { initialOrganization } from "../data/initialOrganization";
 
 export const addNewOrganization = (state, creatorEmail) => {
     const { organizations, possibleNewOrganization } = state;

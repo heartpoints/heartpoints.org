@@ -1,4 +1,4 @@
-import { initialOrgsState } from "../organizations/initialOrgsState";
+import { initialOrgsState } from "../organizations/data/initialOrgsState";
 import { initialDevelopersState } from "../developers/initialDevelopersState";
 import { initialFacebookState } from "../facebook/intialFacebookState";
 import { initialNavState } from "../nav/initialNavState";

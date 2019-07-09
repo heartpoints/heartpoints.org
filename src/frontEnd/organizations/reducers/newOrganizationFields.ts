@@ -1,8 +1,8 @@
-import { nestedFieldNamed } from "../forms/nestedFieldNamed";
-import { mapProperties } from "../../utils/list/mapProperties";
+import { nestedFieldNamed } from "../../forms/nestedFieldNamed";
+import { mapProperties } from "../../../utils/list/mapProperties";
 import { generalOrgFields } from "./generalOrgFields";
-import { Organization } from "./organization";
-import { FieldBinderTransformer } from "../forms/FieldBinderTransformer";
+import { Organization } from "../data/organization";
+import { FieldBinderTransformer } from "../../forms/FieldBinderTransformer";
 
 export type HasPossibleNewOrganization = {
     possibleNewOrganization: Organization

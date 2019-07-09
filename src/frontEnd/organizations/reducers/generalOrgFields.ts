@@ -1,6 +1,6 @@
-import { fieldNamed } from "../forms/fieldNamed";
-import { defaultOrgLogoSrc } from "./defaultOrgLogoSrc";
-import { Organization } from "./organization";
+import { fieldNamed } from "../../forms/fieldNamed";
+import { defaultOrgLogoSrc } from "../data/defaultOrgLogoSrc";
+import { Organization } from "../data/organization";
 
 export const title = fieldNamed<Organization, "title">("title", "Organization Title")
 export const homepage = fieldNamed<Organization, "homepage">("homepage", "Organization Home Page")

@@ -1,13 +1,13 @@
 import * as React from "react"
-import { orgHrefFromEditUrl } from "./orgHrefFromEditUrl";
-import { findOrgByHref } from "./findOrgByHref";
+import { orgHrefFromEditUrl } from "../data/orgHrefFromEditUrl";
+import { findOrgByHref } from "../data/findOrgByHref";
 import { EditLoadedOrganization } from "./EditLoadedOrganization";
 import { MissingOrganization } from "./MissingOrganization";
-import { Page } from "../page/Page";
-import { WithBindFields, WithBindField } from "../state/renderApp";
-import { IUrl } from "../../utils/url/IUrl";
-import { Organization } from "./organization";
-import { title } from "./newOrganizationFields";
+import { Page } from "../../page/Page";
+import { WithBindFields, WithBindField } from "../../state/renderApp";
+import { IUrl } from "../../../utils/url/IUrl";
+import { Organization } from "../data/organization";
+import { title } from "../reducers/newOrganizationFields";
 
 export type ViewOrEditOrgProps<S, T> = 
     WithBindField<S, T> & 

@@ -1,11 +1,11 @@
 import * as React from "react";
-import { HPSearchResult } from "../search/HPSearchResult";
-import { HPSearchBar } from "../search/HPSearchBar";
-import { Page } from "../page/Page";
-import { Organization } from "./organization";
+import { HPSearchResult } from "../../search/HPSearchResult";
+import { HPSearchBar } from "../../search/HPSearchBar";
+import { Page } from "../../page/Page";
+import { Organization } from "../data/organization";
 import { Typography } from "@material-ui/core";
-import { Space } from "../page/Space";
-import { PageTitle } from "../page/PageTitle";
+import { Space } from "../../page/Space";
+import { PageTitle } from "../../page/PageTitle";
 
 export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange, organizations, navTo } = props;

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { OrgAddEdit } from './OrgAddEdit';
-import { newOrganizationFields } from './newOrganizationFields';
-import { Page } from '../page/Page';
-import { HPButton } from '../forms/HPButton';
-import { PageTitle } from '../page/PageTitle';
-import { Space } from '../page/Space';
-import { fakeFacebookUserSession } from '../developers/fakeFacebookUserSession';
+import { newOrganizationFields } from '../reducers/newOrganizationFields';
+import { Page } from '../../page/Page';
+import { HPButton } from '../../forms/HPButton';
+import { PageTitle } from '../../page/PageTitle';
+import { Space } from '../../page/Space';
+import { fakeFacebookUserSession } from '../../developers/fakeFacebookUserSession';
 
 export const CreateOrganization = (props) => {
     const { bindFields, addNewOrganization, facebookUserSession = fakeFacebookUserSession } = props;

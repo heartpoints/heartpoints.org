@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Organization } from './organization';
-import { EditButton } from '../buttons/EditButton';
-import { PageTitle } from '../page/PageTitle';
+import { Organization } from '../data/organization';
+import { EditButton } from '../../buttons/EditButton';
+import { PageTitle } from '../../page/PageTitle';
 import { Typography, Grid } from '@material-ui/core';
-import { Space } from '../page/Space';
-import { defaultOrgLogoSrc } from './defaultOrgLogoSrc';
-import { Image } from "../forms/viewEditToggleables/Image";
+import { Space } from '../../page/Space';
+import { defaultOrgLogoSrc } from '../data/defaultOrgLogoSrc';
+import { Image } from "../../forms/viewEditToggleables/Image";
 
 //todo: should these also use fields? maybe not "settable" fields but field readers (whether something is loaded / valid / etc)?
 //todo: can we have fields that toggle between edit vs display mode over a field?

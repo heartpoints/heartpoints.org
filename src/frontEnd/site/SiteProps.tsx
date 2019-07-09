@@ -1,5 +1,5 @@
 import { IUrl } from "../../utils/url/IUrl";
-import { Organization } from "../organizations/organization";
+import { Organization } from "../organizations/data/organization";
 
 export type SiteProps = {
   url: IUrl;

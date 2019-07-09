@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { OrgAddEdit } from './OrgAddEdit';
-import { HPButton } from '../forms/HPButton';
-import { PageTitle } from '../page/PageTitle';
-import { Space } from '../page/Space';
+import { HPButton } from '../../forms/HPButton';
+import { PageTitle } from '../../page/PageTitle';
+import { Space } from '../../page/Space';
 
 export const EditLoadedOrganization = ({ orgFields }) => <React.Fragment>
     <PageTitle>{orgFields.title.value} <small style={{color: "lightgray"}}>(editing)</small></PageTitle>

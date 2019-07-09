@@ -9,7 +9,7 @@ import { onCelebrationXClicked } from "../modals/onCelebrationXClicked";
 import { onFacebookLoginFailure } from "../facebook/onFacebookLoginFailure";
 import { updateState } from "../castleRisk/updateState";
 import { Dictionary } from "lodash";
-import { orgCallbacks } from "../organizations/orgCallbacks";
+import { orgCallbacks } from "../organizations/reducers/orgCallbacks";
 
 type StateUpdatingCallback = (state:any, ...args:any[]) => any
 
