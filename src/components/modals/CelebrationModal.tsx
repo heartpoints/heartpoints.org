@@ -10,7 +10,7 @@ import LockIconOutlined from '@material-ui/icons/LockOutlined';
 import { HPButton } from '../forms/HPButton';
 import { Typography } from '@material-ui/core';
 
-export const confettiStyle = {
+export const confettiStyle:React.CSSProperties = {
     "position": "absolute",
     "top": "0",
     "left": "0"
@@ -26,11 +26,7 @@ export const actionContainerStyle = {
 export const actionIconContainerStyle = {
     "width": "100%",
     "display": "inline-block",
-}
-
-export const actionButtonStyle = {
-    "margin": "8px",
-    "background-color": "red",
+    "marginBottom": "24px"
 }
 
 export interface ICelebrationModalProps {
@@ -64,11 +60,8 @@ export const CelebrationModal = (props:ICelebrationModalProps) => {
                 imageURL="/images/celebration.png" 
                 onXClicked={props.onXClicked}>
                     <div>
-                        <Typography variant="h4" style={{fontSize: "1.5vw"}}>
-                            What you can do: 
-                        </Typography>
                         <div style={actionIconContainerStyle}>
-                            <HPButton 
+                            <HPButton
                                 label="Give it "
                                 onClick={alert}>
                                 <RedeemIconOutlined />
@@ -78,7 +71,7 @@ export const CelebrationModal = (props:ICelebrationModalProps) => {
                                 onClick={alert}>
                                 <StoreIconOutlined />
                             </HPButton>
-                            <HPButton 
+                            <HPButton
                                 label="Keep it "
                                 onClick={alert}>
                                 <LockIconOutlined />

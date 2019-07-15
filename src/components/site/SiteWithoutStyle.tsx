@@ -9,7 +9,7 @@ export const SiteWithoutStyle = (props: SiteProps) => {
   const { shouldShowCelebration, onCelebrationXClicked, isSideNavOpen, url } = props;
   const { classes, ...propsWithoutClasses } = props;
   return <React.Fragment>
-  {shouldShowCelebration && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} />}
+  {1 < 2 && <CelebrationModal numHeartpointsAwarded={10} onXClicked={onCelebrationXClicked} />}
     <main className={classNames(classes.content, { [classes.contentShift]: isSideNavOpen })}>
       <PossibleNavBars {...{ history }} {...propsWithoutClasses} />
       {CurrentRoute(url, propsWithoutClasses)}
