@@ -1,9 +1,27 @@
 import * as React from 'react';
-import { Fab } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    button: {
+      margin: theme.spacing(1),
+      backgroundColor: 'red',
+      color: 'white',
+      '&:hover': {
+        backgroundColor: '#ff5252'
+      }
+    },
+    input: {
+      display: 'none',
+    }
+  }),
+);
 
 export const HPButton = (props) => {
+    const classes = useStyles();
     const { onClick, label, children } = props
-    return <Fab onClick={onClick} variant="extended" style={{marginLeft: "10px", marginTop: "10px", backgroundColor: "red", color: "white"}}>
+    return <Button className={classes.button} onClick={onClick} variant="contained">
         {label} {children}
-    </Fab>
+    </Button>
 }
