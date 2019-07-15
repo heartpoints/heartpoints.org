@@ -8,7 +8,7 @@ import { defaultOrgLogoSrc } from '../data/defaultOrgLogoSrc';
 import { Image } from "../../forms/viewEditToggleables/Image";
 
 //todo: should these also use fields? maybe not "settable" fields but field readers (whether something is loaded / valid / etc)?
-//todo: can we have fields that toggle between edit vs display mode over a field?
+//todo: can we have fields that toggle between edit vs display mode over a field?\
 
 export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnailURL, homepage, navTo, href }: Organization & {navTo}) => <div>
     <Grid container direction="row" justify="flex-start" alignItems="center" spacing={2}>

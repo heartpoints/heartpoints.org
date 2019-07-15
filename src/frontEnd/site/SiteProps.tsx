@@ -1,9 +1,6 @@
-import { IUrl } from "../../utils/url/IUrl";
-import { Organization } from "../organizations/data/organization";
+import { WithOrganizations } from "../organizations/data/WithOrganizations"
+import { WithUrl } from "../../utils/url/WithUrl";
+import { WithUnknownProperties } from "../state/WithUnknownProperties";
+import { WithNavTo } from "../nav/WithNavTo";
 
-export type SiteProps = {
-  url: IUrl;
-  organizations: Organization[];
-  [others: string]: any;
-  navTo;
-};
+export type SiteProps = WithOrganizations & WithUrl & WithUnknownProperties & WithNavTo

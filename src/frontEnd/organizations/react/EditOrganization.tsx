@@ -9,6 +9,7 @@ import { EditLoadedOrganization } from './EditLoadedOrganization';
 export const EditOrganization = (props) => {
     const { bindFields, url, organizations } = props;
     const orgHref = orgHrefFromEditUrl(url)
+    
     const content = findOrgByHref(organizations, orgHref)
         .map(org => <EditLoadedOrganization orgFields={bindFields(editOrganizationFields(org.href))} />)
         .valueOrDefault(<MissingOrganization />)

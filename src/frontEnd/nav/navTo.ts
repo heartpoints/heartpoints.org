@@ -1,5 +1,6 @@
 import { history } from "./history";
 
+export type NavTo<S> = (state:S, path:string, skipHistoryUpdate:boolean) => void
 export const navTo = (state, path: string, skipHistoryUpdate:boolean = false) => {
     const url = state.url.setPath(path);
 

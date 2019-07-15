@@ -10,4 +10,4 @@ export const None: NoneType = {
     valueOrDefault: <S>(someDefault: S): S => someDefault,
     isNone: True,
     ifElse: (_, valueIfNone) => valueIfNone,
-};
+}
