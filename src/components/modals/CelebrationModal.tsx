@@ -5,15 +5,15 @@ import Button from '@material-ui/core/Button';
 import Confetti from 'react-confetti';
 import FavoriteIconTwoTone from '@material-ui/icons/FavoriteBorderTwoTone';
 import RedeemIconOutlined from '@material-ui/icons/RedeemOutlined';
-import StroreIconOutlined from '@material-ui/icons/StoreOutlined';
+import StoreIconOutlined from '@material-ui/icons/StoreOutlined';
 import LockIconOutlined from '@material-ui/icons/LockOutlined';
+import { HPButton } from '../forms/HPButton';
+import { Typography } from '@material-ui/core';
 
 export const confettiStyle = {
     "position": "absolute",
     "top": "0",
-    "left": "0",
-    "width": "100%",
-    "height": "100%"
+    "left": "0"
 }
 
 export const actionContainerStyle = {
@@ -30,7 +30,7 @@ export const actionIconContainerStyle = {
 
 export const actionButtonStyle = {
     "margin": "8px",
-    "background-color": "rgba(255,0,0,0.5)",
+    "background-color": "red",
 }
 
 export interface ICelebrationModalProps {
@@ -55,38 +55,34 @@ export const CelebrationModal = (props:ICelebrationModalProps) => {
             <HPModal
                 title="Congratulations!"
                 subtitle={
-                    <h3 style={{fontSize: "1.5vw"}}>
+                    <Typography variant="h3" style={{marginTop: "10px", fontSize: "1.5vw"}}>
                         You have been awarded &nbsp;  
                         <FavoriteIconTwoTone />
                         {props.numHeartpointsAwarded}
-                    </h3>
+                    </Typography>
                 }
                 imageURL="/images/celebration.png" 
                 onXClicked={props.onXClicked}>
-                    <div style={actionContainerStyle}>
-                        <h4>What you can do: </h4>
+                    <div>
+                        <Typography variant="h4" style={{fontSize: "1.5vw"}}>
+                            What you can do: 
+                        </Typography>
                         <div style={actionIconContainerStyle}>
-                            <Button
-                                style={actionButtonStyle}
-                                size={'large'}
-                                variant={'contained'}>
+                            <HPButton 
+                                label="Give it "
+                                onClick={alert}>
                                 <RedeemIconOutlined />
-                                <h5>&nbsp; Give It</h5>
-                            </Button>
-                            <Button
-                                style={actionButtonStyle}
-                                size={'large'}
-                                variant={'contained'}>
-                                <StroreIconOutlined />
-                                <h5>&nbsp; Use It</h5>
-                            </Button>
-                            <Button
-                                style={actionButtonStyle}
-                                size={'large'}
-                                variant={'contained'}>
+                            </HPButton>
+                            <HPButton
+                                label="Use it "
+                                onClick={alert}>
+                                <StoreIconOutlined />
+                            </HPButton>
+                            <HPButton 
+                                label="Keep it "
+                                onClick={alert}>
                                 <LockIconOutlined />
-                                <h5>&nbsp; Keep It</h5>
-                            </Button>
+                            </HPButton>
                         </div>
                     </div>
             </HPModal>

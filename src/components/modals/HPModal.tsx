@@ -1,10 +1,11 @@
 import * as React from 'react';
 import Modal from '@material-ui/core/Modal';
 import ClearIconRounded from '@material-ui/icons/ClearOutlined';
+import { Typography } from '@material-ui/core';
 
 export const modalForgroundStyle = {
-    "margin": "50px auto 0",
-    "padding": "25px",
+    "margin": "10px auto 0",
+    "padding": "15px",
     "width": "50%",
     "background-color": "#FFFFFF",
     "border-radius": "10px",
@@ -32,14 +33,12 @@ export const HPModal = (props:IHPModalProps) => {
             disableAutoFocus={true}>
             <div style={modalForgroundStyle}>
                 <ClearIconRounded onClick={props.onXClicked} style={{float: "right"}}/>
-                <h1 style={{clear: "both", marginTop: "0px", fontSize: "4vw", color: "rgba(255,0,0,0.5)"}}>
+                <Typography variant="h1" style={{clear: "both", margin: "0px", fontSize: "4vw", color: "red"}}>
                     {props.title}
-                </h1>
-                <h3 style={{fontSize: "1.5vw"}}>
-                    {props.subtitle}
-                </h3>
+                </Typography>
+                {props.subtitle}
                 <img 
-                    style={{width: "50%", margin: "12px 0"}} 
+                    style={{width: "35%", margin: "15px 0"}} 
                     src={props.imageURL} />
                 {props.children}
             </div>
