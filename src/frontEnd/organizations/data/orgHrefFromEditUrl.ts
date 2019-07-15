@@ -1,5 +1,8 @@
-import { IUrl } from "../../../utils/url/IUrl";
-
 export const orgHrefFromEditUrl = 
-    (editUrl:IUrl) => 
-    editUrl.path.substring(0, editUrl.path.indexOf("/edit"))
+    (path:string) => {
+        const slashEditLocation = path.indexOf("/edit")
+        return slashEditLocation == -1
+            ? path
+            : path.substring(0, slashEditLocation)
+    }
+    

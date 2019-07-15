@@ -1,5 +1,5 @@
 import { nestedField } from "./nestedField";
-import { FieldBinderTransformer } from "./FieldBinderTransformer";
+import { FieldBinderTransformer } from "./types/FieldBinderTransformer";
 
 export const nestedFieldNamed = 
     <S, K extends keyof S, V>(name: K): FieldBinderTransformer<S, S[K], V> =>

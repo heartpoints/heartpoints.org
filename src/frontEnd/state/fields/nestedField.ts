@@ -1,9 +1,9 @@
 import { Field } from "./types/Field";
 import { FieldBinder } from "./types/FieldBinder";
-import { Mapper } from "../../utils/axioms/Mapper";
-import { Consumer } from "../../utils/axioms/Consumer";
-import { Reducer } from "../../utils/axioms/Reducer";
-import { FieldBinderTransformer } from "./FieldBinderTransformer";
+import { Mapper } from "../../../utils/axioms/Mapper";
+import { Consumer } from "../../../utils/axioms/Consumer";
+import { Reducer } from "../../../utils/axioms/Reducer";
+import { FieldBinderTransformer } from "./types/FieldBinderTransformer";
 
 export const nestedField = 
     <S, T, V>(nestedStateSelector: Mapper<S, T>, nestedStateReducer: Reducer<S, T>):FieldBinderTransformer<S, T, V> => 

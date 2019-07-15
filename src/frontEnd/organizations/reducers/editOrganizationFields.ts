@@ -1,6 +1,6 @@
 import { mapProperties } from "../../../utils/list/mapProperties";
 import { generalOrgFields } from "./generalOrgFields";
-import { nestedFieldInArray } from "../../forms/nestedFieldInArray";
+import { nestedFieldInArray } from "../../state/fields/nestedFieldInArray";
 
 //todo: kill the any
 export const editOrganizationFields = 

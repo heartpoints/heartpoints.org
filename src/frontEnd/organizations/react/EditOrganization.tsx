@@ -5,13 +5,17 @@ import { orgHrefFromEditUrl } from '../data/orgHrefFromEditUrl';
 import { findOrgByHref } from '../data/findOrgByHref';
 import { MissingOrganization } from './MissingOrganization';
 import { EditLoadedOrganization } from './EditLoadedOrganization';
+import { WithUrl } from '../../../utils/url/WithUrl';
+import { WithOrganizations } from '../data/WithOrganizations';
+import { WithBindFields } from "../../state/fields/types/WithBindFields";
 
-export const EditOrganization = (props) => {
+export type EditOrganizationProps<S, T> = WithUrl & WithOrganizations & WithBindFields<S, T>
+export const EditOrganization = <S, T>(props:EditOrganizationProps<S, T>) => {
     const { bindFields, url, organizations } = props;
-    const orgHref = orgHrefFromEditUrl(url)
+    const orgHref = orgHrefFromEditUrl(url.path)
     
     const content = findOrgByHref(organizations, orgHref)
-        .map(org => <EditLoadedOrganization orgFields={bindFields(editOrganizationFields(org.href))} />)
+        .map(({href}) => <EditLoadedOrganization orgFields={bindFields(editOrganizationFields(href))} />)
         .valueOrDefault(<MissingOrganization />)
     
     return <Page>

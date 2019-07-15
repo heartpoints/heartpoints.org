@@ -1,5 +1,5 @@
 import { nestedField } from "./nestedField";
-import { Predicate } from "../../utils/predicates/Predicate";
+import { Predicate } from "../../../utils/predicates/Predicate";
 
 export const nestedFieldInArray = 
     <S>(propertyNameOfArray: string, elementMatcher: Predicate<unknown>) => 

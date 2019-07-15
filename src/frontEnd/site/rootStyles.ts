@@ -2,6 +2,10 @@ import { drawerWidth } from "./drawerWidth";
 
 export const rootStyles = theme => ({
   content: {
+    palette: {
+      primary: "red",
+      secondary: "green"
+    },
     flexGrow: 1,
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {

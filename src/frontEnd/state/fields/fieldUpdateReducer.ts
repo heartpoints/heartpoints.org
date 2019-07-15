@@ -1,4 +1,4 @@
-import { renderApp } from "../state/renderApp";
+import { renderApp } from "../renderApp";
 
 export const fieldUpdateReducer = 
     (state, fieldName) => 

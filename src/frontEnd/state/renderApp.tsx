@@ -5,24 +5,8 @@ import { Site } from "../site/Site";
 import { rootSiteElement } from "./rootSiteElement";
 import { sitePropsFromState } from "./sitePropsFromState";
 import { updateStateToUseOnBackAndForwardNav } from "../nav/updateStateToUseOnBackAndForwardNav";
-import { FieldBinder } from "../forms/types/FieldBinder";
-import { Dictionary } from "lodash";
+import { FieldBinder } from "./fields/types/FieldBinder";
 import { mapProperties } from "../../utils/list/mapProperties";
-import { Field } from "../forms/types/Field";
-
-export type FieldBinders<S, T> = Dictionary<FieldBinder<S,T>>
-export type BoundFields<T> = Dictionary<Field<T>>
-export type BindFields<S, T> = (fieldBinders:FieldBinders<S, T>) => BoundFields<T>
-
-export type BindField<S, T> = (fieldBinder:FieldBinder<S, T>) => Field<T>
-
-export type WithBindFields<S, T> = {
-    bindFields: BindFields<S, T>
-}
-
-export type WithBindField<S, T> = {
-    bindField: BindField<S, T>
-}
 
 export const renderApp = <S,>(state:S) => {
     window.onresize = () => renderApp(state)
