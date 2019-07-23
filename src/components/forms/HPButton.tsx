@@ -11,9 +11,6 @@ const useStyles = makeStyles((theme: Theme) =>
       '&:hover': {
         backgroundColor: '#ff5252'
       }
-    },
-    input: {
-      display: 'none',
     }
   }),
 );
