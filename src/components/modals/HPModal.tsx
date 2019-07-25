@@ -1,20 +1,18 @@
 import * as React from 'react';
 import Modal from '@material-ui/core/Modal';
 import ClearIconRounded from '@material-ui/icons/ClearOutlined';
+import { Typography } from '@material-ui/core';
 
-export const modalForgroundStyle = {
-    "margin": "50px auto 0",
-    "padding": "25px",
+export const modalStyle:React.CSSProperties = {
     "width": "50%",
-    "background-color": "#FFFFFF",
-    "border-radius": "10px",
-    "text-align": "center",
-}
-
-export const modalHeaderStyle = {
-    "margin-top": "0px",
-    "font-size": "4vw",
-    "color": "rgba(255,0,0,0.5)",
+    "backgroundColor": "white",
+    "borderRadius": "10px",
+    "textAlign": "center",
+    "padding": "10px",
+    "position": "absolute",
+    "top": "50%",
+    "left": "50%",
+    "transform": "translate(-50%, -50%)"
 }
 
 export interface IHPModalProps{
@@ -30,16 +28,14 @@ export const HPModal = (props:IHPModalProps) => {
         <Modal
             open={true}
             disableAutoFocus={true}>
-            <div style={modalForgroundStyle}>
+            <div style={modalStyle}>
                 <ClearIconRounded onClick={props.onXClicked} style={{float: "right"}}/>
-                <h1 style={{clear: "both", marginTop: "0px", fontSize: "4vw", color: "rgba(255,0,0,0.5)"}}>
+                <Typography variant="h1" style={{clear: "both", margin: "0px", fontSize: "4vw", color: "red"}}>
                     {props.title}
-                </h1>
-                <h3 style={{fontSize: "1.5vw"}}>
-                    {props.subtitle}
-                </h3>
+                </Typography>
+                {props.subtitle}
                 <img 
-                    style={{width: "50%", margin: "12px 0"}} 
+                    style={{width: "35%", margin: "15px 0"}} 
                     src={props.imageURL} />
                 {props.children}
             </div>
