@@ -10,7 +10,7 @@ describe("Switch", () => {
     
         when("I have an empty switchWhenInputIsTommy", () => {
             it("yields None", () => {
-                expect(switchWhenInputIsTommy.result.isNone).to.be.true
+                expect(switchWhenInputIsTommy.result.isNone()).to.be.true
             });
         });
     
@@ -37,7 +37,7 @@ describe("Switch", () => {
         const switchWithoutInput = Switch.withoutInput
         when("I have an empty SwitchWithoutInput", () => {
             it("yields None", () => {
-                expect(switchWithoutInput.result.isNone).to.be.true
+                expect(switchWithoutInput.result.isNone()).to.be.true
             });
         });
     
@@ -66,7 +66,7 @@ describe("Switch", () => {
     describe(".that", () => {
         const switchThat = Switch.that
         when("no matches / cases are added", () => {
-            then(()=>switchThat.resultWhen(5 as never).isNone).shouldBeTrue()
+            then(()=>switchThat.resultWhen(5 as never).isNone()).shouldBeTrue()
         });
     
         const switchWithOnlyCases = () => switchThat
@@ -76,7 +76,7 @@ describe("Switch", () => {
     
         whenValues({theSwitch: switchWithOnlyCases}, ({theSwitch}) => {
             whenValues({inputValue: 9}, ({inputValue}) => {
-                then(() => theSwitch().resultWhen(inputValue).hasValue).shouldBeFalse()
+                then(() => theSwitch().resultWhen(inputValue).hasValue()).shouldBeFalse()
             })
     
             whenValues({inputValue: 7}, ({inputValue}) => {
@@ -90,7 +90,7 @@ describe("Switch", () => {
     
         whenValues({theSwitch: switchWithLazyCase}, ({theSwitch}) => {
             whenValues({inputValue: "nonMatchingInputValue"}, ({inputValue}) => {
-                then(() => theSwitch().resultWhen(inputValue).hasValue).shouldBeFalse()
+                then(() => theSwitch().resultWhen(inputValue).hasValue()).shouldBeFalse()
             })
     
             whenValues({inputValue: "tommy"}, ({inputValue}) => {
@@ -121,7 +121,7 @@ describe("Switch", () => {
     
         whenValues({theSwitch: switchWithMatchesOnly}, ({theSwitch}) => {
             whenValues({inputValue: "sidfusidufhsidu"}, ({inputValue}) => {
-                then(() => theSwitch().resultWhen(inputValue).hasValue).shouldBeFalse()
+                then(() => theSwitch().resultWhen(inputValue).hasValue()).shouldBeFalse()
             })
     
             whenValues({inputValue: 6}, ({inputValue}) => {

@@ -1,15 +1,17 @@
-import { None } from "./None";
 import { MaybeFlatmapper } from "./MaybeFlatmapper";
 import { IMaybe } from "./IMaybe";
-export const Some = <T>(value: T): IMaybe<T> => ({
+import { False } from "../axioms/False";
+import { True } from "../axioms/true";
+import { SomeType } from "./SomeType";
+
+export const Some = <T>(value: T): SomeType<T> => ({
     map: <S>(f: (t: T) => S) => Some(f(value)),
     flatMap: <S>(f: MaybeFlatmapper<T, S>): IMaybe<S> => {
-        const maybeResult = f(value);
-        return maybeResult.hasValue ? Some(maybeResult.value) : None;
+        return f(value)
     },
     value,
-    hasValue: true,
+    hasValue: True,
     valueOrDefault: () => value,
-    isNone: false,
+    isNone: False,
     ifElse: valueIfSomeObject => valueIfSomeObject,
 });

@@ -13,7 +13,7 @@ describe("List", () => {
     theExpression(() => ListOfLiterals(1,2,3).head.value).shouldEqual(1)
     theExpression(() => ListOfLiterals(1,2,3).first(isEven).value).shouldEqual(2)
     theExpression(() => ListOfLiterals(1,2,3).first(isOdd).value).shouldEqual(1)
-    theExpression(() => ListOfLiterals(1,5,3).first(isEven).isNone).shouldEqual(true)
+    theExpression(() => ListOfLiterals(1,5,3).first(isEven).isNone()).shouldEqual(true)
     theExpression(() => ListOfLiterals(1,5,3).reduce((a, b) => a - b, 0)).shouldEqual(-9)
     theExpression(() => [...ListOfLiterals(1,2,3), 4, 5]).shouldDeepEqual([1,2,3,4,5])
 })
