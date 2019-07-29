@@ -25,5 +25,6 @@ export const OrgRoutes = (url, props, router:Router) =>
     router
         .case("/organizations/search", <OrgSearchBar {...props} />)
         .case("/organizations/new", <CreateOrganization {...props} />)
-        // .matches(regexMatch("/organizations/.+/edit"), <EditOrganization {...props} />)
-        .matches(regexMatch("/organizations/.+"), <ViewOrEditOrganization {...props} />)
+        .matches(regexMatch("/organizations/.+/edit"), <EditOrganization {...props} />)
+        .matches(regexMatch("/organizations/.+"), <ViewOrganization {...props} />)
+        // .matches(regexMatch("/organizations/.+"), <ViewOrEditOrganization {...props} />)
