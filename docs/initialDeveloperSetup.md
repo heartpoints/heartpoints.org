@@ -11,13 +11,13 @@ to get a local version of this repository.
 
 ## Set up Dev Environment
 
-Most commands run from `hp [command]` will automatically download dependencies lazily, on
+Most commands run from the [hp CLI](docs/cli.md) (ie: `./hp [command]`), will automatically download dependencies lazily, on
 an as-needed basis, installing everything into a local, .gitignored `devEnvironment` folder
 within the repo directory.
 
 You may optionally, proactively install these items up front by running:
 
-    hp devEnviromentSetup
+`./hp devEnviromentSetup`
 
 ## Globally Installed Dev Dependencies
 
