@@ -1,6 +1,5 @@
-export type Field<T> = {
-    value: T
-    title: string
-    setValue(t: T): void
-    placeholder: string
-};
+import { FieldReader } from "./FieldReader";
+import { FieldSetter } from "./FieldSetter";
+import { FieldDescription } from "./FieldDescription";
+
+export type Field<T> = FieldReader<T> & FieldSetter<T> & FieldDescription

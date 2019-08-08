@@ -7,4 +7,3 @@ export const EditButton = ({ onClick }) => <Tooltip title="Edit Organization" pl
         <EditIcon onClick={onClick} />
     </IconButton>
 </Tooltip>
-
