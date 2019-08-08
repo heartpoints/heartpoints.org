@@ -1,4 +1,4 @@
-import { renderApp } from "../renderApp";
+import { renderApp } from "../react/renderApp"
 
 export const fieldUpdateReducer = 
     (state, fieldName) => 
@@ -6,4 +6,4 @@ export const fieldUpdateReducer =
     renderApp({
         ...state,
         [fieldName]: newValue
-    });
+    })
