@@ -4,6 +4,6 @@ import { IconButton, Tooltip } from '@material-ui/core';
 
 export const EditButton = ({ onClick }) => <Tooltip title="Edit Organization" placement="right">
     <IconButton>
-        <EditIcon onClick={onClick} />
+        <EditIcon {...{onClick}} />
     </IconButton>
 </Tooltip>

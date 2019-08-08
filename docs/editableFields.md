@@ -41,3 +41,7 @@ Adding complexity, say I am editing a field. As I update the field, my changes m
 may or may not be asynchronous. I can continue to make changes while validation has not completed. Perhaps I want
 a way to undo / cancel the changes vs. apply them. Unless I apply, the field does not receive changes. Perhaps I cannot 
 apply until validated? Perhaps I do not validate until attempting to apply? Perhaps I apply immediately sometimes?
+
+# Should I just use React state?
+
+If I do then that state gets hidden inside of the react component hierarchy. 

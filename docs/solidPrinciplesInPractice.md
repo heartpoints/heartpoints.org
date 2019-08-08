@@ -12,5 +12,5 @@ For a given entity, define its Single Responsibility, Make sure it is Open For E
 Make sure the interfaces it depends on are as simple as possible, making it obvious to the user how to fill the intent based
 on interface names and structures used. Depend on abstractions, not implementations - so whatever functions or
 react components or other things you wish to work with, allow those to be passed in, and if not by the most natural, direct caller,
-than by using closure to ensure the remaining concretions are passed in by someone better suited (based on *their* single responsibility)
+then by using closure to ensure the remaining concretions are passed in by someone better suited (based on *their* single responsibility)
 to provide them.
