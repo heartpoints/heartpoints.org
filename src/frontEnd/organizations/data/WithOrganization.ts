@@ -1,4 +1,4 @@
-import { Organization } from "./Organization"
+import { Organization } from "./organization"
 
 export type WithOrganization = {
     organization: Organization
