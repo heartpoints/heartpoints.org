@@ -1,6 +1,10 @@
-import http from "http"
 import { onServerStart } from "./onServerStart"
+import { serverPort } from "./serverPort";
+import { generalHttpServer } from "./generalHttpServer";
 
-export const registerHTTPListener = (expressApplication) => {
-    http.createServer(expressApplication).listen(expressApplication.get('port'), onServerStart)
-}
+export const registerHTTPListener = 
+    expressApplication =>
+    generalHttpServer(expressApplication).listen(
+        serverPort(expressApplication), 
+        onServerStart
+    )
