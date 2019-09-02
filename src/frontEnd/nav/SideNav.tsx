@@ -66,6 +66,10 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
               <ListItemIcon><DonutSmallIcon /></ListItemIcon>
               <ListItemText primary="Castle Risk" />
             </ListItem>
+            <ListItem button onClick={() => navTo("/rest-guru") }>
+              <ListItemIcon><DonutSmallIcon /></ListItemIcon>
+              <ListItemText primary="rest.guru" />
+            </ListItem>
           </List>
     </Drawer>
 }

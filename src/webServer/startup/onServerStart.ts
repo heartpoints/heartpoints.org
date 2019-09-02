@@ -1,6 +1,6 @@
-import { log } from "./log"
-import { loginUrl } from "./loginUrl"
-import { baseUrl } from "./baseUrl"
+import { log } from "../../utils/debugging/log"
+import { loginUrl } from "../config/loginUrl"
+import { baseUrl } from "../config/baseUrl"
 
 export const onServerStart = () => {
     log(`'Express server listening on ${baseUrl}`)

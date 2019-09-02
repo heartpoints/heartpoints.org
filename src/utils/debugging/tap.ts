@@ -1,4 +1,4 @@
-import { log } from "../../webServer/log"
+import { log } from "./log"
 
 export const tap = (tappedFunction) => (...args) => {
     try {
