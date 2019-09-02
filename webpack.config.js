@@ -23,7 +23,13 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         port: 3002,
-        contentBase: [path.join(__dirname, "./dist"), path.join(__dirname, "./src/public"),path.join(__dirname, "./node_modules")]
+        //TODO: Since we will be proxying to underlying server, we may want to reduce contentBase
+        contentBase: [path.join(__dirname, "./dist"), path.join(__dirname, "./src/public"),path.join(__dirname, "./node_modules")],
+        proxy: {
+            "/": {
+                target: "http://localhost:5001"
+            }
+        }
     },
 
     module: {

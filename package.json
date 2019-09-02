@@ -4,7 +4,7 @@
   "description": "A platform for electronic 1 on 1 philanthropy",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/webServer.ts",
+    "start": "ts-node-dev src/webServer",
     "watch": "webpack-dev-server --hot --inline --color"
   },
   "repository": {
