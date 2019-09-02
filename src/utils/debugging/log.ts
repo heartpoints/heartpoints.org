@@ -1,4 +1,4 @@
 export const log = (...args) => {
     console.log(...args)
-    return args[0]
+    return args[args.length - 1]
 }
