@@ -1,6 +1,6 @@
-import express from "express"
+import express, { Application } from "express"
 
 export const serveStaticContentFromAbsolutePath = 
-    expressApplication => 
-    absolutePath => 
+    (expressApplication:Application) => 
+    (absolutePath:string) => 
     expressApplication.use(express.static(absolutePath))
