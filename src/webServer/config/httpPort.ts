@@ -1,3 +1,4 @@
 import { env } from "../../utils/env"
+import { defaultPort } from "./defaultPort"
 
-export const httpPort = env.PORT ? env.PORT : 5001
+export const httpPort = env.PORT || defaultPort

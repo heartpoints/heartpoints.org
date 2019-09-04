@@ -1,6 +1,7 @@
 import { NoneType } from "./NoneType";
 import { True } from "../axioms/true";
 import { False } from "../axioms/False";
+import { Provider } from "../axioms/Provider";
 
 export const None: NoneType = {
     map: (f) => None,
@@ -10,4 +11,5 @@ export const None: NoneType = {
     valueOrDefault: <S>(someDefault: S): S => someDefault,
     isNone: True,
     ifElse: (_, valueIfNone) => valueIfNone,
+    valueOr: <T>(defaultProducer:Provider<T>) => defaultProducer(),
 }

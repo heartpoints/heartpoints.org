@@ -14,4 +14,5 @@ export const Some = <T>(value: T): SomeType<T> => ({
     valueOrDefault: () => value,
     isNone: False,
     ifElse: valueIfSomeObject => valueIfSomeObject,
-});
+    valueOr: () => value,
+})
