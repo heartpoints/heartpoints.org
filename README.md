@@ -8,10 +8,12 @@ Welcome to the Heartpoints.org website repository!
 - [Initial Development Environment Setup](docs/initialDeveloperSetup.md)
 - [Using Github](docs/usingGithub.md) - Issues, Pull Requests, and Source Control
 - [Heartpoints CLI](docs/cli.md) - Overview for the `./hp` command line interface for running dev tasks (ie: compiling/testing)
+- [Running Local heartpoints.org REST API](docs/serverDev.md) - Run Local Version of the API server
 - [Running Local heartpoints.org Website](docs/clientDev.md) - Run Local Version of heartpoints.org
 - [Production Website](docs/production.md) - Find, view, administrate the live version of http://www.heartpoints.org
 - [Material UI](docs/materialUI.md) - Our Design system - for look and feel and design
 - [SOLID Principles](docs/solidPrinciplesInPractice.md) - guidance on software design
+- [Common Errors](docs/commonErrors.md) - a list of commonly found errors and advice to troubleshoot / fix them
 - Links to Other Resources
     - [Heartpoints Google Drive](https://docs.google.com/document/d/1BZXYQGlBMvy1x8UQ5b8Bco7hyasknCCjdy6DxbKI03Q) 
       contains shared company documents, spreadsheets, presentations that are not in github

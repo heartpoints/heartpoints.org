@@ -1,6 +1,15 @@
-### Run Local Version of heartpoints.org
+Client Dev Server (via webpack-dev-server)
+------------------------------------------
 
-To prepare and run the web server, run:
+For client development, we use webpack-dev-server, which watches our typescript code, recompiles it on the fly,
+and hot reloads the react app in-browser automatically for us, speeding development time.
+
+# Prerequisites
+
+Ensure the [api dev server](./serverDev) is running, since the webpack-dev-server will proxy all non-frontend requests
+thereto; if it is not running, 
+
+To prepare and run the development web server (based on webpack-dev-server), run:
 
     ./hp clientDev
 

@@ -5,5 +5,5 @@ import { serveStaticContent } from "./serveStaticContent";
 export const setUpMiddleWare = (expressApplication) => {
     expressApplication.use(commitShaHeaderMiddleware)
     serveStaticContent(expressApplication)
-    expressApplication.get("*", useIndexHTMLFile)
+    expressApplication.get("*", (req, res) => useIndexHTMLFile(res))
 }
