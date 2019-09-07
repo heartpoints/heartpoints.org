@@ -10,6 +10,8 @@ export const RestGuru = () => <Page>
     <CardPadded>
         <h5>Embedded HTTP Requestor</h5>
 
+        <h3>NOTE: Incomplete! This is a WIP</h3>
+
         <p>
             <label>URL: </label>
             <input style={{width: 500 }} type="text" value={window.location.href} /></p>
