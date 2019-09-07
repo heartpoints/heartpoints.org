@@ -1,5 +1,7 @@
-Rest Guru Root Resource
------------------------
+Rest Guru Root Resource - WIP
+-----------------------------
+
+NOTE: Work in progress
 
 This is a readme for how the root resource of the http://rest.guru web service should behave. Ideally, tests and/or
 the product (the rest.guru viewer) should render this readme unnecessary (it should be generatable from the runtime itself)

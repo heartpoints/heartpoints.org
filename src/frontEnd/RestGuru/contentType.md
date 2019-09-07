@@ -1,5 +1,5 @@
-A given content type resource
------------------------------
+A given content type resource - WIP
+-----------------------------------
 
 NOTE: Work in progress
 
@@ -44,7 +44,7 @@ OPTIONS /tommy
 RESPONSE BODY: {
     "Content-Types": [
         "text/plain",
-        "http://rest.guru/contentTypes/Person
+        "http://rest.guru/contentTypes/Person"
     ]
 }
 
@@ -77,6 +77,6 @@ RESPONSE BODY:
     }
 
 GET /tommy
-ACCEPT: application/json;href=http://rest.guru/contentTypes/Person
+ACCEPT: application/json;href=http://rest.guru/contentTypes/Person;typesystem=http://rest.guru/contentTypes/typescript
 RESPONSE BODY: 
     Here we have not been precise in asking for a JSON, just a generic person type, so what should we return?

@@ -1,5 +1,7 @@
-contentTypes resource
----------------------
+contentTypes resource - WIP
+---------------------------
+
+NOTE: Work in progress
 
 This describes the contentTypes resource that would list a series of content types themselves, such as might be returned
 in the body of an OPTIONS call to some resource URL:
