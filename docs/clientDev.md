@@ -7,7 +7,7 @@ and hot reloads the react app in-browser automatically for us, speeding developm
 # Prerequisites
 
 Ensure the [api dev server](./serverDev) is running, since the webpack-dev-server will proxy all non-frontend requests
-thereto; if it is not running, 
+thereto; if it is not running, you may see one of the [common errors](./commonErrors.md)
 
 To prepare and run the development web server (based on webpack-dev-server), run:
 

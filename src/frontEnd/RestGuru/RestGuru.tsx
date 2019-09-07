@@ -1,26 +1,44 @@
 import * as React from "react"
 import { Page } from "../page/Page";
+import { Card, Typography } from "@material-ui/core";
 
-// type A = number
-interface A {
-    a: number
-}
-export default A
+const CardPadded = (props) => <Card {...props} style={{padding: "15px", marginBottom: "15px", ...props.style}} />
 
 export const RestGuru = () => <Page>
     <h1>rest.guru</h1>
 
-    <select>
-        <option>text/plain</option>
-        <option>browser native</option>
-        <option>React Markdown</option>
-        <option>HTML (derived from markdown)</option>
-    </select>
+    <CardPadded>
+        <h5>Embedded HTTP Requestor</h5>
 
-    <ul>
-        <li><a href="http://cnn.com" media="text/html">cnn html</a></li>
-        <li><a href="http://cnn.com" media="application/json">cnn json</a></li>
-        <li><a href="http://cnn.com" media="text/plain">cnn text</a></li>
-    </ul>
-    <p>Here we will display the plain text or a fancy readme version of restguru home page</p>
+        <p>
+            <label>URL: </label>
+            <input style={{width: 500 }} type="text" value={window.location.href} /></p>
+
+        <p>
+            <label>Method: </label>
+            <select>
+                <option>GET</option>
+                <option>OPTIONS</option>
+            </select>
+        </p>
+
+        <p>
+            <label>Accepted Content Type(s): </label>
+            <select>
+                <option>text/plain</option>
+                <option>browser native</option>
+                <option>React Markdown</option>
+                <option>HTML (derived from markdown)</option>
+            </select>
+        </p>
+    </CardPadded>
+    
+    <CardPadded>
+        <h5>Representation</h5>
+        <textarea style={{width: "500px", height: "200px"}}>
+            Here we would see a representation of the resource, based on the browser's ability to figure out how to render
+            that resource, which it may do by looking up content types related to the data content type that it in turn knows
+            how to render.
+        </textarea>
+    </CardPadded>
 </Page>
