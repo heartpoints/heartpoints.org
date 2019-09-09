@@ -3,5 +3,9 @@
     "workbench.editor.enablePreviewFromQuickOpen": false,
     "workbench.editor.enablePreview": false,
     "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 118
+    "editor.wordWrapColumn": 118,
+    "[markdown]": {
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 118,
+    }
 }

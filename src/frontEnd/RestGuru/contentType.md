@@ -3,9 +3,9 @@ A given content type resource - WIP
 
 NOTE: Work in progress
 
-Imagine there is "some type" out there, a format that other resources can be represented by. This type has a URL to distinguish it from other types. By
-requesting a resource at SOME URL, and sending the URL of "some type" in the ACCEPT header of that call, the resource should be sent back in a format that
-embodies the format of "some type".
+Imagine there is "some type" out there, a format that other resources can be represented by. This type has a URL to
+distinguish it from other types. By requesting a resource at SOME URL, and sending the URL of "some type" in the
+ACCEPT header of that call, the resource should be sent back in a format that embodies the format of "some type".
 
 /rest.guru/contentTypes/SomeType
 
@@ -24,8 +24,8 @@ OPTIONS
 GET http://rest.guru/contentTypes/typescript
 ACCEPTS: text/plain
 BODY: The plain text description of this custom content type, which is not a basic wrapper, but something more
-precise - say like a typescript interface that is compatible with JSON itself. Not necessarily code, but not necessarily
-*not* code.
+    precise - say like a typescript interface that is compatible with JSON itself. Not necessarily code, but not
+    necessarily *not* code.
 
 GET /rest.guru/contentTypes/SomeType
 ACCEPTS: application/rest.guru;href=http://rest.guru/contentTypes/typescript/export/default;etag=v2.1.1
@@ -36,9 +36,9 @@ BODY: [Returns a typescript module with a single default export whose value is a
 # Requesting a resource using a specific type, in a specific language
 
 Given we know what a logical type is, and that we can see it as a typescript type, java type, or other type, including
-different language versions of that type, how do we then go back and request the original resource of interest, represented
-as one of those specific types, given that the resource only referred to a more general notion of one of its available
-types in its OPTIONS response?
+different language versions of that type, how do we then go back and request the original resource of interest,
+represented as one of those specific types, given that the resource only referred to a more general notion of one of 
+its available types in its OPTIONS response?
 
 OPTIONS /tommy
 RESPONSE BODY: {

@@ -13,8 +13,8 @@ To prepare and run the development web server (based on webpack-dev-server), run
 
     ./hp clientDev
 
-Then, look at the output for a URL. Click or copy paste that URL into your browser to view the local version of the site. As
-changes are made, the site should be updated automatically after a quick moment.
+Then, look at the output for a URL. Click or copy paste that URL into your browser to view the local version of the 
+site. As changes are made, the site should be updated automatically after a quick moment.
 
 ### Terminate Local Running Version of heartpoints.org
 

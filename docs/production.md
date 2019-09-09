@@ -23,17 +23,21 @@ how to set it up from scratch should that ever be necessary.
 Deploys to production shall happen automatically upon merge via CircleCI
 (see ./circleci/config.yml).
 
-Note: Deployments require that the `gcr.io/heartpoints-org/cicd` image is available. If you would like to make updates to the image, you may modify `cicd.Dockerfile` and run `./hp buildAndPushCicdImage`. When pushing an update, be sure to find and replace the semver tag with the next version.
+Note: Deployments require that the `gcr.io/heartpoints-org/cicd` image is available. If you would like to make 
+updates to the image, you may modify `cicd.Dockerfile` and run `./hp buildAndPushCicdImage`. When pushing an update, 
+be sure to find and replace the semver tag with the next version.
 
 ## Manual Deployment
 
 ### Deploy via web
 
-Go to https://circleci.com/gh/heartpoints/heartpoints.org/tree/master, choose a previously run job (you may search the page by the git commit sha), and rerun the workflow.
+Go to https://circleci.com/gh/heartpoints/heartpoints.org/tree/master, choose a previously run job (you may search 
+the page by the git commit sha), and rerun the workflow.
 
 ### Deploy from Mac
 
-Make sure you have production deployment credentials, then launch the interactive
-manual deploy script: `./hp manual_deploy`
+Make sure you have production deployment credentials, then launch the interactive manual deploy script: 
+
+    ./hp manual_deploy
 
 Note: only deploys from "master" are allowed.
