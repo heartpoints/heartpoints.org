@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { HPModal } from './HPModal';
-import Button from '@material-ui/core/Button';
 import Confetti from 'react-confetti';
 import FavoriteIconTwoTone from '@material-ui/icons/FavoriteBorderTwoTone';
 import RedeemIconOutlined from '@material-ui/icons/RedeemOutlined';

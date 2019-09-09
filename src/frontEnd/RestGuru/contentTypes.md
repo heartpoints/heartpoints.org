@@ -56,3 +56,24 @@ BODY: {
         "application/rest.guru;href=http://anyOtherURLForALogicalTypeThatIsRESTfullyDiscoverable"
     ]
 }
+
+# Example Built-In Content Types
+
+http://rest.guru/
+    /mime
+        /text
+            /plain
+        /image
+            /jpeg
+            /png
+        /application
+            /json
+    /rgson
+        /immutable
+        /mutable
+        /cyclic
+        /acyclic
+        /withOrWithoutSeveralProperties?immutable=true&otherProp=true&cyclic=false
+        hash-key
+        string
+        boolean

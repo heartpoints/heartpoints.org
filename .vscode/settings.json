@@ -1,5 +1,7 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
     "workbench.editor.enablePreviewFromQuickOpen": false,
-    "workbench.editor.enablePreview": false
+    "workbench.editor.enablePreview": false,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 118
 }
