@@ -1,6 +1,8 @@
 const webpack = require("webpack");
 const path = require('path');
 
+const localDir = d => path.join(__dirname, d)
+
 module.exports = {
     entry: "./src/frontEnd",
     output: {
@@ -23,8 +25,7 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         port: 3002,
-        //TODO: Since we will be proxying to underlying server, we may want to reduce contentBase
-        contentBase: [path.join(__dirname, "./dist"), path.join(__dirname, "./src/public"),path.join(__dirname, "./node_modules")],
+        contentBase: ["./dist", "./src/public", "./node_modules"].map(localDir),
         proxy: {
             "/": {
                 target: "http://localhost:5001"
