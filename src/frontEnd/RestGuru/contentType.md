@@ -17,7 +17,7 @@ OPTIONS
         "text/html",
         "application/rest.guru;href=http://rest.guru/contentTypes/text/plain",
         "application/rest.guru;href=http://rest.guru/contentTypes/text/html",
-        "application/rest.guru;href=http://rest.guru/contentTypes/typescript,
+        "application/rest.guru;href=http://rest.guru/contentTypes/typescript",
     ]
 }
 
@@ -51,7 +51,7 @@ RESPONSE BODY: {
 OPTIONS http://rest.guru/contentTypes/Person
 RESPONSE BODY: {
     "Content-Types": [
-        http://rest.guru/contentTypes/typescript
+        "http://rest.guru/contentTypes/typescript"
     ]
 }
 
