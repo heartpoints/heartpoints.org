@@ -140,10 +140,16 @@ You may also pull request using the following:
 
     `./hp hub pull-request`
 
-You will be taken to the newly created pull request page, where you can see your pull request is automatically tested 
-by the development pipeline. Look for the "Status" or "Details" links on the "Conversation" tab of the pull request 
-to understand what automatic testing jobs are running, and whether they passed or failed (you will see a yellow 
-circle for running, green check for passing, red x for failing)
+You will be taken to the newly created pull request page.
+
+## Automatic Build and Test for Pull Requests
+On the newly created pull request page, on the "Conversations" tab, near the bottom, there is a "Checks" section.
+In this section you can see your pull request is automatically tested by the development pipeline. Look for the 
+"Status" or "Details" links on the "Conversation" tab of the pull request to understand what automatic testing jobs 
+are running, and whether they passed or failed (you will see a yellow circle for running, green check for passing, 
+red x for failing)
+
+## Merge to Master with Automated Production Deployment & Verification
 
 Once you have passing jobs with green checks and at least one review signoff from a colleague, then, assuming you 
 have the latest changes incorporated into your branch, you will be ready to merge! Click "Squash and Merge" to squash 

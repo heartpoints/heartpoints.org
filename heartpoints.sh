@@ -318,6 +318,10 @@ hp_unitTestWatch() { local args="$@"
     hp_unitTest --watch --watch-extensions ts "$@"
 }
 
+hp_unitTestWithCoverage() {
+    hp_yarn_global cover
+}
+
 hp_dockerBuildTagAndTest() {
     local imageRepo="circleci"
     local shaToBuild="$(git_currentSha)"
