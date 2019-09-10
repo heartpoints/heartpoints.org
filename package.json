@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node-dev src/webServer",
     "watch": "webpack-dev-server --hot --inline --color",
-    "cover": "nyc mocha"
+    "cover": "nyc mocha",
+    "coverHTML": "nyc --reporter=html mocha"
   },
   "repository": {
     "type": "git",
@@ -72,24 +73,5 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "nyc": {
-    "include": [
-      "src/**/*.ts",
-      "src/**/*.tsx"
-    ],
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "reporter": [
-      "json"
-    ],
-    "all": true,
-    "sourceMap": true,
-    "instrument": true
   }
 }

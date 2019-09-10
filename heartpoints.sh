@@ -305,8 +305,7 @@ hp_prePushVerification() {
 }
 
 hp_onPullRequest() {
-    echo "TODO: Uncomment hp_dockerBuildTagAndTest after proving the coverage submit works"
-    #hp_dockerBuildTagAndTest
+    hp_dockerBuildTagAndTest
 }
 
 hp_unitTest_help() { echo "run the mocha unit tests, which test without build / deploy"; }
@@ -319,8 +318,14 @@ hp_unitTestWatch() { local args="$@"
     hp_unitTest --watch --watch-extensions ts "$@"
 }
 
-hp_unitTestWithCoverage() {
-    hp_yarn_global cover
+hp_cover_help() { echo "run unit tests over instrumented code, producing coverage reports"; }
+hp_cover() {
+    if hp_isMac; then
+        hp_yarn_global coverHTML
+        open "./coverage/index.html"
+    else
+        hp_yarn_global cover
+    fi
 }
 
 hp_dockerBuildTagAndTest() {

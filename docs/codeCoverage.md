@@ -52,3 +52,19 @@ Are there any solutions that show results in github.com without requiring a brow
 - also was able to generate html report but was slow
 - it appears that if this file is created during circleci build, that as long as the env id is set for codecov.io,
   it may automatically upload the report.
+
+### How to Run:
+
+From command line, run:
+
+    hp cover
+
+A coverage-final.json file will be written in the coverage folder. If on a mac, an html view will be produced in the coverage folder, and a browser window will open to show the report.
+
+### View Coverage in VS Code
+
+Additionally, the 
+[Code Coverage Highlighter](https://marketplace.visualstudio.com/items?itemName=brainfit.vscode-coverage-highlighter)
+plugin for Visual Studio Code can be used to view coverage results inline in source, where you can
+quickly get it under test during [tdd](./tdd.md)
+

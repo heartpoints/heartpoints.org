@@ -11,7 +11,7 @@ RUN yarn webpack --verbose
 
 COPY heartpoints.sh ./
 COPY test test
-RUN ./heartpoints.sh unitTestWithCoverage
+RUN ./heartpoints.sh cover
 
 ARG commitSha
 ENV commitSha=$commitSha
