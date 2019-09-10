@@ -10,6 +10,7 @@ COPY tsconfig.json webpack.config.js ./
 RUN yarn webpack --verbose
 
 COPY heartpoints.sh ./
+COPY test test
 RUN ./heartpoints.sh unitTestWithCoverage
 
 ARG commitSha
