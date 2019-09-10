@@ -288,7 +288,7 @@ hp_ensureCommitIsAppropriate() {
 hp_buildAndTagImage() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     ensureDockerCliConfiguredToRunningDaemon
     hp_ensureCommitIsAppropriate
-    docker build --build-arg commitSha="${shaToReportInHttpHeaders}" -t ${taggedImageName} .
+    docker build -v coverage:coverage --build-arg commitSha="${shaToReportInHttpHeaders}" -t ${taggedImageName} .
 }
 
 hp_dockerTestImage() { local taggedImageName=$1
@@ -305,7 +305,8 @@ hp_prePushVerification() {
 }
 
 hp_onPullRequest() {
-    hp_dockerBuildTagAndTest
+    echo "TODO: Uncomment hp_dockerBuildTagAndTest after proving the coverage submit works"
+    #hp_dockerBuildTagAndTest
 }
 
 hp_unitTest_help() { echo "run the mocha unit tests, which test without build / deploy"; }
