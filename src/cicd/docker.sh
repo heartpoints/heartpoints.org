@@ -9,7 +9,7 @@ ensureDockerCliConfiguredToRunningDaemon() {
 hp_buildAndTagImage() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     ensureDockerCliConfiguredToRunningDaemon
     hp_ensureCommitIsAppropriate
-    docker build -v coverage:coverage --build-arg commitSha="${shaToReportInHttpHeaders}" -t ${taggedImageName} .
+    docker build --build-arg commitSha="${shaToReportInHttpHeaders}" -t ${taggedImageName} .
 }
 
 hp_dockerTestImage() { local taggedImageName=$1
