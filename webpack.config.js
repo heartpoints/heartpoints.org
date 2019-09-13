@@ -1,8 +1,10 @@
 const webpack = require("webpack");
 const path = require('path');
 
+const localDir = d => path.join(__dirname, d)
+
 module.exports = {
-    entry: "./src/frontEnd.tsx",
+    entry: "./src/frontEnd",
     output: {
         filename: "bundle.js",
         path: path.join(__dirname, "./dist"),
@@ -23,7 +25,12 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         port: 3002,
-        contentBase: [path.join(__dirname, "./dist"), path.join(__dirname, "./src/public"),path.join(__dirname, "./node_modules")]
+        contentBase: ["./dist", "./src/public", "./node_modules"].map(localDir),
+        proxy: {
+            "/": {
+                target: "http://localhost:5001"
+            }
+        }
     },
 
     module: {

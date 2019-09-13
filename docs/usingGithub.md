@@ -2,23 +2,24 @@
 
 Heartpoints uses Github as a [version control system](https://en.wikipedia.org/wiki/GitHub). 
 
-There is a [heartpoints organization](https://github.com/heartpoints) with information about the Heartpoints organization,
-[Members](https://github.com/orgs/heartpoints/people), who may work on various version controlled assets for the Organization,
-[Repositories](https://github.com/heartpoints), where various software and other digital assets are officially stored and controlled
-as they change over time, and other features and capabilities.
+There is a [heartpoints organization](https://github.com/heartpoints) with information about the Heartpoints 
+organization, [Members](https://github.com/orgs/heartpoints/people), who may work on various version controlled  
+assets for the Organization, [Repositories](https://github.com/heartpoints), where various software and other digital
+assets are officially stored and controlled as they change over time, and other features and capabilities.
 
 # Heartpoints.org Repository
 
-The repository containing this help document is the [heartpoints.org](https://github.com/heartpoints/heartpoints.org) repository.
-It contains not only the various software assets (source code files, images, videos, this documentation itself), but it also contains
-[issues](https://github.com/heartpoints/heartpoints.org/issues) - a list of categorized bugs, feature ideas, to-dos, etc.
-which sometimes also appear, along with less formal "notes", in the repository's 
-[project board](https://github.com/heartpoints/heartpoints.org/projects/1), where we try to organize our "current focus" into
-columns representing things we are about to do, currently doing, or have recently completed.
+The repository containing this help document is the [heartpoints.org](https://github.com/heartpoints/heartpoints.org) 
+repository. It contains not only the various software assets (source code files, images, videos, this documentation 
+itself), but it also contains [issues](https://github.com/heartpoints/heartpoints.org/issues) - a list of categorized
+bugs, feature ideas, to-dos, etc. which sometimes also appear, along with less formal "notes", in the repository's
+[project board](https://github.com/heartpoints/heartpoints.org/projects/1), where we try to organize our "current
+focus" into columns representing things we are about to do, currently doing, or have recently completed.
 
 ## Finding and working on a Github Issue
 
-For a left-to-right issue board view, visit [github.com focus board](https://github.com/heartpoints/heartpoints.org/projects/1)
+For a left-to-right issue board view, visit 
+[github.com focus board](https://github.com/heartpoints/heartpoints.org/projects/1)
 
 To view issues from terminal, run:
 
@@ -34,7 +35,8 @@ To create a new issue from command line:
 
 ## Create and manage branches
 
-When working on a particular github issue, it is best to do so in a particular branch. Ideally the name of the branch ties back to the issue.
+When working on a particular github issue, it is best to do so in a particular branch. Ideally the name of the branch
+ties back to the issue.
 
 To create an issue and make a branch at the same time:
 
@@ -57,8 +59,9 @@ behind a feature switch so other devs can see it and it doesn't get lost or forg
 
 ### Keep Branches Up-To-Date via REBASE (MERGES DISALLOWED!!!)
 
-Branches may not be merged to origin/master from a pull request unless the pull request commits are *properly rebased*, 
-please see [this video tutorial](https://www.youtube.com/watch?v=tukOm3Afd8s) or find a similar one to understand the procedure. Use the following command:
+Branches may not be merged to origin/master from a pull request unless the pull request commits are *properly 
+rebased*, please see [this video tutorial](https://www.youtube.com/watch?v=tukOm3Afd8s) or find a similar one to
+understand the procedure. Use the following command:
 
     git pull --rebase origin master
 
@@ -129,23 +132,32 @@ and push them with
 
 ## Creating a pull request
 
-Finally, navigate to github.com/heartpoints/heartpoints.org, and look for the prompt to create a new pull request from your newly pushed branch. Here, you can review your changes and if things look good, add any potential code reviewers in the upper right, add an optional explanation in the text box, and click "Create pull request"
+Finally, navigate to github.com/heartpoints/heartpoints.org, and look for the prompt to create a new pull request 
+from your newly pushed branch. Here, you can review your changes and if things look good, add any potential code 
+reviewers in the upper right, add an optional explanation in the text box, and click "Create pull request"
 
 You may also pull request using the following:
 
     `./hp hub pull-request`
 
-You will be taken to the newly created pull request page, where you can see your pull request is automatically tested by the development pipeline. Look for the "Status" or "Details" links on the "Conversation" tab of the pull request to understand what automatic testing jobs are running, and whether they passed or failed (you will see a yellow circle for running, green check for passing, red x for failing)
+You will be taken to the newly created pull request page, where you can see your pull request is automatically tested 
+by the development pipeline. Look for the "Status" or "Details" links on the "Conversation" tab of the pull request 
+to understand what automatic testing jobs are running, and whether they passed or failed (you will see a yellow 
+circle for running, green check for passing, red x for failing)
 
-Once you have passing jobs with green checks and at least one review signoff from a colleague, then, assuming you have the latest changes incorporated into your branch, you will be ready to merge! Click "Squash and Merge" to squash your commits into a single commit for the pull request as a whole, and merge that into master. (If the words "squash and merge" are not visible on the button,
-click the down arrow and refine your selection to say squash and merge, then click).
+Once you have passing jobs with green checks and at least one review signoff from a colleague, then, assuming you 
+have the latest changes incorporated into your branch, you will be ready to merge! Click "Squash and Merge" to squash 
+your commits into a single commit for the pull request as a whole, and merge that into master. (If the words "squash 
+and merge" are not visible on the button, click the down arrow and refine your selection to say squash and merge, 
+then click).
 
-At that point, the pipeline will automatically build, test, deploy, and production verify your change. Master merge pipeline
-jobs can be viewed [here](https://circleci.com/gh/heartpoints/heartpoints.org/tree/master). You may also find this link from
-github by navigating to the "commits" tab of the main repository page, and clicking the small green / red / yellow status icon
-near your merge commit, and following the link.
+At that point, the pipeline will automatically build, test, deploy, and production verify your change. Master merge 
+pipeline jobs can be viewed [here](https://circleci.com/gh/heartpoints/heartpoints.org/tree/master). You may also 
+find this link from github by navigating to the "commits" tab of the main repository page, and clicking the small 
+green / red / yellow status icon near your merge commit, and following the link.
 
-You can validate your change has made it to production by using the chrome developer tools to inspect the http response headers, looking for the `commitSha` header, which should match the sha of your merged PR commit in master.
+You can validate your change has made it to production by using the chrome developer tools to inspect the http 
+response headers, looking for the `commitSha` header, which should match the sha of your merged PR commit in master.
 
 ## Shortcut for Getting Changes to a PR
 

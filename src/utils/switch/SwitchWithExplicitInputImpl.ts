@@ -6,6 +6,7 @@ import { equals } from "../axioms/equals";
 import { Constant } from "../axioms/Constant";
 import { ISwitchWithEarlyInput } from "./ISwitchWithEarlyInput";
 import { ExplicitInputPredicateMapperPairs } from "./ExplicitInputPredicateMapperPairs";
+import { True } from "../axioms/true";
 
 export const SwitchWithExplicitInputImpl = <T, V>(input: T, predicateMapperPairs: ExplicitInputPredicateMapperPairs<T, V>): ISwitchWithEarlyInput<T, V> => ({
     case<R>(possiblyEqualValue: T, resultToUseIfMatch: R): ISwitchWithEarlyInput<T, R | V> {
@@ -31,4 +32,10 @@ export const SwitchWithExplicitInputImpl = <T, V>(input: T, predicateMapperPairs
             .first(([predicate]) => predicate(input))
             .map(([_, mapper]) => mapper(input));
     },
+    otherwise<R>(resultMapperToUseIfMatch: Mapper<T, R>): ISwitchWithEarlyInput<T, R | V> {
+        return SwitchWithExplicitInputImpl<T, R | V>(input, [
+            ...predicateMapperPairs,
+            [True, resultMapperToUseIfMatch]
+        ]);
+    }
 });
