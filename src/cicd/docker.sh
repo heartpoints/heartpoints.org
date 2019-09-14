@@ -4,6 +4,7 @@ source "src/cicd/git.sh"
 source "src/cicd/reflect.sh"
 source "src/cicd/process.sh"
 source "src/cicd/string.sh"
+source "src/cicd/mac.sh"
 
 hp_docker() { local args="$@"
     local error="ERROR: CICD requires docker CLI installed, and docker daemon running."
@@ -26,17 +27,15 @@ hp_buildAndTagImage() { local taggedImageName=$1; local shaToReportInHttpHeaders
 
 hp_dockerTestImage() { local taggedImageName=$1
     hp_docker run -v codeCoverage:codeCoverage --rm "${taggedImageName}" bash ./heartpoints.sh cover
-    # local testName="heartpointsTest"
-    # trap "docker stop ${testName} > /dev/null" EXIT
-    # docker run --detach --name "${testName}" --rm "${taggedImageName}"
-    # sleep 10
-    # docker exec "${testName}" bash ./heartpoints.sh cover #localhost:5001
+}
+
+hp_imageRepoName() {
+    stringTernary hp_isMac "mac" "circleci"
 }
 
 hp_dockerBuildTagAndTest() {
-    local imageRepo="circleci"
     local shaToBuild="$(git_currentSha)"
-    local taggedImageName="$(hp_taggedImageName ${imageRepo} ${shaToBuild})"
+    local taggedImageName="$(hp_taggedImageName $(hp_imageRepoName) ${shaToBuild})"
     hp_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
     hp_dockerTestImage "${taggedImageName}"
 }

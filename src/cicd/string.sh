@@ -72,3 +72,11 @@ strings_are_not_equal() { local string1=$1; local string2=$2
 stringContains() { local soughtSubstring=$1; local fullString=$2
     [[ $fullString == *"${soughtSubstring}"* ]]
 }
+
+stringTernary() { local condition=$1; local trueString=$2; local falseString=$3
+    if $condition; then
+        echo "${trueString}"
+    else
+        echo "${falseString}"
+    fi
+}
