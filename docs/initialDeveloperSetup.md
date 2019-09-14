@@ -29,3 +29,10 @@ folder, there are a few dependencies which are installed globally:
 - nvm
 
 Please be aware that scripts may attempt to install these applications in non-isolated places.
+
+## Visual Studio Code Plugins
+
+The following plugins may be useful:
+
+- [Code Coverage Highlighter](./codeCoverage)
+- Bash IDE (helps with bash .sh file nav, requires a global yarn install as listed on their help page)

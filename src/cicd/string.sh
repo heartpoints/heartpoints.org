@@ -68,3 +68,7 @@ strings_are_equal() { local string1=$1; local string2=$2
 strings_are_not_equal() { local string1=$1; local string2=$2
     ! strings_are_equal "${string1}" "${string2}"
 }
+
+stringContains() { local soughtSubstring=$1; local fullString=$2
+    [[ $fullString == *"${soughtSubstring}"* ]]
+}

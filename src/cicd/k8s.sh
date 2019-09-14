@@ -47,6 +47,7 @@ hp_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     requiredParameter "shaToReportInHttpHeaders" "${shaToReportInHttpHeaders}"
     hp_pointToAndRunMinikubeDockerDaemon
     hp_buildAndTagImage "${taggedImageName}" "${shaToReportInHttpHeaders}"
+    hp_dockerTestImage "${taggedImageName}"
 }
 
 hp_minikubeDestroyEnvironment_help() { echo "if minikube dev environment is running, destroys it"; }

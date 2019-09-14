@@ -28,7 +28,8 @@ productionBuildDeployTest() {
     local shaToBuild="$(git_currentSha)"
     local taggedImageName="$(hp_taggedImageName ${imageRepository} ${shaToBuild})"
     hp_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
-    docker push "${taggedImageName}"
+    hp_dockerTestImage "${taggedImageName}"
+    hp_docker push "${taggedImageName}"
     hp_deployToKubernetes "${taggedImageName}"
     hp_testUntilSuccess 120 15 hp_test "http://35.244.131.133/" # This refers to the static loadbalancer IP in gcloud
 }
@@ -46,7 +47,7 @@ hp_manualProductionBuildDeployTest() {
 
 hp_buildAndPushCicdImage() {
     local imageURI="$(hp_gcr)/cicd:1.0.1"
-    docker build -t "$imageURI" -f cicd.Dockerfile .
+    hp_docker build -t "$imageURI" -f cicd.Dockerfile .
     gcloud_manualLogin
-    docker push "$imageURI"
+    hp_docker push "$imageURI"
 }
