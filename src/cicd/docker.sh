@@ -26,7 +26,9 @@ hp_buildAndTagImage() { local taggedImageName=$1; local shaToReportInHttpHeaders
 
 hp_dockerTestImage() { local taggedImageName=$1
     local coveragePath="$(createAndReturnPath "$(pwd)/coverage")"
-    hp_docker run -e CODECOV_TOKEN --rm "${taggedImageName}" bash ./heartpoints.sh cover
+    local ci_env=`bash <(curl -s https://codecov.io/env)`
+    echo "CI environment getting passed to test container: ${ci_env}"
+    hp_docker run ${ci_env} -e CODECOV_TOKEN  --rm "${taggedImageName}" bash ./heartpoints.sh cover
 }
 
 hp_imageRepoName() {
