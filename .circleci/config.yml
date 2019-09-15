@@ -10,6 +10,7 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run: ./heartpoints.sh onPullRequest
+      - run: cat ./coverage/coverage-final.json
       - codecov/upload:
           file: ./coverage/coverage-final.json
   onMasterMerge:
