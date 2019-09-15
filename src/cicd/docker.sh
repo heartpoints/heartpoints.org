@@ -26,7 +26,7 @@ hp_buildAndTagImage() { local taggedImageName=$1; local shaToReportInHttpHeaders
 
 hp_dockerTestImage() { local taggedImageName=$1
     local coveragePath="$(createAndReturnPath "$(pwd)/coverage")"
-    hp_docker run --rm "${taggedImageName}" bash ./heartpoints.sh cover
+    hp_docker run --rm "${taggedImageName}" bash -e CODECOV_TOKEN ./heartpoints.sh cover
 }
 
 hp_imageRepoName() {
