@@ -10,9 +10,9 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true
       - run: ./heartpoints.sh onPullRequest
-      - run: cat ./coverage/coverage-final.json
+      - run: pwd && ls -al
       - codecov/upload:
-          file: ./coverage/coverage-final.json
+          file: coverage/coverage-final.json
   onMasterMerge:
     docker:
       - image: gcr.io/heartpoints-org/cicd:1.0.1
