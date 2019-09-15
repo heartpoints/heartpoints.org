@@ -18,9 +18,12 @@ hp_cover_help() { echo "run unit tests over instrumented code, producing coverag
 hp_cover() {
     if hp_isMac; then
         hp_yarn_global coverHTML
+        echo "On Mac, so not reporting coverage to coverage.io; will open local browser instead..."
         open "./coverage/index.html"
     else
         hp_yarn_global cover
+        echo "Not on Mac, assuming CICD environment, writing coverage to codecov.io"
+        bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}
     fi
 }
 
