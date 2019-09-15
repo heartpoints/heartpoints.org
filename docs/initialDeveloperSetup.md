@@ -29,3 +29,11 @@ folder, there are a few dependencies which are installed globally:
 - nvm
 
 Please be aware that scripts may attempt to install these applications in non-isolated places.
+
+## Visual Studio Code Plugins
+
+The following plugins may be useful:
+
+- [Code Coverage Highlighter](./codeCoverage)
+- [BashIDE](https://marketplace.visualstudio.com/items?itemName=mads-hartmann.bash-ide-vscode) VS Code Extension
+- [sourcegraph browser extension](https://github.com/codecov/sourcegraph-codecov#usage)

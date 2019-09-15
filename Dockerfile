@@ -10,7 +10,8 @@ COPY tsconfig.json webpack.config.js ./
 RUN yarn webpack --verbose
 
 COPY heartpoints.sh ./
-RUN ./heartpoints.sh unitTest
+COPY test test
+COPY .nycrc ./
 
 ARG commitSha
 ENV commitSha=$commitSha

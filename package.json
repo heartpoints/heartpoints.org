@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev src/webServer",
-    "watch": "webpack-dev-server --hot --inline --color"
+    "watch": "webpack-dev-server --hot --inline --color",
+    "cover": "nyc mocha",
+    "coverHTML": "nyc --reporter=html mocha"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/victory": "^0.9.20",
     "awesome-typescript-loader": "^5.2.1",
+    "bash-language-server": "^1.5.6",
     "chai": "^4.2.0",
     "classnames": "^2.2.6",
     "css-loader": "^2.1.1",
@@ -51,8 +54,9 @@
     "recharts": "^1.4.2",
     "sass-loader": "^7.1.0",
     "source-map-loader": "^0.2.4",
+    "source-map-support": "^0.5.13",
     "style-loader": "^0.23.1",
-    "ts-node": "^7.0.1",
+    "ts-node": "^8.3.0",
     "typescript": "^3.5.2",
     "victory": "^30.6.0",
     "webpack": "^4.23.1"
@@ -62,6 +66,7 @@
     "@types/js-cookie": "^2.2.0",
     "@types/react-facebook-login": "^4.1.0",
     "@types/react-router-dom": "^4.3.1",
+    "nyc": "^14.1.1",
     "ts-mocha": "^6.0.0",
     "ts-node-dev": "^1.0.0-pre.32",
     "webpack-cli": "^3.1.2",
