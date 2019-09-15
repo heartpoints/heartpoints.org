@@ -11,7 +11,7 @@ RUN yarn webpack --verbose
 
 COPY heartpoints.sh ./
 COPY test test
-COPY .nycrc .nycrc
+COPY .nycrc ./
 
 ARG commitSha
 ENV commitSha=$commitSha
