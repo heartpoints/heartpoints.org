@@ -23,7 +23,7 @@ hp_cover() {
     else
         hp_yarn_global cover
         echo "Not on Mac, assuming CICD environment, writing coverage to codecov.io"
-        bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}
+        bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -Z
     fi
 }
 
