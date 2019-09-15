@@ -26,7 +26,7 @@ hp_buildAndTagImage() { local taggedImageName=$1; local shaToReportInHttpHeaders
 }
 
 hp_dockerTestImage() { local taggedImageName=$1
-    hp_docker run -v codeCoverage:codeCoverage --rm "${taggedImageName}" bash ./heartpoints.sh cover
+    hp_docker run -v ./codeCoverage:/heartpoints.org/codeCoverage --rm "${taggedImageName}" bash ./heartpoints.sh cover
 }
 
 hp_imageRepoName() {
