@@ -22,11 +22,11 @@ hp_docker() { local args="$@"
 hp_buildAndTagImage() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     hp_ensureCommitIsAppropriate
     hp_docker build --build-arg commitSha="${shaToReportInHttpHeaders}" -t ${taggedImageName} .
-    #TODO: Test what used to happen in docker build (RUN ./heartpoints.sh cover)
 }
 
 hp_dockerTestImage() { local taggedImageName=$1
-    hp_docker run -v "$(pwd)/coverage:/heartpoints.org/coverage" --rm "${taggedImageName}" bash ./heartpoints.sh cover
+    local coveragePath="$(createAndReturnPath "$(pwd)/coverage")"
+    hp_docker run -v "${coveragePath}:/heartpoints.org/coverage" --rm "${taggedImageName}" bash ./heartpoints.sh cover
 }
 
 hp_imageRepoName() {
