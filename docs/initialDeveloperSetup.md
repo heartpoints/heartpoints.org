@@ -35,4 +35,5 @@ Please be aware that scripts may attempt to install these applications in non-is
 The following plugins may be useful:
 
 - [Code Coverage Highlighter](./codeCoverage)
-- Bash IDE (helps with bash .sh file nav, requires a global yarn install as listed on their help page)
+- [BashIDE](https://marketplace.visualstudio.com/items?itemName=mads-hartmann.bash-ide-vscode) VS Code Extension
+- [sourcegraph browser extension](https://github.com/codecov/sourcegraph-codecov#usage)
