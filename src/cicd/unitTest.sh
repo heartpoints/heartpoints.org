@@ -22,6 +22,8 @@ hp_cover() {
     else
         hp_yarn_global cover
     fi
+    ls -al coverage
+    cat coverage/coverage-final.json
 }
 
 hp_onTestComplete() { local failureOrSuccess=$1
