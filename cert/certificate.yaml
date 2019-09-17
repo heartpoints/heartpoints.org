@@ -1,0 +1,23 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: heartpoints-org-certs
+spec:
+  secretName: heartpoints-org-certs
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: "www.heartpoints.org"
+  dnsNames:
+  # you can add multiple domains here
+  - "www.heartpoints.org"
+  - "heartpoints.org"
+  acme:
+    config:
+    - dns01:
+    # using google cloud dns for now
+        provider: cloud-dns
+      domains:
+      # you can add multiple domains here
+      - "www.heartpoints.org"
+      - "heartpoints.org"
