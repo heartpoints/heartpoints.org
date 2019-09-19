@@ -21,6 +21,7 @@ functionNamesAndDescriptions() {
             possibleHelp=" - $(${possibleHelpFunctionName})"
         fi
         local niceFunctionName="$(string_everythingAfterChar "${fullFunctionName}" "_")"
+        # local niceFunctionName="${fullFunctionName}"
         echo "$(fixStringWidth "${niceFunctionName}" 30)$(fixStringWidth "${possibleHelp}" 80)"
     done
 }
