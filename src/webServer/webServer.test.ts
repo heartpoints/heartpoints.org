@@ -4,7 +4,7 @@ import { Server } from "http";
 import expect from "expect";
 import fetch from "node-fetch";
 
-describe.only("web server", () => {
+describe("web server", () => {
     let server:Server | null = null
     before(async () => server = await startServer())
     describe("root resource", () => {
