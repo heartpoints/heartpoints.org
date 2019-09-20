@@ -1,5 +1,13 @@
 import express from "express"
 import { callWith } from "../../utils/composition/callWith";
-import { setupSteps } from "./setupSteps";
+import { expressSetupSteps } from "./expressSetupSteps";
+import { registerHTTPListener } from "./registerHTTPListener";
+import http, { Server } from "http"
 
-export const startServer = () => setupSteps.map(callWith(express()))
+export const startServer = ():Server => {
+    const expressApp = express()
+    expressSetupSteps.map(callWith(expressApp))
+    const server = http.createServer(expressApp)
+    registerHTTPListener(server)
+    return server
+}
