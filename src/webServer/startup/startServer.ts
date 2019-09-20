@@ -1,13 +1,15 @@
 import express from "express"
 import { callWith } from "../../utils/composition/callWith";
 import { expressSetupSteps } from "./expressSetupSteps";
-import { registerHTTPListener } from "./registerHTTPListener";
+import { httpServerListenAsync } from "./httpServerListenAsync";
 import http, { Server } from "http"
+import { onServerStart } from "./onServerStart";
 
-export const startServer = ():Server => {
+export const startServer = async ():Promise<Server> => {
     const expressApp = express()
     expressSetupSteps.map(callWith(expressApp))
     const server = http.createServer(expressApp)
-    registerHTTPListener(server)
+    await httpServerListenAsync(server)
+    onServerStart()
     return server
 }
