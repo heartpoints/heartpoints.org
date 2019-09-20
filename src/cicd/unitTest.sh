@@ -6,7 +6,7 @@ source "src/cicd/k8s.sh"
 
 hp_unitTest_help() { echo "run the mocha unit tests, which test without build / deploy"; }
 hp_unitTest() { local args="$@"
-    hp_yarn_global ts-mocha "src/**/*.test.ts" "$@"
+    hp_yarn_global test "$@"
 }
 
 hp_unitTestWatch_help() { echo "run unit tests continuously, updating every time files are saved"; }
