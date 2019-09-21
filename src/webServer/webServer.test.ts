@@ -1,7 +1,7 @@
+import { expect } from "chai"
 import { describe } from "mocha"
 import { startServer } from "./startup/startServer"
 import { Server } from "http";
-import expect from "expect";
 import fetch from "node-fetch";
 
 describe("web server", () => {
@@ -12,7 +12,7 @@ describe("web server", () => {
             it("returns expected html", async () => { 
                 const response = await fetch("http://localhost:5001")
                 const text = await response.text()
-                expect(text).toContain("<title>heartpoints.org</title>")
+                expect(text).to.contain("<title>heartpoints.org</title>")
             })
         })
     })
