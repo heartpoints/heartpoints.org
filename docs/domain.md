@@ -18,6 +18,14 @@ contemporaneously.
 - [Local Copy of DNS Configuration - BIND format](../src/dns/heartpoints.org.txt) 
 - [Local Copy of DNS Configuration - GCP-specific YAML format](../src/dns/heartpoints.org.YAML)
 
+## Static IP of Load Balancer
+
+The A records for naked heartpoints.org and www.heartpoints.org both point to the static IP of our GCP / GKE
+Load Balancer.
+
+For more information about that IP and how requests continue along their lifecycle after the DNS resolution
+process, see the [GKE Readme](gkeSetup.md).
+
 ## Possible Future DNS Solutions
 
 In the future, we wish to more carefully code control the DNS settings, and then ensure our target cloud is configured

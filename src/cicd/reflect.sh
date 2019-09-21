@@ -21,7 +21,6 @@ functionNamesAndDescriptions() {
             possibleHelp=" - $(${possibleHelpFunctionName})"
         fi
         local niceFunctionName="$(string_everythingAfterChar "${fullFunctionName}" "_")"
-        # local niceFunctionName="${fullFunctionName}"
         echo "$(fixStringWidth "${niceFunctionName}" 30)$(fixStringWidth "${possibleHelp}" 80)"
     done
 }
@@ -31,7 +30,11 @@ publicFunctionNames() {
 }
 
 command_does_not_exist() { local possibleCommand=$1
-    ! [ -x "$(command -v ${possibleCommand})" ]
+    ! command_exists "${possibleCommand}"
+}
+
+command_exists() { local possibleCommand=$1
+    [ -x "$(command -v ${possibleCommand})" ]
 }
 
 requiredParameter() { local parameterName=$1; local parameterValue=$2

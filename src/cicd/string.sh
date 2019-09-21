@@ -6,6 +6,10 @@ string_is_empty() { local possiblyEmptyString=$1
     [[ -z "${possiblyEmptyString}" ]]
 }
 
+string_not_empty() { local possiblyEmptyString=$1
+    ! string_is_empty "${possiblyEmptyString}"
+}
+
 stringLength() { local stringInQuestion=$1
     echo ${#stringInQuestion}
 }
