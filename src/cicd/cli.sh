@@ -4,7 +4,7 @@ source "src/cicd/string.sh"
 source "src/cicd/reflect.sh"
 source "src/cicd/process.sh"
 
-heartpoints() { local command=$1; local remainingArgs="${@:2}"
+heartpoints() { local command=${1-""}; local remainingArgs="${@:2}"
     if string_is_empty "${command}"; then
         hp_help
     else
