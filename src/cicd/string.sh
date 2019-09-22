@@ -6,13 +6,17 @@ string_is_empty() { local possiblyEmptyString=$1
     [[ -z "${possiblyEmptyString}" ]]
 }
 
+string_not_empty() { local possiblyEmptyString=$1
+    ! string_is_empty "${possiblyEmptyString}"
+}
+
 stringLength() { local stringInQuestion=$1
     echo ${#stringInQuestion}
 }
 
 fixStringWidth() { local originalString=$1; local fixedWidth=$2
     local limitedString="$(string_firstNChars "${originalString}" $fixedWidth)"
-    local limitedStringLength="$(stringLength "${limitedString}")"
+    local limitedStringLength=$(stringLength "${limitedString}")
     local spacesNeeded=$(expr $fixedWidth - $limitedStringLength)
     local spaces="$(padString " " $spacesNeeded)"
     echo "${limitedString}${spaces}"
@@ -28,7 +32,7 @@ string_toLower() { local stringToConvertToAllLowercase=$1
 }
 
 string_firstNChars() { local sourceString=$1; local n=$2
-    echo "${sourceString}" | cut -c 1-$n
+    echo ${sourceString:0:$n}
 }
 
 string_everythingAfterChar() { local sourceString=$1; local delimitingCharacter=$2;

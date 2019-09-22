@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source "src/cicd/brew.sh"
+source "src/cicd/cert.sh"
 source "src/cicd/cli.sh"
 source "src/cicd/client.sh"
 source "src/cicd/devEnvSetup.sh"

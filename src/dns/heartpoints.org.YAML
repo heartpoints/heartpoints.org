@@ -1,0 +1,36 @@
+# A .YAML file is used to export DNS records to a
+# domain managed by Google Cloud. The format is
+# exclusive to Google Cloud DNS.
+
+---
+kind: dns#resourceRecordSet
+name: heartpoints.org.
+rrdatas:
+- 35.244.131.133
+ttl: 600
+type: A
+---
+kind: dns#resourceRecordSet
+name: heartpoints.org.
+rrdatas:
+- 1 aspmx.l.google.com.
+- 5 alt1.aspmx.l.google.com.
+- 5 alt2.aspmx.l.google.com.
+- 10 alt3.aspmx.l.google.com.
+- 10 alt4.aspmx.l.google.com.
+ttl: 3600
+type: MX
+---
+kind: dns#resourceRecordSet
+name: _domainconnect.heartpoints.org.
+rrdatas:
+- connect.domains.google.com.
+ttl: 21600
+type: CNAME
+---
+kind: dns#resourceRecordSet
+name: www.heartpoints.org.
+rrdatas:
+- 35.244.131.133
+ttl: 3600
+type: A

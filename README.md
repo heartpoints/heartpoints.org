@@ -14,6 +14,7 @@ Welcome to the Heartpoints.org website repository!
 - [Code Coverage](docs/codeCoverage.md) - Measuring Code Coverage during Tests and Viewing Coverage (locally and on
   github.com PRs)
 - [Production Website](docs/production.md) - Find, view, administrate the live version of http://www.heartpoints.org
+- [Heartpoints Domain](docs/domain.md) - Domain registrar and DNS management info for the heartpoints.org domain
 - [Material UI](docs/materialUI.md) - Our Design system - for look and feel and design
 - [SOLID Principles](docs/solidPrinciplesInPractice.md) - guidance on software design
 - [Common Errors](docs/commonErrors.md) - a list of commonly found errors and advice to troubleshoot / fix them

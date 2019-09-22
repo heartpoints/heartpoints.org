@@ -1,21 +1,23 @@
 #!/usr/bin/env bash
 
 source "src/cicd/k8s.sh"
+source "src/cicd/string.sh"
+source "src/cicd/docker.sh"
 
 hp_createGKECluster_help() { echo "creates a GKE cluster. See README for prerequisites"; }
 hp_createGKECluster() {
-    withinCloudSDK ./heartpoints.sh createGKECluster_commands
+    withinCloudSDK ./heartpoints.sh createGKEClusterFromWithinCloudSDK
 }
 
 withinCloudSDK() { local commands=$@
-    docker run -p 8001:8001 -v "$(pwd)":/heartpoints --rm -w /heartpoints google/cloud-sdk:latest "$@"
+    hp_docker run -p 8001:8001 -v "$(pwd)":/heartpoints --rm -w /heartpoints google/cloud-sdk:latest "$@"
 }
 
 hp_gcloud_kubectl() { local args=$@
-    withinCloudSDK ./heartpoints.sh kubectl_commands "$@"
+    withinCloudSDK ./heartpoints.sh kubectlWithinCloudSDK "$@"
 }
 
-hp_createGKECluster_commands() {
+createGKEClusterFromWithinCloudSDK() {
     gcloud_cicdAccountLogin
     gcloud_cli beta container --project "heartpoints-org" \
         clusters create "heartpoints-org" \
@@ -39,21 +41,23 @@ hp_createGKECluster_commands() {
         --maintenance-window "11:00"
 }
 
-hp_kubectl_commands() { local args=$@
+kubectlWithinCloudSDK() { local args="$@"
     gcloud_cicdAccountLogin
-    kubectl_install
     kubectl "$@"
 }
 
 gcloud_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson
-    if [ -v gcpCicdServiceAccountCredentialsJson ]; then
+    if string_is_empty "${gcpCicdServiceAccountCredentialsJson}"; then
+        echo "Unable to log into service account - gcpCicdServiceAccountCredentialsJson is not set"
+        echo "Find the credential at https://github.com/heartpoints/credentials"
+        echo "And re-run this script with the above-mentioned environment variable set to that JSON string"
+        echo ""
+        exit 1
+    else
         trap "rm gcpCicdServiceAccountCredentialsJson.json" EXIT
         echo "$gcpCicdServiceAccountCredentialsJson" > gcpCicdServiceAccountCredentialsJson.json
         gcloud_cli auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=gcpCicdServiceAccountCredentialsJson.json
         gcloud_configure
-    else
-        echo "Unable to log into service account - gcpCicdServiceAccountCredentialsJson is not set"
-        exit 1
     fi
 }
 
