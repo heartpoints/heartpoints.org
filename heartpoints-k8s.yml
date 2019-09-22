@@ -34,10 +34,31 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
 ---
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: heartpoints-org-cert
+spec:
+  domains:
+    - heartpoints.org
+---
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: www-heartpoints-org-cert
+spec:
+  domains:
+    - www.heartpoints.org
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: heartpoints-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: heartpoints-org
+    networking.gke.io/managed-certificates:
+      - www-heartpoints-org-cert
+      - heartpoints-org-cert
 spec:
   backend:
     serviceName: heartpoints-org
