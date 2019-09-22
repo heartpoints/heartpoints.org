@@ -8,7 +8,7 @@ source "src/cicd/brew.sh"
 
 hp_deployToKubernetes() { local image=$1
     echo "$(hp_k8sResourceYaml "${image}")" | kubectl apply -f -
-    echo "deployment request complete... to check status run './heartpoints.sh minikubeDashboard'"
+    echo "deployment request complete"
 }
 
 hp_k8sResourceYaml() { local image=$1
