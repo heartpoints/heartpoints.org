@@ -1,6 +1,6 @@
 import { theInternet } from "./theInternet";
 import { RGSONArray } from "./rgson";
-import { JSONArray } from "./JSONArray";
+import { JSONArray } from "../utils/json/JSONArray";
 
 export const mapArrayToCompleteProjection = 
     (arrayRepresentation: RGSONArray): JSONArray => 

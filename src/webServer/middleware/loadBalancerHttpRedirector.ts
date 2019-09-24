@@ -6,4 +6,3 @@ export const loadBalancerHttpRedirector:ExpressMiddleware =
     req.headers["x-forwarded-proto"] === "http"
         ? res.redirect(urlFromExpressRequest(req).setProtocol("https").asString)
         : next()
-
