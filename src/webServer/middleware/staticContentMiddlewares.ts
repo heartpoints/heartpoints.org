@@ -1,3 +1,3 @@
-import { staticContentPathsRelativeToProjectRootFolder } from "../config/staticContentPathsRelativeToProjectRootFolder";
+import { staticContentAbsolutePaths } from "../config/staticContentAbsolutePaths";
 import express from "express";
-export const staticContentMiddlewares = staticContentPathsRelativeToProjectRootFolder.map(absPath => express.static(absPath));
+export const staticContentMiddlewares = staticContentAbsolutePaths.map(absPath => express.static(absPath));
