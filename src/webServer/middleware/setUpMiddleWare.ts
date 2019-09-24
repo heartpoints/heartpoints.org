@@ -1,7 +1,6 @@
-import { commitShaHeaderMiddleware } from "./commitShaHeaderMiddleware"
-import { serveStaticContent } from "./serveStaticContent";
+import { Application } from "express"
+import { middlewares } from "./middlewares";
 
-export const setUpMiddleWare = (expressApplication) => {
-    expressApplication.use(commitShaHeaderMiddleware)
-    serveStaticContent(expressApplication)
+export const setUpMiddleWare = (expressApp:Application) => {
+    middlewares.map(middleware => expressApp.use(middleware))
 }

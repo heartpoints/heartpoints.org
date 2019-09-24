@@ -15,6 +15,7 @@ Welcome to the Heartpoints.org website repository!
   github.com PRs)
 - [Production Website](docs/production.md) - Find, view, administrate the live version of http://www.heartpoints.org
 - [Heartpoints Domain](docs/domain.md) - Domain registrar and DNS management info for the heartpoints.org domain
+- [TLS / Security Certificates / HTTPS](docs/tls.md) - How the site runs on HTTPS vs HTTP
 - [Material UI](docs/materialUI.md) - Our Design system - for look and feel and design
 - [SOLID Principles](docs/solidPrinciplesInPractice.md) - guidance on software design
 - [Common Errors](docs/commonErrors.md) - a list of commonly found errors and advice to troubleshoot / fix them
