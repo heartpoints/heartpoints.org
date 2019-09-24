@@ -1,6 +1,4 @@
-import { restGuruRoutes } from "../rest-guru/restGuruRoutes";
+import { allRouters } from "./allRouters";
+import { compose } from "../../utils/composition/compose";
 
-export const registerRoutes = 
-    expressApp =>
-    restGuruRoutes(expressApp)
-    
+export const registerRoutes = compose(...allRouters)
