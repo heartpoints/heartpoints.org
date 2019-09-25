@@ -6,6 +6,7 @@ import { SomeType } from "./SomeType";
 
 export const Some = <T>(value: T): SomeType<T> => ({
     map: <S>(f: (t: T) => S) => Some(f(value)),
+    mapOrDefault: (f, d) => f(value),
     flatMap: <S>(f: MaybeFlatmapper<T, S>): IMaybe<S> => {
         return f(value)
     },

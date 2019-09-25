@@ -1,4 +1,5 @@
-import { whenValues, then } from "../../testing/expect";
+import { then } from "../../testing/then";
+import { whenValues } from "../../testing/whenValues";
 import { setContainingOneElement } from "./setContainingOneElement";
 import { equatableNumber } from "./equatableNumber";
 

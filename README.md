@@ -9,6 +9,7 @@ Welcome to the Heartpoints.org website repository!
 - [Using Github](docs/usingGithub.md) - Issues, Pull Requests, and Source Control
 - [Heartpoints CLI](docs/cli.md) - Overview for the `./hp` command line interface for running dev tasks (ie: 
   compiling/testing)
+- [Typescript](docs/typescript.md) - Our main language of choice for both front and back end
 - [Running Local heartpoints.org REST API](docs/serverDev.md) - Run Local Version of the API server
 - [Running Local heartpoints.org Website](docs/clientDev.md) - Run Local Version of heartpoints.org
 - [Code Coverage](docs/codeCoverage.md) - Measuring Code Coverage during Tests and Viewing Coverage (locally and on

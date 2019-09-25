@@ -1,5 +1,6 @@
 import * as _ from "lodash";
-import { whenValues, then } from "../testing/expect";
+import { then } from "../testing/then";
+import { whenValues } from "../testing/whenValues";
 import { theInternet } from "../restguru/theInternet";
 import { expect } from "chai";
 import { HttpMethod } from "../restguru/HttpMethod";

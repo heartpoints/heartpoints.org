@@ -3,6 +3,7 @@ import { Protocol } from "./Protocol";
 
 export const Url = (urlString:string):IUrl => ({
     get path() { return new URL(urlString).pathname },
+    get host() { return new URL(urlString).host },
     get protocol() { return new URL(urlString).protocol.replace(":","") as Protocol },
     asString: urlString,
     setPath(newPath) { 
@@ -15,5 +16,11 @@ export const Url = (urlString:string):IUrl => ({
         tempUrl.protocol = newProtocol
         return Url(tempUrl.toString())
     },
+    setHost(newHost) {
+        const tempUrl = new URL(urlString);
+        tempUrl.host = newHost
+        return Url(tempUrl.toString())
+    },
+    get toHttps() { return this.setProtocol("https") },
     toString: () => urlString,
 })

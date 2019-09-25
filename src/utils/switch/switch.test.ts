@@ -1,4 +1,7 @@
-import { when, whenValues, then, theExpression } from "../../testing/expect";
+import { theExpression } from "../../testing/theExpression";
+import { then } from "../../testing/then";
+import { whenValues } from "../../testing/whenValues";
+import { when } from "../../testing/when";
 import * as _ from "lodash";
 import { expect } from "chai";
 import { Switch } from "./Switch";

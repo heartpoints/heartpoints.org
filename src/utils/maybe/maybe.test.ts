@@ -1,7 +1,9 @@
 import { reduceMaybe } from "./reduceMaybe";
 import { Some } from "./Some";
-import { whenValues, then } from "../../testing/expect";
-import { add3ToEvens, doubleOdds } from "../../testing/helpers";
+import { then } from "../../testing/then";
+import { whenValues } from "../../testing/whenValues";
+import { add3ToEvens } from "../../testing/add3ToEvens";
+import { doubleOdds } from "../../testing/doubleOdds";
 
 describe("Maybe", () => {
     whenValues({add3ToEvens, doubleOdds}, () => {
