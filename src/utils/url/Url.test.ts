@@ -1,9 +1,9 @@
-import { Url } from "./Url"
 import { UnitTestDefinition } from "../../testing/UnitTestDefinition";
+import { urlFromString } from "./urlFromString";
 
  // todo: support { Url } to get DRY naming
 export const Test:UnitTestDefinition = ({forFunction}) => 
-    forFunction(Url)
+    forFunction(urlFromString)
         .givenParameter("http://www.cnn.com/hey")
             .expect.returnValue.protocol.equals("http")
             .expect.returnValue.path.equals("/hey")
