@@ -1,16 +1,22 @@
 import { IncomingHttpHeaders } from "http";
-import { maybe } from "../../utils/maybe/maybe";
 import { IMaybe } from "../../utils/maybe/IMaybe";
+import { JSONValue } from "../../utils/json/JSONValue";
+import { headersLazyLookup } from "./headersLazyLookup";
+import { log } from "../../utils/debugging/log";
 
 //todo: suppport the string[] api or remove it from type
 export type Headers = {
     [P in keyof Required<IncomingHttpHeaders>]: IMaybe<string>
 } & {
-    [key:string]:IMaybe<string>
-}
+    [key:string]:IMaybe<string>,
+} & { asJSON:JSONValue }
 
-export const headers = (incomingHttpHeaders: IncomingHttpHeaders) => ({
-    get(_, name) {
-        return maybe(incomingHttpHeaders[name]).map(h => h.toString());
-    }
-});
+export const headers = 
+    (incomingHttpHeaders: IncomingHttpHeaders): Headers => 
+    new Proxy(
+        {
+            get asJSON() { return log(incomingHttpHeaders) }
+        } as any,
+        headersLazyLookup(incomingHttpHeaders)
+    )
+

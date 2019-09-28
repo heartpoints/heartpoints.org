@@ -1,3 +1,6 @@
 import { staticContentAbsolutePaths } from "../config/staticContentAbsolutePaths";
 import express from "express";
-export const staticContentMiddlewares = staticContentAbsolutePaths.map(absPath => express.static(absPath));
+import { ExpressMiddleware } from "./ExpressMiddleware";
+
+export const staticContentMiddlewares:ExpressMiddleware[] = 
+    staticContentAbsolutePaths.map(absPath => express.static(absPath))
