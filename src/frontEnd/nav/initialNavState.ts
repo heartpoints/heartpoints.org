@@ -1,7 +1,7 @@
-import { Url } from "../../utils/url/Url";
+import { urlFromString } from "../../utils/url/urlFromString";
 
 export const initialNavState = () => ({
     isSideNavExpanded: true,
     isSideNavOpen: true,
-    url: Url(window.location.href),
+    url: urlFromString(window.location.href),
 })
