@@ -1,34 +1,25 @@
 import { IUrl } from "./IUrl";
 import { Protocol } from "./Protocol";
+import { copyMutateAndWrap } from "./copyMutateAndWrap";
+import { defaultPort } from "./defaultPort";
 
-export const Url = (urlString:string):IUrl => ({
-    get path() { return new URL(urlString).pathname },
-    get host() { return new URL(urlString).host },
-    get protocol() { return new URL(urlString).protocol.replace(":","") as Protocol },
-    asString: urlString,
-    setPath(newPath) { 
-        const tempUrl = new URL(urlString);
-        tempUrl.pathname = newPath
-        return Url(tempUrl.toString())
-    },
-    setProtocol(newProtocol) {
-        const tempUrl = new URL(urlString);
-        tempUrl.protocol = newProtocol
-        return Url(tempUrl.toString())
-    },
-    setHost(newHost) {
-        const tempUrl = new URL(urlString);
-        tempUrl.host = newHost
-        return Url(tempUrl.toString())
-    },
+export const Url = (nativeURL:URL):IUrl => ({
+    get path() { return nativeURL.pathname },
+    get host() { return nativeURL.host },
+    get protocol() { return nativeURL.protocol.replace(":","") as Protocol },
+    get asString() { return nativeURL.toString() },
     get toHttps() { return this.setProtocol("https") },
-    toString: () => urlString,
-    get port() { return Number(new URL(urlString).port) },
+    get port() { return Number(nativeURL.port) },
+    setPath: (newPath) => copyMutateAndWrap(nativeURL, u => u.pathname = newPath),
+    setProtocol: (newProtocol) => copyMutateAndWrap(nativeURL, u => u.protocol = newProtocol),
+    setHost: (newHost) => copyMutateAndWrap(nativeURL, u => u.host = newHost),
+    toString() { return this.asString },
     setPort(newPort) {
-        const tempUrl = new URL(urlString);
-        tempUrl.port = newPort == defaultPort(this.protocol) ? "" : newPort.toString()
-        return Url(tempUrl.toString())
+        return copyMutateAndWrap(
+            nativeURL, 
+            u => u.port = newPort == defaultPort(this.protocol) 
+                ? "" 
+                : newPort.toString()
+        )
     }
 })
-
-const defaultPort = (protocol:Protocol) => protocol == "http" ? 80 : 443
