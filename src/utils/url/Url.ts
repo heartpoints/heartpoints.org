@@ -23,4 +23,12 @@ export const Url = (urlString:string):IUrl => ({
     },
     get toHttps() { return this.setProtocol("https") },
     toString: () => urlString,
+    get port() { return Number(new URL(urlString).port) },
+    setPort(newPort) {
+        const tempUrl = new URL(urlString);
+        tempUrl.port = newPort == defaultPort(this.protocol) ? "" : newPort.toString()
+        return Url(tempUrl.toString())
+    }
 })
+
+const defaultPort = (protocol:Protocol) => protocol == "http" ? 80 : 443

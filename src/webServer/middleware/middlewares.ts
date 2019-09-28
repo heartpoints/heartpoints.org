@@ -3,10 +3,11 @@ import { staticContentMiddlewares } from "./staticContentMiddlewares";
 import { loadBalancerHttpRedirector } from "./loadBalancerHttpRedirector";
 import { requestLogMiddleware } from "./requestLogMiddleware";
 import { immutableRequest } from "../immutableRequest/immutableRequest";
+import { log } from "../../utils/debugging/log";
 
 export const middlewares = [
     requestLogMiddleware,
-    ...staticContentMiddlewares, 
     commitShaHeaderMiddleware, 
+    ...staticContentMiddlewares, 
     (req,res,next) => loadBalancerHttpRedirector(immutableRequest(req), res, next),
 ];

@@ -8,6 +8,8 @@ export interface IUrl {
     setPath(newPath: string): IUrl
     toString(): string
     toHttps: IUrl
+    port:number
     setProtocol(newProtocol:Protocol): IUrl
     setHost(newHost:string): IUrl
+    setPort(newPort:number): IUrl
 }
