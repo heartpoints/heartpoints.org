@@ -1,13 +1,10 @@
 import { Middleware } from "./middleware";
-import { maybe } from "../../utils/maybe/maybe";
-import { AllMaybes } from "./AllMaybes";
+import { allMaybes } from "../../utils/maybe/AllMaybes";
 
 export const loadBalancerHttpRedirector:Middleware = 
     (req, res, next) => 
-    req.loadBalancer.map(
-        lb => lb.originalProtocol.if(p => p == "http").map(
-            _ => lb.originalHost.map(
-                host => res.redirect(req.url.toHttps.setHost(host).asString)
-            )
-        )
-    ).valueOr(next)
+    req.loadBalancer
+        .flatMap(allMaybes)
+        .if(({originalProtocol}) => originalProtocol == "http")
+        .map(l => res.redirect(req.url.toHttps.setHost(l.originalHost).asString))
+        .valueOr(next)
