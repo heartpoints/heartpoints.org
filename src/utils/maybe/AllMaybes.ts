@@ -12,5 +12,5 @@ export const allMaybes:AllMaybes =
         ? Some(typesafeEntries(maybes).reduce(
             (obj, [key, value]) => ({...obj, [key]: value.value}),
             {}
-        ) as any as T)
+        ) as T)
         : None

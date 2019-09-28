@@ -20,7 +20,7 @@ describe("web server", () => {
             })
         })
     })
-    describe.only("load balancer forwarding rules", () => {
+    describe("load balancer forwarding rules", () => {
         whenValues({url: "http://localhost:5001/some/url?here=myes"}, ({url}) => {
             it("redirects to https://www.heartpoints.org/some/url?here=myes", async () => { 
                 const headers = {
