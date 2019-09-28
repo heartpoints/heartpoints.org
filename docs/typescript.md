@@ -20,7 +20,7 @@ mapped types, types involving key ranges, and more, built into the language as p
 
 ## Very Advanced Types
 
-[Typescript Toolbelt](https://www.typescriptlang.org/docs/handbook/advanced-types.html) is one of many
+[Typescript Toolbelt](https://github.com/pirix-gh/ts-toolbelt) is one of many
 typescript libraries that offer user defined type primitives for combining types, generating new types
 based off of known type shapes and function signatures, and generally allowing for more advanced type
 concepts without needing to write the boilerplate ones self.
