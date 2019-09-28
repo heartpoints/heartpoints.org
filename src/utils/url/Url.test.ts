@@ -1,5 +1,5 @@
 import { Url } from "./Url"
-import { UnitTestDefinition } from "../../testing/unitTest";
+import { UnitTestDefinition } from "../../testing/UnitTestDefinition";
 
  // todo: support { Url } to get DRY naming
 export const Test:UnitTestDefinition = ({forFunction}) => 
