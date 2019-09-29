@@ -1,5 +1,7 @@
 import { commitShaHeaderMiddleware } from "./commitShaHeaderMiddleware";
-import { loadBalancerHttpRedirector } from "./loadBalancerHttpRedirector";
+// import { loadBalancerHttpRedirector } from "./loadBalancerHttpRedirector";
 import { requestLogMiddleware } from "./requestLogMiddleware";
 
-export const immutableMiddlewares = [requestLogMiddleware, commitShaHeaderMiddleware, loadBalancerHttpRedirector];
+//todo: fix loadBalancerHttpRedirector and re-add
+// export const immutableMiddlewares = [requestLogMiddleware, commitShaHeaderMiddleware, loadBalancerHttpRedirector];
+export const immutableMiddlewares = [requestLogMiddleware, commitShaHeaderMiddleware];
