@@ -2,7 +2,7 @@ import { Protocol } from "./Protocol";
 
 export interface IUrl {
     path: string
-    host: string
+    fullyQualifiedDomainName: string
     protocol: Protocol
     asString: string
     setPath(newPath: string): IUrl

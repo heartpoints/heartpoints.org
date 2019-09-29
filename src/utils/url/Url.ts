@@ -5,7 +5,7 @@ import { defaultPort } from "./defaultPort";
 
 export const Url = (nativeURL:URL):IUrl => ({
     get path() { return nativeURL.pathname },
-    get host() { return nativeURL.host },
+    get fullyQualifiedDomainName() { return nativeURL.host },
     get protocol() { return nativeURL.protocol.replace(":","") as Protocol },
     get asString() { return nativeURL.toString() },
     get toHttps() { return this.setProtocol("https") },
