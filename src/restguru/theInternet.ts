@@ -12,7 +12,7 @@ import { Dictionary } from "lodash";
 import { getCompleteProjection } from "./getCompleteProjection";
 import { HttpRequestArgs } from "./HttpRequestArgs";
 import { RGSONValue } from "./rgson";
-import { JSONValue } from "./JSONValue";
+import { JSONValue } from "../utils/json/JSONValue";
 
 export const theInternet = ({url, contentType}:HttpRequestArgs):IMaybe<RGSONValue> | IMaybe<JSONValue> =>
     firstLegitValue(

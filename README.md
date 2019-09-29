@@ -9,12 +9,14 @@ Welcome to the Heartpoints.org website repository!
 - [Using Github](docs/usingGithub.md) - Issues, Pull Requests, and Source Control
 - [Heartpoints CLI](docs/cli.md) - Overview for the `./hp` command line interface for running dev tasks (ie: 
   compiling/testing)
+- [Typescript](docs/typescript.md) - Our main language of choice for both front and back end
 - [Running Local heartpoints.org REST API](docs/serverDev.md) - Run Local Version of the API server
 - [Running Local heartpoints.org Website](docs/clientDev.md) - Run Local Version of heartpoints.org
 - [Code Coverage](docs/codeCoverage.md) - Measuring Code Coverage during Tests and Viewing Coverage (locally and on
   github.com PRs)
 - [Production Website](docs/production.md) - Find, view, administrate the live version of http://www.heartpoints.org
 - [Heartpoints Domain](docs/domain.md) - Domain registrar and DNS management info for the heartpoints.org domain
+- [TLS / Security Certificates / HTTPS](docs/tls.md) - How the site runs on HTTPS vs HTTP
 - [Material UI](docs/materialUI.md) - Our Design system - for look and feel and design
 - [SOLID Principles](docs/solidPrinciplesInPractice.md) - guidance on software design
 - [Common Errors](docs/commonErrors.md) - a list of commonly found errors and advice to troubleshoot / fix them

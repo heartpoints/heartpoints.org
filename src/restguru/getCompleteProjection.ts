@@ -1,5 +1,5 @@
 import { RGSONValue, IsRJSONArray, IsRJSONDictionary } from "./rgson";
-import { JSONValue } from "./JSONValue";
+import { JSONValue } from "../utils/json/JSONValue";
 import { Switch } from "../utils/switch/Switch";
 import { mapArrayToCompleteProjection } from "./mapArrayToCompleteProjection";
 import { mapDictionaryToCompleteProjection } from "./mapDictionaryToCompleteProjection";

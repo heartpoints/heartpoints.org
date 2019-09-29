@@ -1,7 +1,7 @@
 import { commitSha } from "../config/commitSha"
-import { ExpressMiddleware } from "./ExpressMiddleware";
+import { Middleware } from "./middleware";
 
-export const commitShaHeaderMiddleware:ExpressMiddleware = (request, response, next) => {
+export const commitShaHeaderMiddleware:Middleware = (request, response, next) => {
     response.set({ commitSha })
     next()
 }

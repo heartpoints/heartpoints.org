@@ -1,5 +1,5 @@
 import { ListOfLiterals } from "./ListOfLiterals";
-import { theExpression } from "../../testing/expect";
+import { theExpression } from "../../testing/theExpression";
 
 describe("List", () => {
     const plus = (a,b) => a + b
