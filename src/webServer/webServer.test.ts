@@ -20,7 +20,7 @@ describe("web server", () => {
             })
         })
     })
-    describe.only("load balancer forwarding rules", () => {
+    describe("load balancer forwarding rules", () => {
         const forHttpWithoutWWW = {
             [loadBalancerHostHeaderName]: "heartpoints.org",
             [loadBalancerProtocolHeaderName]: "http",
