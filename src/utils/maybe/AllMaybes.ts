@@ -8,7 +8,7 @@ export type AllMaybes = <T>(maybes: Maybes<T>) => IMaybe<T>;
 
 export const allMaybes:AllMaybes = 
     <T> (maybes: Maybes<T>) =>
-    typesafeEntries(maybes).every(([key, value]) => value.hasValue) 
+    typesafeEntries(maybes).every(([key, value]) => value.hasValue()) 
         ? Some(typesafeEntries(maybes).reduce(
             (obj, [key, value]) => ({...obj, [key]: value.value}),
             {}
