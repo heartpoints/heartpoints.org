@@ -99,3 +99,7 @@ retrigger docker builds, causing in turn updated deployments.
 
 Most of this is kubernetes resources, docker images, that must be deployable in minikube, and therefore must
 use some docker registry.
+
+Right now I am testing `hp hp_minikubeBuildDeployTest` to see what it does. It seems like this could do all
+the work to bring up the minikube vm and link kubectl and docker CLI to it; then once that is complete, we 
+would run the pulumi app so that it updates kubernetes
