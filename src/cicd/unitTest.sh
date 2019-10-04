@@ -15,7 +15,7 @@ hp_unitTestWatch() { local args="$@"
 }
 
 hp_cover_help() { echo "run unit tests over instrumented code, producing coverage reports"; }
-hp_cover() {
+hp_cover() { export CODECOV_TOKEN;
     if hp_isMac; then
         echo "On Mac, so not reporting coverage to coverage.io; will open local browser instead..."
         hp_yarn_global coverHTML
@@ -24,7 +24,7 @@ hp_cover() {
         echo "Not on Mac, assuming CICD environment, writing coverage to codecov.io"
         hp_yarn_global cover
 
-        if string_not_empty "${CODECOV_TOKEN}"; then
+        if string_not_empty "${CODECOV_TOKEN:-}"; then
             bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -Z
         else
             warn "Not on Mac and no CODECOV_TOKEN, not reporting coverage..."
