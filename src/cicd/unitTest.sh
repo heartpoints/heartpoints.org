@@ -21,11 +21,9 @@ hp_cover() {
         hp_yarn_global coverHTML
         open "./coverage/index.html"
     else
-        #TODO: Hit this when running minikube tests
         echo "Not on Mac, assuming CICD environment, writing coverage to codecov.io"
         hp_yarn_global cover
 
-        #TODO: There is no CODECOV_TOKEN for minikube run, need to not submit to codecov!
         if string_not_empty "${CODECOV_TOKEN}"; then
             bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -Z
         else
