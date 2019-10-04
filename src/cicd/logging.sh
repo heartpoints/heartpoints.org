@@ -5,3 +5,7 @@ hp_log_path() { local remainingPath=$1
     touch "${logFile}"
     echo "${logFile}"
 }
+
+hp_runCommandWithLogCapture() { local logFileName="$1"; local command="${@:2}"
+    $command > "$(hp_log_path ${logFileName})" 2>&1
+}

@@ -7,14 +7,19 @@ source "src/cicd/string.sh"
 source "src/cicd/mac.sh"
 
 hp_docker() { local args="$@"
-    local error="ERROR: CICD requires docker CLI installed, and docker daemon running."
     if command_does_not_exist "docker"; then
-        errorAndExit "ERROR: CICD requires docker CLI installed"
+        errorAndExit "ERROR: Docker CLI not found" \
+            " To address this, you may either:" \
+            " - attempt again in a different environment, or" \
+            " - install docker (see: https://docs.docker.com/v17.12/install/) and try again"
     else
-        if stringContains "Is the docker daemon running" "$(docker info 2>&1)"; then
-            errorAndExit "Docker CLI available, but daemon is not. On MAC: CMD+SPACE, find docker, click. Then retry"
+        local dockerInfo="$(combineOutputStreams docker info)"
+        if stringContains "Is the docker daemon running" "${dockerInfo}"; then
+            errorAndExit "Docker CLI available, but daemon is not." \
+                " On MAC: CMD+SPACE, find docker, click. Then retry." \
+                " Raw Docker Info: ${dockerInfo}"
         else
-            docker "${@}"
+            docker "$@"
         fi
     fi
 }

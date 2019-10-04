@@ -17,7 +17,7 @@ hp_k8sResourceYaml() { local image=$1
 
 hp_pointToAndRunMinikubeDockerDaemon() {
     hp_minikube_start
-    eval $(minikube docker-env)
+    eval $(hp_minikube docker-env)
 }
 
 hp_minikubeDeployTest_help() { echo "<taggedImageName> - deploy image to mk and test it (defaults to image for head sha)"; }
@@ -74,9 +74,9 @@ hp_minikube_update() {
     fi
 }
 
-hp_minikube() { local args=$@
+hp_minikube() { local args="$@:-"
     virtualbox_install_globally
-    hp_brew_cask_run minikube "${@}"
+    hp_brew_cask_run minikube "${@:-}"
 }
 
 hp_minikubeIngressNotEnabled() {

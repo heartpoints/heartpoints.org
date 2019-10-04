@@ -2,6 +2,7 @@
 
 source "src/cicd/string.sh"
 source "src/cicd/process.sh"
+source "src/cicd/reflect.sh"
 
 git_safeBranchNameFromIssueDescription() { local issueDescription=$1
     local lowercased="$(string_toLower "${issueDescription}")"
@@ -49,12 +50,15 @@ hp_ensureCommitIsAppropriate() {
     fi
 }
 
-hp_git() { local args="${@}"
-    git "${@}"
-    # brew_package_run git "${@}"
+hp_git() { local args="${@:-}"
+    if command_does_not_exist git; then
+        hp_docker run -ti --rm -v ${HOME}:/root -v $(pwd):/git alpine/git "${@:-}"
+    else
+        git "${@:-}"
+    fi
 }
 
-hp_g() { local message=$@ 
+hp_g() { local message="$@"
     hp_git add -A
     hp_git commit -m "${message}"
 }

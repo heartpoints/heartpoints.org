@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-errorAndExit() { local message=$1
+errorAndExit() { local message=$@
     echo $message
     exit 1
 }
