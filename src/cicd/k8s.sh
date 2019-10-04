@@ -102,9 +102,13 @@ hp_minikubeDashboard() {
     hp_minikube dashboard 
 }
 
+minikube_vm_memory_mb() {
+    echo "4096"
+}
+
 hp_minikube_start() {
     if ! hp_minikube_isRunning; then
-        hp_minikube start
+        hp_minikube start --memory "$(minikube_vm_memory_mb)"
     fi
     hp_minikubeEnableIngress
 }

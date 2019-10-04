@@ -1,0 +1,7 @@
+.circleci
+.nyc_output
+.vscode
+coverage
+devEnvironment
+dist
+node_modules
