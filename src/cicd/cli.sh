@@ -24,7 +24,7 @@ heartpoints() { local command=${1-""}; local remainingArgs="${@:2}"
 
 hp_help() {
     echo ""
-    echo "Usage: heartpoints.sh [command]"
+    echo "Usage: hp [command]"
     echo ""
     echo "Commands:"
     echo ""

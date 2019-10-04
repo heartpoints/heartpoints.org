@@ -51,7 +51,7 @@ may need to be performed in the event of a recovery, we document them here.
        At the time of this writing, the generated account email is: 
        cicd-353@heartpoints-org.iam.gserviceaccount.com. 
        *IMPORTANT* - if you recreate this service account, you must update `cicdServiceAccountEmail()` within
-       [code pipeline](../heartpoints.sh). 
+       [code pipeline](../hp). 
     3. Associate Service Account with these Roles: (GCP -> IAM & Admin -> IAM)
         * Kubernetes Engine Admin
         * Service Account User

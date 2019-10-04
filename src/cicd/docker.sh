@@ -35,7 +35,7 @@ hp_dockerTestImage() { local taggedImageName=$1
     echo "CI environment getting passed to test container: ${ci_env}"
     echo "taggedImageName to run: ${taggedImageName}"
     #TODO: This got called during my minikube run - we do not want to cover necessarily (although, why didn't it work)
-    hp_docker run ${ci_env} -e CODECOV_TOKEN  --rm "${taggedImageName}" bash ./heartpoints.sh cover
+    hp_docker run ${ci_env} -e CODECOV_TOKEN  --rm "${taggedImageName}" bash ./hp cover
 }
 
 hp_imageRepoName() {

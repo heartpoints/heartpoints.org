@@ -9,10 +9,10 @@ COPY src src
 COPY tsconfig.json webpack.config.js ./
 RUN yarn webpack --verbose
 
-COPY heartpoints.sh ./
+COPY hp ./
 COPY test test
 COPY .nycrc ./
 
 ARG commitSha
 ENV commitSha=$commitSha
-CMD ./heartpoints.sh runServer
+CMD ./hp runServer

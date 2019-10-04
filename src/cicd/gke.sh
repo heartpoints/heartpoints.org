@@ -6,7 +6,7 @@ source "src/cicd/docker.sh"
 
 hp_createGKECluster_help() { echo "creates a GKE cluster. See README for prerequisites"; }
 hp_createGKECluster() {
-    withinCloudSDK ./heartpoints.sh createGKEClusterFromWithinCloudSDK
+    withinCloudSDK ./hp createGKEClusterFromWithinCloudSDK
 }
 
 withinCloudSDK() { local commands=$@
@@ -14,7 +14,7 @@ withinCloudSDK() { local commands=$@
 }
 
 hp_gcloud_kubectl() { local args=$@
-    withinCloudSDK ./heartpoints.sh kubectlWithinCloudSDK "$@"
+    withinCloudSDK ./hp kubectlWithinCloudSDK "$@"
 }
 
 createGKEClusterFromWithinCloudSDK() {
