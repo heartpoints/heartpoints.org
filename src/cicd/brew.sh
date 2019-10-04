@@ -18,7 +18,7 @@ brew_install() { local packageName=$1
 brew_package_run() { local packageName=$1; local args="${@:2}"
     local brewPackagePath="$(brew_package_path ${packageName})"
     if command_does_not_exist "${brewPackagePath}"; then
-        hp_runCommandWithLogCapture "brewPackageInstall_${packageName}" hp_brew install "${packageName}"
+        hp_runCommandWithLogCapture "brewPackageInstall_${packageName}.log" hp_brew install "${packageName}"
     fi
     "${brewPackagePath}" "${@:2}"
 }

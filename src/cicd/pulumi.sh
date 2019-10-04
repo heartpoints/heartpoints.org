@@ -8,12 +8,12 @@ hp_credentials_repo_clone_url() {
 }
 
 remove_credentials_folder() {
-    hp_runCommandWithLogCapture removeCredentialsFolder rm -rdf credentials
+    hp_runCommandWithLogCapture removeCredentialsFolder.log rm -rdf credentials
 }
 
 hp_credential() { local credentialName=$1
     remove_credentials_folder
-    hp_runCommandWithLogCapture gitCloneCredentialsRepo hp_git clone "$(hp_credentials_repo_clone_url)"
+    hp_runCommandWithLogCapture gitCloneCredentialsRepo.log hp_git clone "$(hp_credentials_repo_clone_url)"
     cat "credentials/${credentialName}"
     remove_credentials_folder
 }
