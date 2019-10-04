@@ -26,7 +26,11 @@ hp_cover() {
         hp_yarn_global cover
 
         #TODO: There is no CODECOV_TOKEN for minikube run, need to not submit to codecov!
-        bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -Z
+        if string_not_empty "${CODECOV_TOKEN}"; then
+            bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -Z
+        else
+            warn "Not on Mac and no CODECOV_TOKEN, not reporting coverage..."
+        fi
     fi
 }
 
