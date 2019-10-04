@@ -44,9 +44,9 @@ gitHeadIsDirty() {
     ! hp_git diff-index --quiet HEAD > /dev/null
 }
 
-hp_ensureCommitIsAppropriate() {
-    if gitHeadIsDirty; then
-        errorAndExit "error: uncommitted changes!"
+hp_ensureCommitIsAppropriate() { export allowDockerBuildForUncommittedChanges
+    if gitHeadIsDirty && strings_are_equal "${allowDockerBuildForUncommittedChanges:-false}" false; then
+        errorAndExit "error: uncommitted changes! to override, set env allowDockerBuildForUncommittedChanges=true"
     fi
 }
 
