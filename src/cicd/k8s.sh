@@ -23,19 +23,13 @@ hp_pointToAndRunMinikubeDockerDaemon() {
 hp_minikubeDeployTest_help() { echo "<taggedImageName> - deploy image to mk and test it (defaults to image for head sha)"; }
 hp_minikubeDeployTest() { local taggedImageName=$1
     requiredParameter "taggedImageName" "${taggedImageName}" 
-    
-    # TODO: Decouple from YAML / GCP-specific stuff because k8s deploy fails with following:
-    # unable to recognize "STDIN": no matches for kind "Deployment" in version "apps/v1beta1"
-    # unable to recognize "STDIN": no matches for kind "ManagedCertificate" in version "networking.gke.io/v1beta1"
-    # unable to recognize "STDIN": no matches for kind "ManagedCertificate" in version "networking.gke.io/v1beta1"
-
     hp_deployToKubernetes "${taggedImageName}"
-    hp_testUntilSuccess 120 15 hp_minikubeRunTests
+    hp_testUntilSuccess 120 1 hp_minikubeRunTests
 }
 
 hp_minikubeBuildDeployTest_help() { echo "minikubeBuild, then minikubeDeployTest"; }
 hp_minikubeBuildDeployTest() {
-    local shaToBuild="$(git_currentSha)"
+    local shaToBuild="$(git_currentShaOrTempShaIfDirty)"
     local taggedImageName="$(hp_minikubeTaggedImageName ${shaToBuild})"
     hp_minikubeBuild "${taggedImageName}" "${shaToBuild}"
     hp_minikubeDeployTest "${taggedImageName}"

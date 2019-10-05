@@ -42,21 +42,19 @@ hp_onTestComplete() { local failureOrSuccess=$1
 }
 
 hp_test() { local baseUrl=$1
-    #TODO: If curl fails, output is captured but this script continues, yielding false positive
-
     echo "Testing..."
     echo "Test homepage html file is 200..."
-    echo "$(curl -L --insecure "${baseUrl}" --fail -o /dev/null)"
+    curl -L --insecure "${baseUrl}" --fail -o /dev/null
     echo "passed"
     echo "" 
     echo "Test bundle.js file is 200..." 
-    echo "$(curl -L --insecure "${baseUrl}/bundle.js" --fail -o /dev/null)"
+    curl -L --insecure "${baseUrl}/bundle.js" --fail -o /dev/null
     echo "passed"
     echo "" 
-    echo "Test commitSha presence in header matches current sha ($(git_currentSha)):"
+    echo "Test commitSha presence in header matches current sha ($(git_currentShaOrTempShaIfDirty)):"
     local headerOutput="$(curl -L --fail --insecure -I "${baseUrl}?preventCache=$(date +%s)")"
     echo "$headerOutput"
-    if echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"; then
+    if echo "$headerOutput" | grep -i "commitSha: $(git_currentShaOrTempShaIfDirty)"; then
         hp_onTestComplete "passed"
     else
         hp_onTestComplete "failed"

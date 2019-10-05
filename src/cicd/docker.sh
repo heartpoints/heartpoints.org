@@ -42,7 +42,7 @@ hp_imageRepoName() {
 }
 
 hp_dockerBuildTagAndTest() {
-    local shaToBuild="$(git_currentSha)"
+    local shaToBuild="$(git_currentShaOrTempShaIfDirty)"
     local taggedImageName="$(hp_taggedImageName $(hp_imageRepoName) ${shaToBuild})"
     hp_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
     hp_dockerTestImage "${taggedImageName}"

@@ -31,7 +31,7 @@ productionBuildDeployTest() {
     hp_dockerTestImage "${taggedImageName}"
     hp_docker push "${taggedImageName}"
     hp_deployToKubernetes "${taggedImageName}"
-    hp_testUntilSuccess 120 15 hp_test "http://35.244.131.133/" # This refers to the static loadbalancer IP in gcloud
+    hp_testUntilSuccess 120 15 hp_test "http://www.heartpoints.org/"
 }
 
 hp_manualDeploy_help() { echo "interactive interview to deploy to production"; }
