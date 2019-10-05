@@ -38,6 +38,10 @@ local kubernetes cluster, and run a post-deployment test by running:
 
     hp minikubeBuildDeployTest
 
+To view the site in k8s after the deployment indicates success, run:
+
+    hp minikubeOpenWebsite
+
 # Deploying to K8s dev-time / pull-request-time cluster in GKE
 
 Ideally we can create independent kubernetes clusters at any time in order to deploy to them. We can also

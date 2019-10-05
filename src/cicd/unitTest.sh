@@ -21,12 +21,14 @@ hp_cover() { export CODECOV_TOKEN;
         hp_yarn_global coverHTML
         open "./coverage/index.html"
     else
-        hp_yarn_global cover
+        echo "Not on Mac, checking for presence of coverage token..."
         if string_not_empty "${CODECOV_TOKEN:-}"; then
-            echo "Not on Mac, assuming CICD environment, writing coverage to codecov.io"
+            echo "Coverage token found. Running tests with coverage and submitting to codecov.io afterward..."
+            hp_yarn_global cover
             bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -Z
         else
-            warn "Not on Mac and no CODECOV_TOKEN, not reporting coverage..."
+            warn "Not on Mac and no CODECOV_TOKEN, running tests without code coverage..."
+            hp_yarn_global test
         fi
     fi
 }
