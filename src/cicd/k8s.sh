@@ -51,8 +51,7 @@ hp_minikubeBuild_help() { echo "<taggedImageName> using minikube's docker daemon
 hp_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     requiredParameter "taggedImageName" "${taggedImageName}"
     requiredParameter "shaToReportInHttpHeaders" "${shaToReportInHttpHeaders}"
-    # TODO: Not pointing to the minikube docker daemon because it takes to long to upload context and runs OOM on NYC
-    # hp_pointToAndRunMinikubeDockerDaemon
+    hp_pointToAndRunMinikubeDockerDaemon
     hp_minikube_start
     hp_buildAndTagImage "${taggedImageName}" "${shaToReportInHttpHeaders}"
     hp_dockerTestImage "${taggedImageName}"
@@ -103,7 +102,7 @@ hp_minikubeDashboard() {
 }
 
 minikube_vm_memory_mb() {
-    echo "4096"
+    echo "8192"
 }
 
 hp_minikube_start() {
