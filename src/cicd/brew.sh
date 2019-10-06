@@ -38,6 +38,11 @@ hp_brew_cask_install() { local caskName=$1; local options="${@:2}"
     fi
 }
 
+hp_brew_cask_run_unmatching_executable() { local caskName=$1; local executableName=$2; local args="${@:3}"
+    hp_brew_cask_install "${caskName}"
+    "$(homebrew_bin_path "${executableName}")" "${@:3}"
+}
+
 hp_brew_cask_run() { local caskName=$1; local args="${@:2}"
     hp_brew_cask_install "${caskName}"
     "$(homebrew_bin_path "${caskName}")" "${@:2}"

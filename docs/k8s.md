@@ -26,7 +26,7 @@ secret management, configuration management, canary deployment, autoscaling, etc
 
 To run a local kubernetes cluster on your local computer, try the following command:
 
-    hp minikube start
+    hp minikube_start
 
 From there, if it comes up successfully, you should be able to glance at the minikube dashboard to see its
 status by running:

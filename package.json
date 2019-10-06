@@ -23,6 +23,7 @@
   "dependencies": {
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
+    "@pulumi/pulumi": "^1.2.0",
     "@types/chai": "^4.1.7",
     "@types/history": "^4.7.2",
     "@types/lodash": "^4.14.117",

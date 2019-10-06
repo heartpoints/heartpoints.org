@@ -19,7 +19,7 @@ hp_gcloud_kubectl() { local args=$@
 
 createGKEClusterFromWithinCloudSDK() {
     gcloud_cicdAccountLogin
-    gcloud_cli beta container --project "heartpoints-org" \
+    hp_gcloud beta container --project "heartpoints-dev" \
         clusters create "heartpoints-org" \
         --zone "us-central1-a" \
         --username "admin" \
@@ -46,6 +46,15 @@ kubectlWithinCloudSDK() { local args="$@"
     kubectl "$@"
 }
 
+gcloud_cicd_credential() {
+    hp_credential "gcpCicdServiceAccountCredentialsJson.json"
+}
+
+gcloud_cicdAccountLoginViaCredsRepo() {
+    export gcpCicdServiceAccountCredentialsJson="$(gcloud_cicd_credential)"
+    gcloud_cicdAccountLogin
+}
+
 gcloud_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson
     if string_is_empty "${gcpCicdServiceAccountCredentialsJson}"; then
         echo "Unable to log into service account - gcpCicdServiceAccountCredentialsJson is not set"
@@ -56,20 +65,20 @@ gcloud_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson
     else
         trap "rm gcpCicdServiceAccountCredentialsJson.json" EXIT
         echo "$gcpCicdServiceAccountCredentialsJson" > gcpCicdServiceAccountCredentialsJson.json
-        gcloud_cli auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=gcpCicdServiceAccountCredentialsJson.json
+        hp_gcloud auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=gcpCicdServiceAccountCredentialsJson.json
         gcloud_configure
     fi
 }
 
 gcloud_manualLogin() {
-    gcloud_cli auth login
+    hp_gcloud auth login
     gcloud_configure
 }
 
 gcloud_configure() {
-    gcloud_cli config set project heartpoints-org
-    gcloud_cli auth configure-docker
-    gcloud_cli container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
+    hp_gcloud config set project heartpoints-org
+    hp_gcloud auth configure-docker
+    hp_gcloud container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
 }
 
 cicdServiceAccountEmail() {
