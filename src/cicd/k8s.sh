@@ -49,6 +49,7 @@ hp_minikube_pulumiBuildDeployTest() {
     local shaToBuild="$(git_currentShaOrTempShaIfDirty)"
     local taggedImageName="$(hp_minikubeTaggedImageName ${shaToBuild})"
     hp_minikubeBuild "${taggedImageName}" "${shaToBuild}"
+    hp_pulumi up --stack heartpoints-dev
 }
 
 hp_minikubeTaggedImageName() { local shaToBuild=$1
