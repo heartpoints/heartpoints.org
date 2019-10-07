@@ -1,8 +1,42 @@
 import * as k8s from "@pulumi/kubernetes";
+import * as docker from "@pulumi/docker";
 
 const appName = "heartpoints-org";
+
+const imageName = process.env["taggedImageName"]
+if (imageName === undefined) {
+    throw new Error("Env var taggedImageName must be defined")
+}
+
+const commitSha = process.env["shaToBuild"]
+if (commitSha === undefined) {
+    throw new Error("Env var shaToBuild must be defined")
+}
+
+const registryHostAndPort = process.env["registryHostAndPort"]
+if (registryHostAndPort === undefined) {
+    throw new Error("Env var registryHostAndPort must be defined")
+}
+
+//TODO: Error: [repositoryUrl] should not contain a tag: 5000/heartpoints.org
+//see: https://github.com/pulumi/pulumi-docker/pull/107/files
+//temp workaround: use an internet-based docker repo! booooo
+const dockerImage = new docker.Image(appName, {
+    build: {
+        context: "../",
+        args: { 
+            commitSha
+        }
+    },
+    imageName,
+    registry: {
+        server: registryHostAndPort,
+        username: "",
+        password: ""
+    }
+})
+
 const appLabels = { app: appName };
-const image = "minikube/heartpoints.org:619dcadc3ca12cfa28d2b96e9fd375a072e1624f"
 const heartpointsDeployment = new k8s.apps.v1.Deployment(appName, {
     spec: {
         selector: { matchLabels: appLabels },
@@ -13,7 +47,7 @@ const heartpointsDeployment = new k8s.apps.v1.Deployment(appName, {
                 containers: [
                     {
                         name: appName,
-                        image,
+                        image: dockerImage.id,
                         imagePullPolicy: "IfNotPresent",
                         resources: {
                             requests: { cpu: "25m" },
@@ -57,7 +91,7 @@ const heartpointsService = new k8s.core.v1.Service(`${appName}-nodeport`, {
             port: servicePort,
             targetPort: 5001
         }],
-        selector: heartpointsDeployment.spec.selector.matchLabels
+        selector: appLabels
     }
 })
 

@@ -239,7 +239,15 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@pulumi/pulumi@^1.2.0":
+"@pulumi/docker@^0.17.4":
+  version "0.17.4"
+  resolved "https://registry.yarnpkg.com/@pulumi/docker/-/docker-0.17.4.tgz#5891eeaefe7711f04c9e29c9aaf62c8b264c3de7"
+  integrity sha512-uGnt9VEGXxCFTpIkCrULP2XTbSEJMH3vQrOq9Q+ATTnIxswlG0z/LkpuktEB6YmvnQqEUtTPPEM+p/RmLkqLrA==
+  dependencies:
+    "@pulumi/pulumi" "^1.0.0"
+    semver "^5.4.0"
+
+"@pulumi/pulumi@^1.0.0", "@pulumi/pulumi@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-1.2.0.tgz#fb7d523798eaa1cd7da5e287d4389be9008666ae"
   integrity sha512-KowEnuaCzDaze5KNTAc5P1AjZNQdhagZZpz3nGV/Nz0u9cRVcTjlPmGBPMEUkc0AnRyi3kRKCdsqJGHguesVKQ==
@@ -5704,7 +5712,7 @@ selfsigned@^1.9.1:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
 
-semver@^5.4.1:
+semver@^5.4.0, semver@^5.4.1:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==

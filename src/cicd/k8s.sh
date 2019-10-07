@@ -45,17 +45,21 @@ hp_minikubeBuildDeployTest() {
     hp_minikubeDeployTest "${taggedImageName}"
 }
 
+minikubeRegistryHostAndPort() {
+    echo "localhost:5000"
+}
+
 hp_minikube_pulumiBuildDeployTest() {
-    local shaToBuild="$(git_currentShaOrTempShaIfDirty)"
-    local taggedImageName="$(hp_minikubeTaggedImageName ${shaToBuild})"
-    hp_minikubeBuild "${taggedImageName}" "${shaToBuild}"
+    export shaToBuild="$(git_currentShaOrTempShaIfDirty)"
+    export registryHostAndPort="$(minikubeRegistryHostAndPort)"
+    export taggedImageName="$(hp_minikubeTaggedImageName ${shaToBuild})"
+    hp_pointToAndRunMinikubeDockerDaemon
     hp_pulumi up --stack heartpoints-dev
 }
 
 hp_minikubeTaggedImageName() { local shaToBuild=$1
     requiredParameter "shaToBuild" "${shaToBuild}"
-    local imageRepository="minikube"
-    echo "$(hp_taggedImageName ${imageRepository} ${shaToBuild})"
+    echo "$(hp_taggedImageName $(minikubeRegistryHostAndPort) ${shaToBuild})"
 }
 
 hp_minikubeBuild_help() { echo "<taggedImageName> using minikube's docker daemon, build image and tag with minikube metadata"; }
@@ -97,14 +101,22 @@ hp_minikube() { local args="$@:-"
     hp_brew_cask_run minikube "${@:-}"
 }
 
-hp_minikubeIngressNotEnabled() {
-    ! hp_minikube addons list | grep "ingress: enabled" > /dev/null
+minikube_addonNotEnabled() { local addonName=$1
+    ! hp_minikube addons list | grep "${addonName}: enabled" > /dev/null
+}
+
+hp_minikubeAddonEnable() { local addonToEnable=$1
+    if minikube_addonNotEnabled "${addonToEnable}"; then
+        hp_minikube addons enable "${addonToEnable}"
+    fi
 }
 
 hp_minikubeEnableIngress() {
-    if hp_minikubeIngressNotEnabled; then
-        hp_minikube addons enable ingress
-    fi
+    hp_minikubeAddonEnable ingress
+}
+
+hp_minikubeEnableDockerRegistry() {
+    hp_minikubeAddonEnable registry
 }
 
 hp_minikubeDashboard_help() { echo "open minikube dashboard in web browser"; }
@@ -121,6 +133,7 @@ hp_minikube_start() {
         hp_minikube start --memory "$(minikube_vm_memory_mb)"
     fi
     hp_minikubeEnableIngress
+    hp_minikubeEnableDockerRegistry
 }
 
 hp_minikube_stop() {
