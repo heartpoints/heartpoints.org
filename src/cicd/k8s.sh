@@ -17,7 +17,17 @@ hp_k8sResourceYaml() { local image=$1
 
 hp_pointToAndRunMinikubeDockerDaemon() {
     hp_minikube_start
-    eval $(hp_minikube docker-env)
+    pointToMinikubeDockerDaemon    
+}
+
+pointToMinikubeDockerDaemon() {
+    local dockerEnvCode="$(hp_minikube docker-env)"
+    eval $dockerEnvCode
+}
+
+hp_dockerMK() { local args="$@"
+    hp_pointToAndRunMinikubeDockerDaemon
+    hp_docker "$@"
 }
 
 hp_minikubeDeployTest_help() { echo "<taggedImageName> - deploy image to mk and test it (defaults to image for head sha)"; }
@@ -33,6 +43,12 @@ hp_minikubeBuildDeployTest() {
     local taggedImageName="$(hp_minikubeTaggedImageName ${shaToBuild})"
     hp_minikubeBuild "${taggedImageName}" "${shaToBuild}"
     hp_minikubeDeployTest "${taggedImageName}"
+}
+
+hp_minikube_pulumiBuildDeployTest() {
+    local shaToBuild="$(git_currentShaOrTempShaIfDirty)"
+    local taggedImageName="$(hp_minikubeTaggedImageName ${shaToBuild})"
+    hp_minikubeBuild "${taggedImageName}" "${shaToBuild}"
 }
 
 hp_minikubeTaggedImageName() { local shaToBuild=$1
@@ -113,7 +129,7 @@ hp_minikube_stop() {
 }
 
 hp_minikube_isRunning() {
-    hp_minikube status | grep "host: Running"
+    hp_minikube status | runCommandSilently grep "host: Running"
 }
 
 hp_kubectl() { local args="$@"

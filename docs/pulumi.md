@@ -103,3 +103,19 @@ use some docker registry.
 Right now I am testing `hp hp_minikubeBuildDeployTest` to see what it does. It seems like this could do all
 the work to bring up the minikube vm and link kubectl and docker CLI to it; then once that is complete, we 
 would run the pulumi app so that it updates kubernetes
+
+# Tommy and Mike Sunday Pairing Session
+
+1. Minikube version
+    1. Pulumify whats there today
+    2. Document how to debug logs
+    3. Watcher / DevMode
+        1. Docker images watch filesystem mounted from mac thru VB into containers and autoreload without
+           new docker deployment
+        2. Filewatcher causes new docker build, causes updated deployment to minikube
+2. Cases for Remote Envs (all should be accessible, perhaps with creds if sensitive, from outside)
+    1. Dev time create / destroy env and easily iterate on it from IDE on mac (but remote cluster)
+    2. Pull request validation as well as temporarily host PR system for people to click around
+    3. On master merge, run tests isolatedly; then deploy canary to production; verify thru
+       automated tests. In future, leave box out there to receive certain traffic and if no errors
+       after significant traffic, deploy to rest of service.
