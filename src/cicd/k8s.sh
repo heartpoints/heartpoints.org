@@ -45,21 +45,28 @@ hp_minikubeBuildDeployTest() {
     hp_minikubeDeployTest "${taggedImageName}"
 }
 
-minikubeRegistryHostAndPort() {
+minikubeRegistryHostAndPort() { 
+    echo "locahost:5000"
+}
+
+docerkIOHostAndPort() {
     echo "docker.io"
 }
 
 #TODO: put general pulumi / k8s stuff in respective files; put HP specific stuff (like below) in a consuming file(s)
 hp_minikube_pulumiBuildDeployTest() {
     export shaToBuild="$(git_currentShaOrTempShaIfDirty)"
-    export registryHostAndPort="$(minikubeRegistryHostAndPort)"
-    export taggedImageName="$(hp_minikubeTaggedImageName ${shaToBuild})"
+    export registryHostAndPort="$(dockerDotIOImageName)"
+    export taggedImageName="$(dockerDotIOImageName ${shaToBuild})"
     hp_pointToAndRunMinikubeDockerDaemon
     hp_pulumi up --stack heartpoints-dev
 }
 
+dockerDotIOImageName() { local shaToBuild=$1
+    echo "$(hp_taggedImageName $(docerkIOHostAndPort)/heartpointsorg ${shaToBuild})"
+}
+
 hp_minikubeTaggedImageName() { local shaToBuild=$1
-    requiredParameter "shaToBuild" "${shaToBuild}"
     echo "$(hp_taggedImageName $(minikubeRegistryHostAndPort) ${shaToBuild})"
 }
 
