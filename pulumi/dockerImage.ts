@@ -1,6 +1,7 @@
 import { appName } from "./appName";
 import { imageName } from "./imageName";
 import { commitSha } from "./commitSha";
+import { registryHostAndPort } from "./registryHostAndPort";
 import * as docker from "@pulumi/docker";
 
 //TODO: Error: [repositoryUrl] should not contain a tag: 5000/heartpoints.org
@@ -15,7 +16,7 @@ export const dockerImage = new docker.Image(appName, {
     },
     imageName: imageName(),
     registry: {
-        server: "docker.io",
+        server: registryHostAndPort(),
         username: "heartpointsorg",
         password: "inmo5428"
     }

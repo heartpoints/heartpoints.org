@@ -46,7 +46,7 @@ hp_minikubeBuildDeployTest() {
 }
 
 minikubeRegistryHostAndPort() {
-    echo "localhost:5000"
+    echo "docker.io"
 }
 
 #TODO: put general pulumi / k8s stuff in respective files; put HP specific stuff (like below) in a consuming file(s)
@@ -133,7 +133,8 @@ hp_minikube_start() {
     if ! hp_minikube_isRunning; then
         #TODO: The --mount stuff is to try to allow pods read/write access for dev env / filewatcher purposes
         #Currently, from within minikube vm cannot write to those locations, there is some permission error.
-        hp_minikube start --memory "$(minikube_vm_memory_mb)" --mount-string="$(pwd):/heartpointsWorkspace" --mount
+        # hp_minikube start --memory "$(minikube_vm_memory_mb)" --mount-string="$(pwd):/heartpointsWorkspace" --mount
+        hp_minikube start --memory "$(minikube_vm_memory_mb)"
     fi
     hp_minikubeEnableIngress
     hp_minikubeEnableDockerRegistry

@@ -10,7 +10,9 @@
         "pretty": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
-        "forceConsistentCasingInFileNames": true,
-        "rootDirs": ["../src", "/"]
-    }
+        "forceConsistentCasingInFileNames": true
+    },
+    "files": [
+        "index.ts"
+    ]
 }
