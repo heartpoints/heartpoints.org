@@ -17,8 +17,7 @@ heartpoints() { local command=${1-""}; local remainingArgs="${@:2}"
             else
                 hp_help "${command}"
                 echo ""
-                errorAndExit "Error: Command '${command}' not found"
-                echo ""
+                errorAndExit "Error: Command '${command}' not found. Try again, or run 'hp' to show all commands \n\n"
             fi
         fi
     fi
