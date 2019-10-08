@@ -56,7 +56,7 @@ docerkIOHostAndPort() {
 #TODO: put general pulumi / k8s stuff in respective files; put HP specific stuff (like below) in a consuming file(s)
 hp_minikube_pulumiBuildDeployTest() {
     export shaToBuild="$(git_currentShaOrTempShaIfDirty)"
-    export registryHostAndPort="$(dockerDotIOImageName)"
+    export registryHostAndPort="$(docerkIOHostAndPort)"
     export taggedImageName="$(dockerDotIOImageName ${shaToBuild})"
     hp_pointToAndRunMinikubeDockerDaemon
     hp_pulumi up --stack heartpoints-dev
