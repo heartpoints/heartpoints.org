@@ -18,9 +18,11 @@ Welcome to the Heartpoints.org website repository!
 - [Heartpoints Domain](docs/domain.md) - Domain registrar and DNS management info for the heartpoints.org domain
 - [TLS / Security Certificates / HTTPS](docs/tls.md) - How the site runs on HTTPS vs HTTP
 - [Material UI](docs/materialUI.md) - Our Design system - for look and feel and design
+- [Figma](https://www.figma.com/files/team/763533984756947560/Heartpoints) - Our design collaboration space
 - [SOLID Principles](docs/solidPrinciplesInPractice.md) - guidance on software design
 - [Common Errors](docs/commonErrors.md) - a list of commonly found errors and advice to troubleshoot / fix them
 - [Testing](docs/tdd.md) - Test Driven Development
+- [CSS Tricks](https://css-tricks.com) - Help with tricky CSS spacing / alignment / responsive
 - Links to Other Resources
     - [Heartpoints Google Drive](https://docs.google.com/document/d/1BZXYQGlBMvy1x8UQ5b8Bco7hyasknCCjdy6DxbKI03Q) 
       contains shared company documents, spreadsheets, presentations that are not in github
