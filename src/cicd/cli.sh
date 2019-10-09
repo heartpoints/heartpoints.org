@@ -15,18 +15,23 @@ heartpoints() { local command=${1-""}; local remainingArgs="${@:2}"
             if function_exists $command; then
                 $command "${@:2}"
             else
-                hp_help
-                errorAndExit "Command not found"
+                hp_help "${command}"
+                echo ""
+                errorAndExit "Error: Command '${command}' not found. Try again, or run 'hp' to show all commands \n\n"
             fi
         fi
     fi
 }
 
-hp_help() {
+hp_help() { local possibleCommand="${1:-}"
     echo ""
-    echo "Usage: heartpoints.sh [command]"
+    echo "Usage: hp [command]"
     echo ""
     echo "Commands:"
     echo ""
-    functionNamesAndDescriptions
+    if string_is_empty "${possibleCommand}"; then
+        functionNamesAndDescriptions
+    else
+        functionNamesAndDescriptions | grep "${possibleCommand}"
+    fi
 }

@@ -37,5 +37,5 @@ The web server can run on mac directly as a nodejs process, or within a docker c
 the docker CLI and daemon, or by minikube, the dev version of a kubernetes cluster.
 
 As of the time of this writing, there are several paths to build, deploy and test this layer, expressed within the
-heartpoints.sh file. Ideally, these utilities can be tested out of band in separate jobs to validate that they
+[hp](../hp) file. Ideally, these utilities can be tested out of band in separate jobs to validate that they
 continue to work, perhaps on a virtual mac that is able to successfully host docker and kubernetes.

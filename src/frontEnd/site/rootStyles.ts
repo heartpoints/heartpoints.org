@@ -1,4 +1,5 @@
 import { drawerWidth } from "./drawerWidth";
+import { inDevMode } from "../developers/inDevMode";
 
 export const rootStyles = theme => ({
   content: {
@@ -19,6 +20,6 @@ export const rootStyles = theme => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: drawerWidth,
+    marginLeft: inDevMode() ? drawerWidth : 0,
   },
 });

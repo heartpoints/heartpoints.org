@@ -4,9 +4,9 @@ source "src/cicd/k8s.sh"
 source "src/cicd/string.sh"
 source "src/cicd/docker.sh"
 
-hp_createGKECluster_help() { echo "creates a GKE cluster. See README for prerequisites"; }
-hp_createGKECluster() {
-    withinCloudSDK ./heartpoints.sh createGKEClusterFromWithinCloudSDK
+loginAndCreateGkeClusterViaDocker_help() { echo "creates a GKE cluster. See README for prerequisites"; }
+loginAndCreateGkeClusterViaDocker() {
+    withinCloudSDK ./hp loginAndCreateGkeCluster
 }
 
 withinCloudSDK() { local commands=$@
@@ -14,13 +14,12 @@ withinCloudSDK() { local commands=$@
 }
 
 hp_gcloud_kubectl() { local args=$@
-    withinCloudSDK ./heartpoints.sh kubectlWithinCloudSDK "$@"
+    withinCloudSDK ./hp kubectlWithinCloudSDK "$@"
 }
 
-createGKEClusterFromWithinCloudSDK() {
-    gcloud_cicdAccountLogin
-    gcloud_cli beta container --project "heartpoints-org" \
-        clusters create "heartpoints-org" \
+createGkeCluster() {
+    hp_gcloud beta container --project "heartpoints-dev" \
+        clusters create "heartpoints-dev" \
         --zone "us-central1-a" \
         --username "admin" \
         --cluster-version "1.11.5-gke.5" \
@@ -32,8 +31,8 @@ createGKEClusterFromWithinCloudSDK() {
         --num-nodes "1" \
         --enable-stackdriver-kubernetes \
         --enable-ip-alias \
-        --network "projects/heartpoints-org/global/networks/default" \
-        --subnetwork "projects/heartpoints-org/regions/us-central1/subnetworks/default" \
+        --network "projects/heartpoints-dev/global/networks/default" \
+        --subnetwork "projects/heartpoints-dev/regions/us-central1/subnetworks/default" \
         --default-max-pods-per-node "110" \
         --addons HorizontalPodAutoscaling,HttpLoadBalancing,KubernetesDashboard \
         --enable-autoupgrade \
@@ -41,13 +40,31 @@ createGKEClusterFromWithinCloudSDK() {
         --maintenance-window "11:00"
 }
 
+loginAndCreateGkeCluster() {
+    gcloud_cicdAccountLogin
+    createGkeCluster
+}
+
 kubectlWithinCloudSDK() { local args="$@"
     gcloud_cicdAccountLogin
     kubectl "$@"
 }
 
-gcloud_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson
-    if string_is_empty "${gcpCicdServiceAccountCredentialsJson}"; then
+gcloud_cicd_credential() {
+    hp_credential "gcpCicdServiceAccountCredentialsJson.json"
+}
+
+gcloud_cicdAccountLoginViaCredsRepo() {
+    export gcpCicdServiceAccountCredentialsJson="$(gcloud_cicd_credential)"
+    gcloud_cicdAccountLogin
+}
+
+gcloudProductionProjectName() {
+    echo "heartpoints-org"
+}
+
+gcloud_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson; local projectName=${1-"$(gcloudProductionProjectName)"}
+    if string_is_empty "${gcpCicdServiceAccountCredentialsJson:-}"; then
         echo "Unable to log into service account - gcpCicdServiceAccountCredentialsJson is not set"
         echo "Find the credential at https://github.com/heartpoints/credentials"
         echo "And re-run this script with the above-mentioned environment variable set to that JSON string"
@@ -56,22 +73,23 @@ gcloud_cicdAccountLogin() { export gcpCicdServiceAccountCredentialsJson
     else
         trap "rm gcpCicdServiceAccountCredentialsJson.json" EXIT
         echo "$gcpCicdServiceAccountCredentialsJson" > gcpCicdServiceAccountCredentialsJson.json
-        gcloud_cli auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=gcpCicdServiceAccountCredentialsJson.json
-        gcloud_configure
+        hp_gcloud auth activate-service-account "$(cicdServiceAccountEmail)" --key-file=gcpCicdServiceAccountCredentialsJson.json
+        gcloud_configure "${projectName}"
     fi
 }
 
-gcloud_manualLogin() {
-    gcloud_cli auth login
-    gcloud_configure
+gcloud_manualLogin() { local projectName=$1
+    hp_gcloud auth login
+    gcloud_configure "${projectName}"
 }
 
-gcloud_configure() {
-    gcloud_cli config set project heartpoints-org
-    gcloud_cli auth configure-docker
-    gcloud_cli container clusters get-credentials heartpoints-org --zone us-central1-a --project heartpoints-org
+gcloud_configure() { local projectName=$1
+    hp_gcloud config set project "${projectName}"
+    hp_gcloud auth configure-docker
+    hp_gcloud container clusters get-credentials "${projectName}" --zone us-central1-a --project "${projectName}"
 }
 
+#TODO: Looks like we would need a different service account to manage the other project
 cicdServiceAccountEmail() {
     echo "cicd-353@heartpoints-org.iam.gserviceaccount.com"
 }

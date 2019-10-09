@@ -1,7 +1,9 @@
+.circleci
 .nyc_output
+.vscode
 coverage
 credentials
 devEnvironment
 dist
 node_modules
-yarn-error.log
+pulumi

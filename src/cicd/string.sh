@@ -14,6 +14,20 @@ stringLength() { local stringInQuestion=$1
     echo ${#stringInQuestion}
 }
 
+firstNonEmptyString() { local strings="$@"
+    local head="$1"
+    if string_is_empty "$head"; then
+        local tail="${@:2}"
+        if string_is_empty "$tail"; then
+            errorAndExit "none of firstNonEmptyString args were non-empty"
+        else
+            firstNonEmptyString "${@:2}"
+        fi
+    else
+        echo "$head"
+    fi 
+}
+
 fixStringWidth() { local originalString=$1; local fixedWidth=$2
     local limitedString="$(string_firstNChars "${originalString}" $fixedWidth)"
     local limitedStringLength=$(stringLength "${limitedString}")

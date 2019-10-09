@@ -2,6 +2,7 @@
 
 source "src/cicd/string.sh"
 source "src/cicd/process.sh"
+source "src/cicd/reflect.sh"
 
 git_safeBranchNameFromIssueDescription() { local issueDescription=$1
     local lowercased="$(string_toLower "${issueDescription}")"
@@ -40,29 +41,43 @@ hp_c() {
 }
 
 gitHeadIsDirty() {
-    ! hp_git diff-index --quiet HEAD > /dev/null
+    ! runCommandSilently hp_git diff-index --quiet HEAD
 }
 
-hp_ensureCommitIsAppropriate() {
-    if gitHeadIsDirty; then
-        errorAndExit "error: uncommitted changes!"
+hp_ensureCommitIsAppropriate() { export allowDockerBuildForUncommittedChanges
+    if gitHeadIsDirty && strings_are_equal "${allowDockerBuildForUncommittedChanges:-false}" false; then
+        echo ""
+        echo "error: uncommitted changes!"
+        echo "this step depends on the current state being committed, and having a definite SHA"
+        echo "to bypass (note: will generate unstaged diff based SHA), set the below env variable and try again"
+        echo ""
+        errorAndExit "   allowDockerBuildForUncommittedChanges=true"
+        echo ""
     fi
 }
 
-hp_git() { local args="${@}"
-    git "${@}"
-    # brew_package_run git "${@}"
+hp_git() { local args="${@:-}"
+    if command_does_not_exist git; then
+        hp_docker run -ti --rm -v ${HOME}:/root -v $(pwd):/git alpine/git "${@:-}"
+    else
+        git "${@:-}"
+    fi
 }
 
-hp_g() { local message=$@ 
+hp_g() { local message="$@"
     hp_git add -A
     hp_git commit -m "${message}"
+}
+
+git_currentShaOrTempShaIfDirty() {
+    stringTernary gitHeadIsDirty "$(git_shaForDirtyDirectory)" "$(git_currentSha)"
 }
 
 git_currentSha() {
     echo "$(hp_git rev-parse HEAD)"
 }
 
-git_working_directory_is_clean() {
-    [ -z "$(hp_git status --porcelain)" ]
+git_shaForDirtyDirectory() {
+    local shaWithDash="$(echo "$(git_currentSha)$(hp_git diff head)" | shasum)"
+    string_everythingBeforeChar "${shaWithDash}" " "
 }

@@ -4,8 +4,16 @@ source "src/cicd/reflect.sh"
 source "src/cicd/string.sh"
 source "src/cicd/file.sh"
 
+nodeVersion() {
+    cat .nvmrc
+}
+
+nodeVersionNumber() {
+    string_everythingAfterChar $(nodeVersion) "v"
+}
+
 nodejs_ensureCorrectVersion() {
-    if command_does_not_exist "node" || ! strings_are_equal "$(node -v)" "$(cat .nvmrc)"; then
+    if command_does_not_exist "node" || ! strings_are_equal "$(node -v)" "$(nodeVersion)"; then
         nvm_installAndUseVersionInNvmRC
     fi
 }
@@ -13,6 +21,19 @@ nodejs_ensureCorrectVersion() {
 npm_cli() { local args=$@
     nodejs_ensureCorrectVersion   
     npm "$@"
+}
+
+hp_yarnInDocker() { local args="$@"
+    #TODO: Ensure docker daemon is running? (or do that for any hp_docker call?)
+    hp_nodeImageRun yarn "$@"
+}
+
+hp_nodeImageRun() { local commandAndArgs="$@"
+    hp_docker run -it --rm "$PWD":/usr/src/app -w /usr/src/app node:$(nodeVersionNumber) "$@"
+}
+
+hp_node() { local args="$@"
+    hp_nodeImageRun node "$@"
 }
 
 nvm_download_and_install() {

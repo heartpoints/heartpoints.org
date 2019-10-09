@@ -15,15 +15,21 @@ hp_unitTestWatch() { local args="$@"
 }
 
 hp_cover_help() { echo "run unit tests over instrumented code, producing coverage reports"; }
-hp_cover() {
+hp_cover() { export CODECOV_TOKEN;
     if hp_isMac; then
-        hp_yarn_global coverHTML
         echo "On Mac, so not reporting coverage to coverage.io; will open local browser instead..."
+        hp_yarn_global coverHTML
         open "./coverage/index.html"
     else
-        hp_yarn_global cover
-        echo "Not on Mac, assuming CICD environment, writing coverage to codecov.io"
-        bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -Z
+        echo "Not on Mac, checking for presence of coverage token..."
+        if string_not_empty "${CODECOV_TOKEN:-}"; then
+            echo "Coverage token found. Running tests with coverage and submitting to codecov.io afterward..."
+            hp_yarn_global cover
+            bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN} -Z
+        else
+            warn "Not on Mac and no CODECOV_TOKEN, running tests without code coverage..."
+            hp_yarn_global test
+        fi
     fi
 }
 
@@ -36,21 +42,19 @@ hp_onTestComplete() { local failureOrSuccess=$1
 }
 
 hp_test() { local baseUrl=$1
-    #TODO: If curl fails, output is captured but this script continues, yielding false positive
-
     echo "Testing..."
     echo "Test homepage html file is 200..."
-    echo "$(curl -L --insecure "${baseUrl}" --fail -o /dev/null)"
+    curl -L --insecure "${baseUrl}" --fail -o /dev/null
     echo "passed"
     echo "" 
     echo "Test bundle.js file is 200..." 
-    echo "$(curl -L --insecure "${baseUrl}/bundle.js" --fail -o /dev/null)"
+    curl -L --insecure "${baseUrl}/bundle.js" --fail -o /dev/null
     echo "passed"
     echo "" 
-    echo "Test commitSha presence in header matches current sha ($(git_currentSha)):"
+    echo "Test commitSha presence in header matches current sha ($(git_currentShaOrTempShaIfDirty)):"
     local headerOutput="$(curl -L --fail --insecure -I "${baseUrl}?preventCache=$(date +%s)")"
     echo "$headerOutput"
-    if echo "$headerOutput" | grep -i "commitSha: $(git_currentSha)"; then
+    if echo "$headerOutput" | grep -i "commitSha: $(git_currentShaOrTempShaIfDirty)"; then
         hp_onTestComplete "passed"
     else
         hp_onTestComplete "failed"

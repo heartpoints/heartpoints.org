@@ -9,9 +9,9 @@ gcloud_install() {
     fi
 }
 
-gcloud_cli() { local args=$@
-    gcloud_install   
-    gcloud "$@"
+hp_gcloud() { local args=$@
+    #TODO: Should we consider running docker gcloud cli?
+    hp_brew_cask_run_unmatching_executable google-cloud-sdk gcloud "$@"
 }
 
 hp_gcr() {

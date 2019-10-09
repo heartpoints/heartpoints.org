@@ -4,11 +4,19 @@ source "src/cicd/string.sh"
 source "src/cicd/process.sh"
 
 allFunctionNames() {
-    declare -F | awk '{print $NF}' | sort | uniq | grep -v "^_" 
+    declare -F | awk '{print $NF}' | uniq | grep -v "^_" | sort 
 }
 
 function_exists() { local functionName=$1
-    type -t $functionName > /dev/null 2>&1
+    runCommandSilently type -t $functionName
+}
+
+runCommandSilently() { local command="$@"
+    "$@" > /dev/null 2>&1
+}
+
+combineOutputStreams() { local command="$@"
+    "$@" 2>&1
 }
 
 functionNamesAndDescriptions() {

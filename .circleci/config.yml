@@ -7,7 +7,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: ./heartpoints.sh onPullRequest
+      - run: ./hp onPullRequest
   onMasterMerge:
     docker:
       - image: gcr.io/heartpoints-org/cicd:1.0.1
@@ -18,7 +18,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - run: ./heartpoints.sh onMasterMerge
+      - run: ./hp onMasterMerge
 workflows:
   version: 2
   pipeline:

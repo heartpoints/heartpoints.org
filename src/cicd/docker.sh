@@ -7,14 +7,19 @@ source "src/cicd/string.sh"
 source "src/cicd/mac.sh"
 
 hp_docker() { local args="$@"
-    local error="ERROR: CICD requires docker CLI installed, and docker daemon running."
     if command_does_not_exist "docker"; then
-        errorAndExit "ERROR: CICD requires docker CLI installed"
+        errorAndExit "ERROR: Docker CLI not found" \
+            " To address this, you may either:" \
+            " - attempt again in a different environment, or" \
+            " - install docker (see: https://docs.docker.com/v17.12/install/) and try again"
     else
-        if stringContains "Is the docker daemon running" "$(docker info 2>&1)"; then
-            errorAndExit "Docker CLI available, but daemon is not. On MAC: CMD+SPACE, find docker, click. Then retry"
+        local dockerInfo="$(combineOutputStreams docker info)"
+        if stringContains "Is the docker daemon running" "${dockerInfo}"; then
+            errorAndExit "Docker CLI available, but daemon is not." \
+                " On MAC: CMD+SPACE, find docker, click. Then retry." \
+                " Raw Docker Info: ${dockerInfo}"
         else
-            docker "${@}"
+            docker "$@"
         fi
     fi
 }
@@ -28,7 +33,8 @@ hp_dockerTestImage() { local taggedImageName=$1
     local coveragePath="$(createAndReturnPath "$(pwd)/coverage")"
     local ci_env=`bash <(curl -s https://codecov.io/env)`
     echo "CI environment getting passed to test container: ${ci_env}"
-    hp_docker run ${ci_env} -e CODECOV_TOKEN  --rm "${taggedImageName}" bash ./heartpoints.sh cover
+    echo "taggedImageName to run: ${taggedImageName}"
+    hp_docker run ${ci_env} -e CODECOV_TOKEN  --rm "${taggedImageName}" bash ./hp cover
 }
 
 hp_imageRepoName() {
@@ -36,7 +42,7 @@ hp_imageRepoName() {
 }
 
 hp_dockerBuildTagAndTest() {
-    local shaToBuild="$(git_currentSha)"
+    local shaToBuild="$(git_currentShaOrTempShaIfDirty)"
     local taggedImageName="$(hp_taggedImageName $(hp_imageRepoName) ${shaToBuild})"
     hp_buildAndTagImage "${taggedImageName}" "${shaToBuild}"
     hp_dockerTestImage "${taggedImageName}"

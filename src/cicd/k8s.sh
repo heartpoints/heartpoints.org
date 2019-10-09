@@ -17,28 +17,57 @@ hp_k8sResourceYaml() { local image=$1
 
 hp_pointToAndRunMinikubeDockerDaemon() {
     hp_minikube_start
-    eval $(minikube docker-env)
+    pointToMinikubeDockerDaemon    
+}
+
+pointToMinikubeDockerDaemon() {
+    local dockerEnvCode="$(hp_minikube docker-env)"
+    eval $dockerEnvCode
+}
+
+hp_dockerMK() { local args="$@"
+    hp_pointToAndRunMinikubeDockerDaemon
+    hp_docker "$@"
 }
 
 hp_minikubeDeployTest_help() { echo "<taggedImageName> - deploy image to mk and test it (defaults to image for head sha)"; }
 hp_minikubeDeployTest() { local taggedImageName=$1
     requiredParameter "taggedImageName" "${taggedImageName}" 
     hp_deployToKubernetes "${taggedImageName}"
-    hp_testUntilSuccess 120 15 hp_minikubeRunTests
+    hp_testUntilSuccess 120 1 hp_minikubeRunTests
 }
 
 hp_minikubeBuildDeployTest_help() { echo "minikubeBuild, then minikubeDeployTest"; }
 hp_minikubeBuildDeployTest() {
-    local shaToBuild="$(git_currentSha)"
+    local shaToBuild="$(git_currentShaOrTempShaIfDirty)"
     local taggedImageName="$(hp_minikubeTaggedImageName ${shaToBuild})"
     hp_minikubeBuild "${taggedImageName}" "${shaToBuild}"
     hp_minikubeDeployTest "${taggedImageName}"
 }
 
+minikubeRegistryHostAndPort() { 
+    echo "locahost:5000"
+}
+
+docerkIOHostAndPort() {
+    echo "docker.io"
+}
+
+#TODO: put general pulumi / k8s stuff in respective files; put HP specific stuff (like below) in a consuming file(s)
+hp_minikube_pulumiBuildDeployTest() {
+    export shaToBuild="$(git_currentShaOrTempShaIfDirty)"
+    export registryHostAndPort="$(docerkIOHostAndPort)"
+    export taggedImageName="$(dockerDotIOImageName ${shaToBuild})"
+    hp_pointToAndRunMinikubeDockerDaemon
+    hp_pulumi up --stack heartpoints-dev
+}
+
+dockerDotIOImageName() { local shaToBuild=$1
+    echo "$(hp_taggedImageName $(docerkIOHostAndPort)/heartpointsorg ${shaToBuild})"
+}
+
 hp_minikubeTaggedImageName() { local shaToBuild=$1
-    requiredParameter "shaToBuild" "${shaToBuild}"
-    local imageRepository="minikube"
-    echo "$(hp_taggedImageName ${imageRepository} ${shaToBuild})"
+    echo "$(hp_taggedImageName $(minikubeRegistryHostAndPort) ${shaToBuild})"
 }
 
 hp_minikubeBuild_help() { echo "<taggedImageName> using minikube's docker daemon, build image and tag with minikube metadata"; }
@@ -46,6 +75,7 @@ hp_minikubeBuild() { local taggedImageName=$1; local shaToReportInHttpHeaders=$2
     requiredParameter "taggedImageName" "${taggedImageName}"
     requiredParameter "shaToReportInHttpHeaders" "${shaToReportInHttpHeaders}"
     hp_pointToAndRunMinikubeDockerDaemon
+    hp_minikube_start
     hp_buildAndTagImage "${taggedImageName}" "${shaToReportInHttpHeaders}"
     hp_dockerTestImage "${taggedImageName}"
 }
@@ -74,19 +104,27 @@ hp_minikube_update() {
     fi
 }
 
-hp_minikube() { local args=$@
+hp_minikube() { local args="$@:-"
     virtualbox_install_globally
-    hp_brew_cask_run minikube "${@}"
+    hp_brew_cask_run minikube "${@:-}"
 }
 
-hp_minikubeIngressNotEnabled() {
-    ! hp_minikube addons list | grep "ingress: enabled" > /dev/null
+minikube_addonNotEnabled() { local addonName=$1
+    ! hp_minikube addons list | grep "${addonName}: enabled" > /dev/null
+}
+
+hp_minikubeAddonEnable() { local addonToEnable=$1
+    if minikube_addonNotEnabled "${addonToEnable}"; then
+        hp_minikube addons enable "${addonToEnable}"
+    fi
 }
 
 hp_minikubeEnableIngress() {
-    if hp_minikubeIngressNotEnabled; then
-        hp_minikube addons enable ingress
-    fi
+    hp_minikubeAddonEnable ingress
+}
+
+hp_minikubeEnableDockerRegistry() {
+    hp_minikubeAddonEnable registry
 }
 
 hp_minikubeDashboard_help() { echo "open minikube dashboard in web browser"; }
@@ -94,11 +132,19 @@ hp_minikubeDashboard() {
     hp_minikube dashboard 
 }
 
+minikube_vm_memory_mb() {
+    echo "8192"
+}
+
 hp_minikube_start() {
     if ! hp_minikube_isRunning; then
-        hp_minikube start
+        #TODO: The --mount stuff is to try to allow pods read/write access for dev env / filewatcher purposes
+        #Currently, from within minikube vm cannot write to those locations, there is some permission error.
+        # hp_minikube start --memory "$(minikube_vm_memory_mb)" --mount-string="$(pwd):/heartpointsWorkspace" --mount
+        hp_minikube start --memory "$(minikube_vm_memory_mb)"
     fi
     hp_minikubeEnableIngress
+    hp_minikubeEnableDockerRegistry
 }
 
 hp_minikube_stop() {
@@ -108,7 +154,7 @@ hp_minikube_stop() {
 }
 
 hp_minikube_isRunning() {
-    hp_minikube status | grep "host: Running"
+    hp_minikube status | runCommandSilently grep "host: Running"
 }
 
 hp_kubectl() { local args="$@"
