@@ -1,18 +1,16 @@
-apiVersion: apps/v1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   labels:
     app: heartpoints-org
-  name: heartpoints-org-deployment
+  name: heartpoints-org
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: heartpoints-org
   template:
     metadata:
       labels:
         app: heartpoints-org
+      name: heartpoints-org
     spec:
       containers:
       - name: heartpoints-org
@@ -36,22 +34,22 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
 ---
-# apiVersion: networking.gke.io/v1beta1
-# kind: ManagedCertificate
-# metadata:
-#   name: heartpoints-org-cert
-# spec:
-#   domains:
-#     - heartpoints.org
-# ---
-# apiVersion: networking.gke.io/v1beta1
-# kind: ManagedCertificate
-# metadata:
-#   name: www-heartpoints-org-cert
-# spec:
-#   domains:
-#     - www.heartpoints.org
-# ---
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: heartpoints-org-cert
+spec:
+  domains:
+    - heartpoints.org
+---
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: www-heartpoints-org-cert
+spec:
+  domains:
+    - www.heartpoints.org
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

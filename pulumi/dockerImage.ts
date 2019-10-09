@@ -1,12 +1,11 @@
+import * as docker from "@pulumi/docker";
 import { appName } from "./appName";
 import { imageName } from "./imageName";
 import { commitSha } from "./commitSha";
 import { registryHostAndPort } from "./registryHostAndPort";
-import * as docker from "@pulumi/docker";
+import { registryUsername } from "./registryUsername";
+import { registryPassword } from "./registryPassword";
 
-//TODO: Error: [repositoryUrl] should not contain a tag: 5000/heartpoints.org
-//see: https://github.com/pulumi/pulumi-docker/pull/107/files
-//temp workaround: use an internet-based docker repo! booooo
 export const dockerImage = new docker.Image(appName, {
     build: {
         context: "../",
@@ -17,7 +16,7 @@ export const dockerImage = new docker.Image(appName, {
     imageName: imageName(),
     registry: {
         server: registryHostAndPort(),
-        username: "heartpointsorg",
-        password: "inmo5428"
+        username: registryUsername(),
+        password: registryPassword()
     }
 });
