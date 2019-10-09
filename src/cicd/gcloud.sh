@@ -11,7 +11,11 @@ gcloud_install() {
 
 hp_gcloud() { local args=$@
     #TODO: Should we consider running docker gcloud cli?
-    hp_brew_cask_run_unmatching_executable google-cloud-sdk gcloud "$@"
+    if isMac; then
+        hp_brew_cask_run_unmatching_executable google-cloud-sdk gcloud "$@"
+    else
+        gcloud "$@"
+    fi
 }
 
 hp_gcr() {
