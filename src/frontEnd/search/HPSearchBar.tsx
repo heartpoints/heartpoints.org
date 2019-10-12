@@ -3,6 +3,7 @@ import * as React from "react";
 import Autosuggest from "react-autosuggest";
 import { theme } from "./theme";
 import { identity } from "../../utils/axioms/identity";
+import { TextField } from "@material-ui/core";
 
 //TODO: Note HPSearchBar is sharing its searchBarValue between screens.
 export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange}) => {
@@ -18,11 +19,19 @@ export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestion
         onChange,
     }
 
+    const renderInputComponent = () => {
+        //TODO: size input's width appropriately
+        return <TextField
+            fullWidth
+            inputProps={inputProps} />
+    }
+
     const autoSuggestProps = {
         suggestions,
         onSuggestionsFetchRequested: doNothing,
         onSuggestionsClearRequested: doNothing,
         renderSuggestion,
+        renderInputComponent,
         getSuggestionValue,
         inputProps,
         alwaysRenderSuggestions: true,
