@@ -11,7 +11,7 @@ hp_serverDev(){
 
 hp_prepareForRun() { 
     hp_yarn_global install
-    hp_yarn_global webpack --verbose
+    hp_yarn_global webpack
     if file_does_not_exist "dist/bundle.js"; then
         echo "dist/bundle.js not found. was webpack successful?"
         exit 1
