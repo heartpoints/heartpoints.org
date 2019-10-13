@@ -7,7 +7,7 @@ RUN yarn install
 
 COPY src src
 COPY tsconfig.json webpack.config.js ./
-RUN yarn webpack --verbose
+RUN yarn webpack
 
 COPY hp ./
 COPY test test
