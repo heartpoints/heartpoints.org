@@ -6,8 +6,8 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 COPY src src
-COPY tsconfig.json webpack.config.js ./
-RUN yarn webpack --verbose
+COPY tsconfig.* webpack.config.js ./
+RUN yarn webpack
 
 COPY hp ./
 COPY test test
