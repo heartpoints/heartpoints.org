@@ -16,7 +16,9 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
             <Image field={{value: imageThumbnailURL || defaultOrgLogoSrc}} isEditMode={false} />
         </Grid>
         <Grid item>
-            <PageTitle>{title} <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} /></PageTitle>
+            <PageTitle>{title} 
+                <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} />
+            </PageTitle>
             {homepage && <Typography variant="caption"><strong>Homepage:</strong> <a href={homepage}>{homepage}</a></Typography>}
         </Grid>
     </Grid>

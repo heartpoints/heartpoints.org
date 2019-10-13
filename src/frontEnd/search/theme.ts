@@ -1,6 +1,6 @@
 export const theme = {
     container: {
-        width: '30%',
+        width: '500px',
     },
     suggestion: {
         listStyle: 'none',
