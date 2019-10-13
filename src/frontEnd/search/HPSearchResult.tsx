@@ -1,12 +1,6 @@
 import * as React from "react";
-import { Fragment } from "react";
 import { ellipsis } from "../../utils/strings/ellipsis";
 import { Typography, Grid } from "@material-ui/core";
-
-export const headerContainerChildStyle = {
-    "display": "inline",
-    "margin": "3px 10px 3px 0px"
-}
 
 export const padLeft = {
     "paddingLeft": "60px"
@@ -17,13 +11,6 @@ export const statementStyle = {
     "color": "#888",
     "fontStyle": "italic",
     ...padLeft,
-}
-
-export const urlStyle ={
-    "fontSize": "15px",
-    "color": "#99bdf7",
-    "fontStyle": "italic",
-    "paddingLeft": "60px"
 }
 
 export const imageStyle = {
