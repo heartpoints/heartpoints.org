@@ -7,7 +7,7 @@ import { styles } from "./styles";
 import { HeartpointsLogoAndName } from "./HeartpointsLogoAndName";
 
 export const TopNavUnstyled = props => {
-    const { classes, onHamburgerClicked, isSideNavOpen, navTo } = props;
+    const { classes, onHamburgerClicked, isSideNavOpen, navTo, inDevMode } = props;
     const { hide, grow, appBar, appBarShift } = classes
 
     const appBarClassName = classNames(
@@ -23,7 +23,9 @@ export const TopNavUnstyled = props => {
                 <MenuIcon />
             </IconButton>
             <HeartpointsLogoAndName typographyClass={grow} navTo={navTo} />
-            <FacebookLoginLogout {...props} />
+            {
+                inDevMode ? <FacebookLoginLogout {...props} /> : null
+            }
         </Toolbar>
     </AppBar>
 }
