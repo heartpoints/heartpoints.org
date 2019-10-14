@@ -8,7 +8,7 @@ import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 
 export const OtherRoutes = (url, props, router: Router) => router
   .case("/", <HomePage />)
-  .case("/dev", <HomePage />)
+  .case("/dev", <FacebookLoginLogout {...props} />)
   .case("/castleRisk", <CastleRisk {...props.castleRisk} {...props} />)
   .case("/rest-guru", <RestGuru {...props} />)
   .case("/volunteering/search", <VolunteeringSearchBar {...props} />);
