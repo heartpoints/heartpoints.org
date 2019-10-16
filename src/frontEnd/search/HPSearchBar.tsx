@@ -1,11 +1,14 @@
-import { doNothing } from "../../utils/axioms/doNothing";
 import * as React from "react";
+import { doNothing } from "../../utils/axioms/doNothing";
 import Autosuggest from "react-autosuggest";
 import { theme } from "./theme";
 import { identity } from "../../utils/axioms/identity";
 import { TextField } from "@material-ui/core";
 
-export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange}) => {
+
+
+export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange, onSearchBarGetsOrLosesFocus}) => {
+
     const getSuggestionValue = identity
     const isNotIllegitimateZeroThatComesWhenTheUserClicksMargins = (value:any) => value !== 0
 
@@ -16,6 +19,8 @@ export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestion
         placeholder,
         value,
         onChange,
+        onFocus: () => onSearchBarGetsOrLosesFocus(true),
+        onBlur: () => onSearchBarGetsOrLosesFocus(false)
     }
 
     const renderInputComponent = (inputProps) => {
