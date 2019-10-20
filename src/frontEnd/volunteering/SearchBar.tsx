@@ -22,6 +22,7 @@ export const SearchBar = (props) => {
         renderSuggestion,
         searchBarValue,
         onSearchBarValueChange,
+        onSearchBarGetsOrLosesFocus
     } 
     
     return <Page>

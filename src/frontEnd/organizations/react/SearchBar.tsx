@@ -5,17 +5,10 @@ import { HPSearchBar } from "../../search/HPSearchBar";
 import { Page } from "../../page/Page";
 import { Organization } from "../data/organization";
 import { Typography } from "@material-ui/core";
+import { Overlay } from "../../page/Overlay";
 import { Space } from "../../page/Space";
 import { PageTitle } from "../../page/PageTitle";
-
-export const overlayStyle:React.CSSProperties = {
-    "position": "absolute",
-    "top": "0px",
-    "left": "0px",
-    "width": "100%",
-    "height": "100%",
-    "backgroundColor": "rgba(0,0,0,0.5)"
-}
+import { ComponentWithOverlay } from "../../page/ComponentWithOverlay";
 
 export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange, organizations, navTo } = props;
@@ -32,7 +25,6 @@ export const SearchBar = (props) => {
     }
 
     const onSearchBarGetsOrLosesFocus = (stateOfOverlay:boolean) => {
-        console.log(stateOfOverlay);
         toggleOverlay(stateOfOverlay);
     }
 
@@ -54,7 +46,8 @@ export const SearchBar = (props) => {
     return <Page>
         <PageTitle>Organization Search...</PageTitle>
         <Space />
-        <HPSearchBar {...hpSearchBarProps} />
-        {isInFocus && <div style={overlayStyle}></div>}
+        <ComponentWithOverlay bgColor={"#FFF"}>
+            <HPSearchBar {...hpSearchBarProps} />
+        </ComponentWithOverlay>
     </Page>
 }
