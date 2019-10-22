@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Page } from "./Page";
 import { Overlay } from "./Overlay";
 
 export interface IComponentWithOverlayProps {
     children: React.ReactNode,
-    bgColor: string
+    bgColor: string,
+    showOverlay: boolean
 }
 
 export const contentToBeHighlightedStyle:React.CSSProperties = {
@@ -13,14 +13,14 @@ export const contentToBeHighlightedStyle:React.CSSProperties = {
     "left": "0px",
     "top": "0px",
     "zIndex": 1001,
-
 }
 
-export const ComponentWithOverlay = ({children, bgColor}:IComponentWithOverlayProps) => {
+export const ComponentWithOverlay = ({children, bgColor, showOverlay}:IComponentWithOverlayProps) => {
+
     return <React.Fragment>
         <div style={{backgroundColor: bgColor, ...contentToBeHighlightedStyle}}>
             {children}
         </div>
-        <Overlay z={1000} />
+        {showOverlay && <Overlay z={1000} /> }
     </React.Fragment>
 }
