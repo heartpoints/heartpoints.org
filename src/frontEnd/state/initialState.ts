@@ -6,6 +6,7 @@ import { initialModalsState } from "../modals/initialModalsState";
 import { initialSearchBarState } from "../search/initalSearchBarState";
 import { initialCastleRiskState } from "../castleRisk/initialCastleRiskState";
 import { combineStateProviders } from "./combineStateProviders";
+import { initialVolState } from "../volunteering/initialVolState";
 
 export const initialState = combineStateProviders([
     initialOrgsState,
@@ -14,5 +15,6 @@ export const initialState = combineStateProviders([
     initialNavState,
     initialModalsState,
     initialSearchBarState,
-    initialCastleRiskState
+    initialCastleRiskState,
+    initialVolState
 ])
