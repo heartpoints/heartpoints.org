@@ -28,6 +28,10 @@ export const SearchBar = (props) => {
             console.log(shouldShowOverlay);
         }
 
+        const  shouldRenderSuggestions = (value) => {
+            return shouldShowOverlay && value
+        }
+
     const hpSearchBarProps = {
         placeholder: "Search by organization name or job title...",
         suggestions: findVolunteeringOpportunities(searchBarValue),
@@ -37,7 +41,8 @@ export const SearchBar = (props) => {
         onSearchBarValueChange,
         onSearchBarGetsOrLosesFocus,
         onBlur,
-        onFocus
+        onFocus,
+        shouldRenderSuggestions
     } 
     
     return <Page>

@@ -12,7 +12,7 @@ export const contentToBeHighlightedStyle:React.CSSProperties = {
     "position": "relative",
     "left": "0px",
     "top": "0px",
-    "zIndex": 1001,
+    "zIndex": 1202,
 }
 
 export const ComponentWithOverlay = ({children, bgColor, showOverlay}:IComponentWithOverlayProps) => {
@@ -21,6 +21,6 @@ export const ComponentWithOverlay = ({children, bgColor, showOverlay}:IComponent
         <div style={{backgroundColor: bgColor, ...contentToBeHighlightedStyle}}>
             {children}
         </div>
-        {showOverlay && <Overlay z={1000} /> }
+        {showOverlay && <Overlay z={1201} /> }
     </React.Fragment>
 }

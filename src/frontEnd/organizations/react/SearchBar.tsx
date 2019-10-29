@@ -30,23 +30,25 @@ export const SearchBar = (props) => {
 
     const onFocus = () => {
         toggleOverlay(true);
-        console.log(shouldShowOverlay);
     }
 
     const onBlur = () => {
         toggleOverlay(false);
-        console.log(shouldShowOverlay);
     }
+
+    const renderSuggestion = ({mission: description, ...rest}:Organization) => 
+        shouldShowOverlay && <HPSearchResult {...{description, ...rest}} />
+    
 
     const hpSearchBarProps = { 
         placeholder,
         suggestions,
-        renderSuggestion: ({mission: description, ...rest}:Organization) => <HPSearchResult {...{description, ...rest}} />,
+        renderSuggestion,
         onSuggestionSelected,
         searchBarValue,
         onSearchBarValueChange,
         onFocus,
-        onBlur
+        onBlur,
     }
     
     return <Page>
