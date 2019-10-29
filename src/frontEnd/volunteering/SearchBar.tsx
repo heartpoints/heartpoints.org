@@ -16,21 +16,21 @@ export const SearchBar = (props) => {
     const renderSuggestion = ({imageThumbnailURL, jobTitle: title, jobDescription: description, title: subtitle}) =>
         <HPSearchResult {...{imageThumbnailURL, title, description, subtitle}} />
 
-        const [shouldShowOverlay, toggleOverlay] = useState(false);
+    const [shouldShowOverlay, toggleOverlay] = useState(false);
 
-        const onFocus = () => {
-            toggleOverlay(true);
-            console.log(shouldShowOverlay);
-        }
+    const onFocus = () => {
+        toggleOverlay(true);
+        console.log(shouldShowOverlay);
+    }
     
-        const onBlur = () => {
-            toggleOverlay(false);
-            console.log(shouldShowOverlay);
-        }
+    const onBlur = () => {
+        toggleOverlay(false);
+        console.log(shouldShowOverlay);
+    }
 
-        const  shouldRenderSuggestions = (value) => {
-            return shouldShowOverlay && value
-        }
+    const renderSuggestionsContainer = ({containerProps, children, query}) => {
+        return shouldShowOverlay && <div {...containerProps}>{children}</div>
+    }
 
     const hpSearchBarProps = {
         placeholder: "Search by organization name or job title...",
@@ -39,10 +39,9 @@ export const SearchBar = (props) => {
         renderSuggestion,
         searchBarValue,
         onSearchBarValueChange,
-        onSearchBarGetsOrLosesFocus,
         onBlur,
         onFocus,
-        shouldRenderSuggestions
+        renderSuggestionsContainer,
     } 
     
     return <Page>

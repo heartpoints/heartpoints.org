@@ -5,7 +5,7 @@ import { theme } from "./theme";
 import { identity } from "../../utils/axioms/identity";
 import { TextField } from "@material-ui/core";
 
-export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange, onFocus, onBlur}) => {
+export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange, onFocus, onBlur, renderSuggestionsContainer}) => {
 
     const getSuggestionValue = identity
     const isNotIllegitimateZeroThatComesWhenTheUserClicksMargins = (value:any) => value !== 0
@@ -36,6 +36,7 @@ export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestion
         getSuggestionValue,
         inputProps,
         alwaysRenderSuggestions: true,
+        renderSuggestionsContainer,
         onSuggestionSelected: (event, {suggestion}) => onSuggestionSelected(suggestion),
         theme,
     }

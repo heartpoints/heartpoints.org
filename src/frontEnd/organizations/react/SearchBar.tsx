@@ -21,23 +21,28 @@ export const SearchBar = (props) => {
             )
     }
 
-    const onSuggestionSelected = ({href}) => navTo(href)
-
     const placeholder = "Search by organization name..."
     const suggestions = getSuggestions(searchBarValue);
 
     const [shouldShowOverlay, toggleOverlay] = useState(false);
+
+    const onSuggestionSelected = ({href}) => {
+        return navTo(href);
+    }
 
     const onFocus = () => {
         toggleOverlay(true);
     }
 
     const onBlur = () => {
-        toggleOverlay(false);
+        setTimeout(() => toggleOverlay(false), 150); //150ms is lowest reliable time that processes click
     }
 
     const renderSuggestion = ({mission: description, ...rest}:Organization) => 
-        shouldShowOverlay && <HPSearchResult {...{description, ...rest}} />
+        <HPSearchResult {...{description, ...rest}} />
+
+    const renderSuggestionsContainer = ({containerProps, children}) => 
+        shouldShowOverlay && <div {...containerProps}>{children}</div>
     
 
     const hpSearchBarProps = { 
@@ -49,6 +54,7 @@ export const SearchBar = (props) => {
         onSearchBarValueChange,
         onFocus,
         onBlur,
+        renderSuggestionsContainer
     }
     
     return <Page>
