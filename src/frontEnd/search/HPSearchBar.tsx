@@ -18,10 +18,16 @@ export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestion
         onChange,
     }
 
-    const renderInputComponent = () => {
+    const renderInputComponent = (inputProps) => {
+        const { ref, ...rest } = inputProps;
         return <TextField
             fullWidth
-            inputProps={inputProps} />
+            InputProps={{
+                inputRef: node => {
+                  ref(node)
+                },
+              }}
+              {...rest} />
     }
 
     const autoSuggestProps = {
