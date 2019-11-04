@@ -9,8 +9,8 @@ describe("List", () => {
     const isEven = a => a % 2 == 0
     const isOdd = not(isEven)
 
-    theExpression(() => ListOfLiterals(1,2,3).map(x => x * 2).asArray).shouldEqual([2,4,6])
-    theExpression(() => [1,2,3].map(x => x * 2)).shouldEqual([2,4,6])
+    theExpression(() => ListOfLiterals(1,2,3).map(x => x * 2).asArray).shouldDeepEqual([2,4,6])
+    theExpression(() => [1,2,3].map(x => x * 2)).shouldDeepEqual([2,4,6])
     theExpression(() => ListOfLiterals().reduce(plus, 0)).shouldEqual(0)
     theExpression(() => ListOfLiterals(1,2,3).reduce(plus, 0)).shouldEqual(6)
     theExpression(() => ListOfLiterals(1,2,3).asArray).shouldDeepEqual([1,2,3])
