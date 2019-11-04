@@ -10,7 +10,7 @@ export const SearchBar = (props) => {
     const { searchBarValue, onSearchBarValueChange, navTo } = props;
 
     const onSuggestionSelected = ({ jobID }) => 
-        navTo("/volunteering/" + jobID);
+        navTo(`/volunteering/${jobID}`);
 
     const renderSuggestion = ({imageThumbnailURL, jobTitle: title, jobDescription: description, title: subtitle}) =>
         <HPSearchResult {...{imageThumbnailURL, title, description, subtitle}} />
