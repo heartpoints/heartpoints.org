@@ -1,0 +1,1 @@
+export const isEmptyOrWhitespaceOnlyString = (s:string) => s.trim() == ""

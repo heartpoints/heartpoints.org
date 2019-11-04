@@ -1,8 +1,11 @@
 import { Some } from "../maybe/Some";
 import { IList } from "./IList";
+import { Predicate } from "../predicates/Predicate";
 
 export const NonEmptyList = <T, S>(head: T, tail: IList<S>): IList<T | S> => ({
     map: f => NonEmptyList(f(head), tail.map(f)),
+    flatMap: f => f(head).append(tail.flatMap(f)),
+    where: (p:Predicate<T | S>) => p(head) ? NonEmptyList(head, tail.where(p)) : tail.where(p),
     push(i) { return NonEmptyList(head, tail.push(i)); },
     get head() { return Some(head); },
     get tail() { return Some(tail); },
