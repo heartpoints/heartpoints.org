@@ -16,4 +16,6 @@ export const EmptyList: IList<never> = {
     asArray: [],
     toString: () => "[]",
     any: False,
+    append: <S>(otherList:IList<S>) => otherList,
+    join: () => ``
 };
