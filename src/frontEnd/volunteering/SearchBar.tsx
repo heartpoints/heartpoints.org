@@ -7,10 +7,10 @@ import { Space } from "../page/Space"
 import { PageTitle } from "../page/PageTitle";
 
 export const SearchBar = (props) => {
-    const { searchBarValue, onSearchBarValueChange } = props;
+    const { searchBarValue, onSearchBarValueChange, navTo } = props;
 
-    const onSuggestionSelected = ({ jobTitle }) =>
-        alert(`You Selected the job titled "${jobTitle}"`);
+    const onSuggestionSelected = ({ jobID }) => 
+        navTo(`/volunteering/${jobID}`);
 
     const renderSuggestion = ({imageThumbnailURL, jobTitle: title, jobDescription: description, title: subtitle}) =>
         <HPSearchResult {...{imageThumbnailURL, title, description, subtitle}} />

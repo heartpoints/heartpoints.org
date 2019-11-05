@@ -3,8 +3,12 @@ import { False } from "../axioms/False";
 import { IList } from "./IList";
 import { NonEmptyList } from "./NonEmptyList";
 
+const produceEmptyList = () => EmptyList
+
 export const EmptyList: IList<never> = {
-    map: () => EmptyList,
+    map: produceEmptyList,
+    flatMap: produceEmptyList,
+    where: produceEmptyList,
     push: i => NonEmptyList(i, EmptyList),
     head: None,
     tail: None,

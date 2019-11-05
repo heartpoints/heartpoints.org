@@ -1,14 +1,10 @@
-import { volunteeringOpportunities } from "./volunteeringOpportunities";
-import { anyOf } from "../../utils/predicates/anyOf";
+import { combineOrgOppPairToSinglePropsObject } from "./combineOrgOppPairToSinglePropsObject";
+import { orgOppPairsMatchingSoughtText } from "./orgOppPairsMatchingSoughtText";
+import { CombinedOrgAndVolOpportunity } from "./CombinedOrgAndVolOpportunity";
+import { isEmptyOrWhitespaceOnlyString } from "../../utils/strings/isEmptyOrWhitespaceOnlyString";
 
-export const findVolunteeringOpportunities = (orgOrJobTitle) => {
-    const inputValue = (orgOrJobTitle || "").trim().toLowerCase();
-    return inputValue.length === 0
+export const findVolunteeringOpportunities = 
+    (orgOrJobTitle:string = ""):CombinedOrgAndVolOpportunity[] => 
+    isEmptyOrWhitespaceOnlyString(orgOrJobTitle)
         ? []
-        : volunteeringOpportunities.filter(
-            anyOf(
-                option => option.title.toLocaleLowerCase().includes(inputValue),
-                option => option.jobTitle.toLocaleLowerCase().includes(inputValue)
-            )
-        );
-}
+        : orgOppPairsMatchingSoughtText(orgOrJobTitle).map(combineOrgOppPairToSinglePropsObject).asArray

@@ -1,3 +1,3 @@
 export type WithNavTo = {
-    navTo: WithNavTo
+    navTo: (url:string) => void
 }

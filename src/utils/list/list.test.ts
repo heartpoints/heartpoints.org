@@ -1,6 +1,7 @@
 import { ListOfLiterals } from "./ListOfLiterals";
 import { theExpression } from "../../testing/theExpression";
-import { ListOfLists, flatten, flatMap } from "./IList";
+import { flatten } from "./flatten";
+import { ListOfLists } from "./ListOfLists";
 import { EmptyList } from "./EmptyList";
 
 describe("List", () => {
@@ -51,11 +52,10 @@ describe("List", () => {
     });
 
     describe("flatMap", () => {
-        const listOfLists = ListOfLists([
-            [1,2,3],
-            [4,5,6]
-        ])
-        theExpression(() => flatMap(listOfLists, x => x * 2).asArray).shouldDeepEqual([2,4,6,8,10,12])
+        const multiples = ListOfLiterals(10,100,1000)
+        const nums = ListOfLiterals(1,2,3)
+        const allProducts = [10,100,1000,20,200,2000,30,300,3000]
+        theExpression(() => nums.flatMap(n => multiples.map(m => n * m)).asArray).shouldDeepEqual(allProducts)
     })
 
 }) 
