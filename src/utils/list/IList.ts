@@ -2,10 +2,7 @@ import { Predicate } from "../predicates/Predicate"
 import { IMaybe } from "../maybe/IMaybe"
 import { Mapper } from "../axioms/Mapper"
 import { Reducer } from "../axioms/Reducer"
-import { EmptyList } from "./EmptyList"
-import { ListOfLiterals } from "./ListOfLiterals"
-
-type FlatMapper<T, S> = (i:T) => IList<S>
+import { FlatMapper } from "./FlatMapper";
 
 export interface IList<T> extends Iterable<T> {
     map<S>(f: Mapper<T, S>): IList<S>
@@ -24,14 +21,3 @@ export interface IList<T> extends Iterable<T> {
     append<S>(otherList:IList<S>):IList<T | S>
     join(delimiter):string
 }
-
-export const ListOfLists = 
-    <T> (arrayOfArrays:Array<Array<T>>):IList<IList<T>> =>
-    ListOfLiterals(...arrayOfArrays).map(nestedArray => ListOfLiterals(...nestedArray))
-
-export const flatten = 
-    <T> (listOfLists:IList<IList<T>>) => 
-    listOfLists.reduce(
-        (reducedSoFar, currentItemToReduce) => reducedSoFar.append(currentItemToReduce),
-        EmptyList as IList<T>
-    )

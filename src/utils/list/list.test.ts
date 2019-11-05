@@ -1,6 +1,7 @@
 import { ListOfLiterals } from "./ListOfLiterals";
 import { theExpression } from "../../testing/theExpression";
-import { ListOfLists, flatten } from "./IList";
+import { flatten } from "./flatten";
+import { ListOfLists } from "./ListOfLists";
 import { EmptyList } from "./EmptyList";
 
 describe("List", () => {
