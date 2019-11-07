@@ -45,5 +45,3 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
         {renderVolunteeringOpportunities()}
     </div>
 }
-
-//{volOpportunities && volOpportunities.map(op => <VolunteeringPreview {...op} {...{navTo}}   />)}
