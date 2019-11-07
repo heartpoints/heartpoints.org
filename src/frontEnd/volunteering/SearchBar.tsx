@@ -1,4 +1,5 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { ComponentWithOverlay } from "../page/ComponentWithOverlay";
 import { HPSearchBar } from "../search/HPSearchBar";
 import { HPSearchResult } from "../search/HPSearchResult";
 import { findVolunteeringOpportunities } from "./findVolunteeringOpportunities";
@@ -15,6 +16,22 @@ export const SearchBar = (props) => {
     const renderSuggestion = ({imageThumbnailURL, jobTitle: title, jobDescription: description, title: subtitle}) =>
         <HPSearchResult {...{imageThumbnailURL, title, description, subtitle}} />
 
+    const [shouldShowOverlay, toggleOverlay] = useState(false);
+
+    const onFocus = () => {
+        toggleOverlay(true);
+        console.log(shouldShowOverlay);
+    }
+    
+    const onBlur = () => {
+        toggleOverlay(false);
+        console.log(shouldShowOverlay);
+    }
+
+    const renderSuggestionsContainer = ({containerProps, children, query}) => {
+        return shouldShowOverlay && <div {...containerProps}>{children}</div>
+    }
+
     const hpSearchBarProps = {
         placeholder: "Search by organization name or job title...",
         suggestions: findVolunteeringOpportunities(searchBarValue),
@@ -22,11 +39,16 @@ export const SearchBar = (props) => {
         renderSuggestion,
         searchBarValue,
         onSearchBarValueChange,
+        onBlur,
+        onFocus,
+        renderSuggestionsContainer,
     } 
     
     return <Page>
         <PageTitle>Volunteering Opportunity Search...</PageTitle>
         <Space />
-        <HPSearchBar {...hpSearchBarProps} />
+        <ComponentWithOverlay bgColor={"#FFF"} showOverlay={shouldShowOverlay}>
+            <HPSearchBar {...hpSearchBarProps} />
+        </ComponentWithOverlay>
     </Page>
 }
