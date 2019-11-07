@@ -6,8 +6,9 @@ import { PageTitle } from '../page/PageTitle';
 import { EditButton } from '../buttons/EditButton';
 import { defaultOrgLogoSrc } from '../organizations/data/defaultOrgLogoSrc';
 import { Page } from '../page/Page';
+import { HPButton } from '../forms/HPButton';
 
-export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, homepage, jobTitle, jobDescription, navTo}) => {
+export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, href, jobTitle, jobDescription, navTo}) => {
     return(
         <Page>
             <Grid container direction="row" justify="flex-start" alignItems="center" spacing={2}>
@@ -18,7 +19,7 @@ export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, 
                     <PageTitle>
                         {jobTitle} 
                     </PageTitle>
-                    <Typography variant="caption"><a href={homepage}>{title}</a></Typography>
+                    <HPButton label={title} onClick={() => navTo(href)} />
                 </Grid>
             </Grid>
             <Space />
