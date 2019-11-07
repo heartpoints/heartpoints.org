@@ -9,7 +9,7 @@ import { PageTitle } from "../../page/PageTitle";
 import { ComponentWithOverlay } from "../../page/ComponentWithOverlay";
 
 export const SearchBar = (props) => {
-    const { searchBarValue, onSearchBarValueChange, organizations, navTo } = props;
+    const { orgSearchBarValue: searchBarValue, onOrgSearchBarValueChange: onSearchBarValueChange, organizations, navTo } = props;
 
 
     const getSuggestions = (searchBarValue) => {

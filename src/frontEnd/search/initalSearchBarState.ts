@@ -1,4 +1,5 @@
 export const initialSearchBarState = () => ({
     searchBarSuggestions: [],
-    searchBarValue: ''
+    volSearchBarValue: '',
+    orgSearchBarValue: ''
 })

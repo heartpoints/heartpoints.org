@@ -4,7 +4,8 @@ import { onLogoutRequested } from "../facebook/onLogoutRequested";
 import { onHamburgerClicked } from "../nav/onHamburgerClicked";
 import { onSideNavExpandRequested } from "../nav/onSideNavExpandRequested";
 import { onSideNavCollapseRequested } from "../nav/onSideNavCollapseRequested";
-import { onSearchBarValueChange } from "../search/onSearchBarValueChange";
+import { onOrgSearchBarValueChange } from "../search/onOrgSearchBarValueChange";
+import { onVolSearchBarValueChange } from '../search/onVolSearchBarValueChange';
 import { onCelebrationXClicked } from "../modals/onCelebrationXClicked";
 import { onFacebookLoginFailure } from "../facebook/onFacebookLoginFailure";
 import { updateState } from "../castleRisk/updateState";
@@ -21,7 +22,8 @@ export const stateUpdatingCallbacks:Dictionary<StateUpdatingCallback> = {
     onFacebookLoginFailure,
     onHamburgerClicked,
     onLogoutRequested,
-    onSearchBarValueChange,
+    onOrgSearchBarValueChange,
+    onVolSearchBarValueChange,
     onSideNavCollapseRequested,
     onSideNavExpandRequested,
     updateState,
