@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, MouseEvent } from "react";
 import { doNothing } from "../../utils/axioms/doNothing";
 import Autosuggest from "react-autosuggest";
 import { theme } from "./theme";
@@ -23,14 +23,17 @@ export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestion
         onBlur
     }
 
+    //const adornmentClickHandler = (event:React.MouseEvent<HTMLDivElement>) => event.stopPropagation();
+    
+
     const renderInputComponent = (inputProps) => {
-        const { ref, onFocus, ...rest } = inputProps;
+        const { ref, ...rest } = inputProps;
         return <TextField 
             fullWidth
             InputProps={{
                 startAdornment: (
-                    <InputAdornment position="start">
-                        <SearchIcon onClick={onFocus}/>
+                    <InputAdornment position="start" onClick={event => event.stopPropagation()}>
+                        <SearchIcon />
                     </InputAdornment>
                 )
             }}
