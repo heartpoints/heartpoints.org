@@ -8,7 +8,7 @@ import { Space } from "../page/Space"
 import { PageTitle } from "../page/PageTitle";
 
 export const SearchBar = (props) => {
-    const { searchBarValue, onSearchBarValueChange, navTo } = props;
+    const { volSearchBarValue: searchBarValue, onVolSearchBarValueChange: onSearchBarValueChange, navTo } = props;
 
     const onSuggestionSelected = ({ jobID }) => 
         navTo(`/volunteering/${jobID}`);
@@ -20,12 +20,10 @@ export const SearchBar = (props) => {
 
     const onFocus = () => {
         toggleOverlay(true);
-        console.log(shouldShowOverlay);
     }
     
     const onBlur = () => {
         toggleOverlay(false);
-        console.log(shouldShowOverlay);
     }
 
     const renderSuggestionsContainer = ({containerProps, children, query}) => {
