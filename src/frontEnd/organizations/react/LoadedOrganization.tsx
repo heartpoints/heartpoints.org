@@ -8,25 +8,42 @@ import { defaultOrgLogoSrc } from '../data/defaultOrgLogoSrc';
 import { Image } from "../../forms/viewEditToggleables/Image";
 import { VolunteeringPreview } from "../../volunteering/VolunteeringPreview";
 import { jobTitleMatches } from '../../volunteering/jobTitleMatches';
+import { previewContainerStyle } from "../../volunteering/VolunteeringPreview";
 
 //todo: should these also use fields? maybe not "settable" fields but field readers (whether something is loaded / valid / etc)?
 //todo: can we have fields that toggle between edit vs display mode over a field?\
 
-export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnailURL, homepage, navTo, href, volOpportunities }: Organization & {navTo}) => <div>
-    <Grid container direction="row" justify="flex-start" alignItems="center" spacing={2}>
-        <Grid item>
-            <Image field={{value: imageThumbnailURL || defaultOrgLogoSrc}} isEditMode={false} />
+export const noOpportunityContainerStyle = {
+    ...previewContainerStyle,
+    "cursor": "default"
+}
+
+export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnailURL, homepage, navTo, href, volOpportunities }: Organization & {navTo}) => {
+
+    const renderVolunteeringOpportunities = () => {
+        return volOpportunities.length > 0
+            ? volOpportunities.map(op => <VolunteeringPreview {...op} {...{navTo}} /> )
+            : <div style={noOpportunityContainerStyle}><Typography variant="h5">No Opportunities yet!</Typography></div>
+            
+    }
+    return <div>
+        <Grid container direction="row" justify="flex-start" alignItems="center" spacing={2}>
+            <Grid item>
+                <Image field={{value: imageThumbnailURL || defaultOrgLogoSrc}} isEditMode={false} />
+            </Grid>
+            <Grid item>
+                <PageTitle>{title} 
+                    <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} />
+                </PageTitle>
+                {homepage && <Typography variant="caption"><strong>Homepage:</strong> <a href={homepage}>{homepage}</a></Typography>}
+            </Grid>
         </Grid>
-        <Grid item>
-            <PageTitle>{title} 
-                <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} />
-            </PageTitle>
-            {homepage && <Typography variant="caption"><strong>Homepage:</strong> <a href={homepage}>{homepage}</a></Typography>}
-        </Grid>
-    </Grid>
-    <Space />
-    {mission && <Typography variant="body1"><strong>Mission:</strong> {mission}</Typography>}
-    <Space />
-    <Typography variant="caption" style={{color: "lightgray"}}>Created by: {creatorEmail}</Typography>
-    {volOpportunities && volOpportunities.map(op => <VolunteeringPreview {...op} {...{navTo}}   />)}
-</div>
+        <Space />
+        {mission && <Typography variant="body1"><strong>Mission:</strong> {mission}</Typography>}
+        <Space />
+        <Typography variant="caption" style={{color: "lightgray"}}>Created by: {creatorEmail}</Typography>
+        {renderVolunteeringOpportunities()}
+    </div>
+}
+
+//{volOpportunities && volOpportunities.map(op => <VolunteeringPreview {...op} {...{navTo}}   />)}

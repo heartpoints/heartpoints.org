@@ -80,5 +80,14 @@ export const defaultOrganizations:Array<Organization> = [
                 jobDescription: ''
             }
         ]
+    },
+    {
+        href: "/organizations/5",
+        imageThumbnailURL: "/images/heartpointsIcon.png",
+        title: "Organization without Opportunities",
+        mission: "To test that organizations without opportunities do not throw an error.",
+        homepage: "https://www.google.com",
+        creatorEmail: "ptmetsch@gmail.com",
+        volOpportunities: []
     }
 ];
