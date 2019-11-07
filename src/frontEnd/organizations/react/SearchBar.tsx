@@ -35,7 +35,7 @@ export const SearchBar = (props) => {
     }
 
     const onBlur = () => {
-        setTimeout(() => toggleOverlay(false), 150); //150ms is lowest reliable time that processes click
+        setTimeout(() => toggleOverlay(false), 150);
     }
 
     const renderSuggestion = ({mission: description, ...rest}:Organization) => 

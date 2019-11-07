@@ -3,7 +3,8 @@ import { doNothing } from "../../utils/axioms/doNothing";
 import Autosuggest from "react-autosuggest";
 import { theme } from "./theme";
 import { identity } from "../../utils/axioms/identity";
-import { TextField } from "@material-ui/core";
+import { TextField, InputAdornment } from "@material-ui/core";
+import SearchIcon from  '@material-ui/icons/Search';
 
 export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestions, renderSuggestion, onSuggestionSelected, onSearchBarValueChange, onFocus, onBlur, renderSuggestionsContainer}) => {
 
@@ -23,8 +24,17 @@ export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestion
     }
 
     const renderInputComponent = (inputProps) => {
-        const { ref, ...rest } = inputProps;
-        return <TextField fullWidth {...{inputProps}} />
+        const { ref, onFocus, ...rest } = inputProps;
+        return <TextField 
+            fullWidth
+            InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">
+                        <SearchIcon onClick={onFocus}/>
+                    </InputAdornment>
+                )
+            }}
+            {...{inputProps}} />
     }
 
     const autoSuggestProps = {
