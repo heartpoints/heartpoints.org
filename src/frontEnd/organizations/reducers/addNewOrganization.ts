@@ -8,6 +8,7 @@ export const addNewOrganization = (state, creatorEmail) => {
         ...possibleNewOrganization,
         href,
         creatorEmail,
+        volOpportunities: []
     };
     const stateWithNewOrg = {
         ...state,
