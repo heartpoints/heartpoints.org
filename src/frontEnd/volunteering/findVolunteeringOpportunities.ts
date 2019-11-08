@@ -4,7 +4,7 @@ import { CombinedOrgAndVolOpportunity } from "./CombinedOrgAndVolOpportunity";
 import { isEmptyOrWhitespaceOnlyString } from "../../utils/strings/isEmptyOrWhitespaceOnlyString";
 
 export const findVolunteeringOpportunities = 
-    (orgOrJobTitle:string = ""):CombinedOrgAndVolOpportunity[] => 
+    (orgOrJobTitle:string = "", organizations):CombinedOrgAndVolOpportunity[] => 
     isEmptyOrWhitespaceOnlyString(orgOrJobTitle)
         ? []
-        : orgOppPairsMatchingSoughtText(orgOrJobTitle).map(combineOrgOppPairToSinglePropsObject).asArray
+        : orgOppPairsMatchingSoughtText(orgOrJobTitle, organizations).map(combineOrgOppPairToSinglePropsObject).asArray

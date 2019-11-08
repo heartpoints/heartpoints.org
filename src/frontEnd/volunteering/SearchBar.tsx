@@ -8,7 +8,7 @@ import { Space } from "../page/Space"
 import { PageTitle } from "../page/PageTitle";
 
 export const SearchBar = (props) => {
-    const { volSearchBarValue: searchBarValue, onVolSearchBarValueChange: onSearchBarValueChange, navTo } = props;
+    const { volSearchBarValue: searchBarValue, onVolSearchBarValueChange: onSearchBarValueChange, navTo, organizations } = props;
 
     const onSuggestionSelected = ({ jobID }) => 
         navTo(`/volunteering/${jobID}`);
@@ -32,7 +32,7 @@ export const SearchBar = (props) => {
 
     const hpSearchBarProps = {
         placeholder: "Search by organization name or job title...",
-        suggestions: findVolunteeringOpportunities(searchBarValue),
+        suggestions: findVolunteeringOpportunities(searchBarValue, organizations),
         onSuggestionSelected,
         renderSuggestion,
         searchBarValue,
