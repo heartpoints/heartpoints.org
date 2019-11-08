@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Organization } from '../data/organization';
+import { DeleteButton } from '../../buttons/DeleteButton';
 import { EditButton } from '../../buttons/EditButton';
 import { PageTitle } from '../../page/PageTitle';
 import { Typography, Grid } from '@material-ui/core';
@@ -18,7 +19,7 @@ export const noOpportunityContainerStyle = {
     "cursor": "default"
 }
 
-export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnailURL, homepage, navTo, href, volOpportunities }: Organization & {navTo}) => {
+export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnailURL, homepage, navTo, href, volOpportunities, deleteOrganization }) => {
 
     const renderVolunteeringOpportunities = () => {
         return volOpportunities.length > 0
@@ -26,6 +27,11 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
             : <div style={noOpportunityContainerStyle}><Typography variant="h5">No Opportunities yet!</Typography></div>
             
     }
+
+    const deleteCurrentOrganizationRequested = () => {
+        deleteOrganization(href);
+    }
+
     return <div>
         <Grid container direction="row" justify="flex-start" alignItems="center" spacing={2}>
             <Grid item>
@@ -34,6 +40,7 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
             <Grid item>
                 <PageTitle>{title} 
                     <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} />
+                    <DeleteButton onClick={deleteCurrentOrganizationRequested} />
                 </PageTitle>
                 {homepage && <Typography variant="caption"><strong>Homepage:</strong> <a href={homepage}>{homepage}</a></Typography>}
             </Grid>

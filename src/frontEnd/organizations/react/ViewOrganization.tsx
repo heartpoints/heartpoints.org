@@ -7,11 +7,11 @@ import { WithOrganizations } from '../data/WithOrganizations';
 import { WithNavTo } from '../../nav/WithNavTo';
 import { WithUrl } from '../../../utils/url/WithUrl';
 
-export type ViewOrganizationProps = WithOrganizations & WithNavTo & WithUrl
-export const ViewOrganization = ({url, organizations, navTo}:ViewOrganizationProps) => {
+//export type ViewOrganizationProps = WithOrganizations & WithNavTo & WithUrl
+export const ViewOrganization = ({url, organizations, navTo, deleteOrganization}) => {
 
     const content = findOrgByHref(organizations, url.path)
-        .map(organization => <LoadedOrganization {...{...organization, navTo}} />)
+        .map(organization => <LoadedOrganization {...{...organization, navTo, deleteOrganization}} />)
         .valueOrDefault(<MissingOrganization />)
 
     return <Page>
