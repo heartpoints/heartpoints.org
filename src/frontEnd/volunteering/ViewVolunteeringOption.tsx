@@ -13,7 +13,7 @@ export const ViewVolunteeringOption = ({url, organizations, navTo}:ViewVolunteer
     const possiblyMatchingOrgVolPair = findOrgOpportunityPairByJobId(organizations, selectedJobID)
     const combinedPropsForMatch = possiblyMatchingOrgVolPair.map(combineOrgOppPairToSinglePropsObject)
     return combinedPropsForMatch.mapOrDefault(
-        combinedProps => <LoadVolunteeringOption {...combinedProps} {...{navTo}} />,
+        combinedProps => <LoadVolunteeringOption  {...combinedProps} {...{navTo}} />,
         <NotFound />
     )
 }
