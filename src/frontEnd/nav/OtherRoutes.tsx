@@ -8,7 +8,7 @@ import { Router } from "./Router";
 import { RestGuru } from "../RestGuru/RestGuru";
 
 export const OtherRoutes = (url, props, router: Router) => router
-  .case("/", <HomePage />)
+  .case("/", <HomePage {...props} />)
   .case("/dev", <FacebookLoginLogout {...props} />)
   .case("/castleRisk", <CastleRisk {...props.castleRisk} {...props} />)
   .case("/rest-guru", <RestGuru {...props} />)

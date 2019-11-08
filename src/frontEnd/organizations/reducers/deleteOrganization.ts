@@ -6,7 +6,8 @@ export const deleteOrganization = (state, organizationToDelete) => {
     const orgsWithSpecifiedOrgDeleted = orgs.filter((org) => org.href != organizationToDelete);
     const stateWithoutDeletedOrg = {
         ...state,
-        organizations: orgsWithSpecifiedOrgDeleted
+        organizations: orgsWithSpecifiedOrgDeleted,
+        shouldShowSnackbar: true
     };
 
     return navTo(stateWithoutDeletedOrg, "/");
