@@ -19,7 +19,11 @@ export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, 
                     <PageTitle>
                         {jobTitle} 
                     </PageTitle>
-                    <HPButton label={title} onClick={() => navTo(href)} />
+                    <Space />
+                    <Typography variant="h6">
+                        {title} 
+                    </Typography>
+                    <HPButton label="View Organization" shouldUseThemeSpacing={false} onClick={() => navTo(href)} />
                 </Grid>
             </Grid>
             <Space />
