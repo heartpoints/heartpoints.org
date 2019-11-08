@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Organization } from '../data/organization';
 import { DeleteButton } from '../../buttons/DeleteButton';
 import { EditButton } from '../../buttons/EditButton';
@@ -10,6 +10,8 @@ import { Image } from "../../forms/viewEditToggleables/Image";
 import { VolunteeringPreview } from "../../volunteering/VolunteeringPreview";
 import { jobTitleMatches } from '../../volunteering/jobTitleMatches';
 import { previewContainerStyle } from "../../volunteering/VolunteeringPreview";
+
+import { YesOrNoDialog } from '../../modals/YesOrNoDialog';
 
 //todo: should these also use fields? maybe not "settable" fields but field readers (whether something is loaded / valid / etc)?
 //todo: can we have fields that toggle between edit vs display mode over a field?\
@@ -24,12 +26,23 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
     const renderVolunteeringOpportunities = () => {
         return volOpportunities.length > 0
             ? volOpportunities.map(op => <VolunteeringPreview {...op} {...{navTo}} /> )
-            : <div style={noOpportunityContainerStyle}><Typography variant="h5">No Opportunities yet!</Typography></div>
-            
+            : <div style={noOpportunityContainerStyle}>
+                <Typography variant="h5">No Opportunities yet!</Typography>
+            </div>
+    }
+
+    const [shouldShowDialog, toggleDialog] = useState(false);
+
+    const confirmOrgDelete = () => {
+        deleteOrganization(href);
+    }
+
+    const cancelOrgDelete = () => {
+        toggleDialog(false);
     }
 
     const deleteCurrentOrganizationRequested = () => {
-        deleteOrganization(href);
+        toggleDialog(true);
     }
 
     return <div>
@@ -50,5 +63,12 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
         <Space />
         <Typography variant="caption" style={{color: "lightgray"}}>Created by: {creatorEmail}</Typography>
         {renderVolunteeringOpportunities()}
+        {shouldShowDialog && 
+            <YesOrNoDialog 
+                isOpen={shouldShowDialog} 
+                titleText="Delete This Organization?" 
+                onYesClicked={confirmOrgDelete} 
+                onNoClicked={cancelOrgDelete} />
+        }
     </div>
 }
