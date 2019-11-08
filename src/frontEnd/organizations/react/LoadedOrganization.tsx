@@ -21,7 +21,7 @@ export const noOpportunityContainerStyle = {
     "cursor": "default"
 }
 
-export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnailURL, homepage, navTo, href, volOpportunities, deleteOrganization }) => {
+export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnailURL, homepage, navTo, href, volOpportunities, deleteOrganization, facebookUserSession }) => {
 
     const renderVolunteeringOpportunities = () => {
         return volOpportunities.length > 0
@@ -30,6 +30,8 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
                 <Typography variant="h5">No Opportunities yet!</Typography>
             </div>
     }
+
+    const userIsCreator = facebookUserSession.email == creatorEmail;
 
     const [shouldShowDialog, toggleDialog] = useState(false);
 
@@ -51,9 +53,11 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
                 <Image field={{value: imageThumbnailURL || defaultOrgLogoSrc}} isEditMode={false} />
             </Grid>
             <Grid item>
-                <PageTitle>{title} 
-                    <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} />
-                    <DeleteButton onClick={deleteCurrentOrganizationRequested} />
+                <PageTitle>{title}
+                    {userIsCreator && <React.Fragment>
+                        <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} />
+                        <DeleteButton onClick={deleteCurrentOrganizationRequested} />
+                    </React.Fragment>}
                 </PageTitle>
                 {homepage && <Typography variant="caption"><strong>Homepage:</strong> <a href={homepage}>{homepage}</a></Typography>}
             </Grid>

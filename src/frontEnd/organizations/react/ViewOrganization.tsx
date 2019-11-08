@@ -8,10 +8,10 @@ import { WithNavTo } from '../../nav/WithNavTo';
 import { WithUrl } from '../../../utils/url/WithUrl';
 
 //export type ViewOrganizationProps = WithOrganizations & WithNavTo & WithUrl
-export const ViewOrganization = ({url, organizations, navTo, deleteOrganization}) => {
+export const ViewOrganization = ({url, organizations, navTo, deleteOrganization, facebookUserSession}) => {
 
     const content = findOrgByHref(organizations, url.path)
-        .map(organization => <LoadedOrganization {...{...organization, navTo, deleteOrganization}} />)
+        .map(organization => <LoadedOrganization {...{...organization, navTo, deleteOrganization, facebookUserSession}} />)
         .valueOrDefault(<MissingOrganization />)
 
     return <Page>
