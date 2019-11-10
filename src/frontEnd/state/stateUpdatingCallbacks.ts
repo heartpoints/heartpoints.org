@@ -10,6 +10,7 @@ import { onCelebrationXClicked } from "../modals/onCelebrationXClicked";
 import { onFacebookLoginFailure } from "../facebook/onFacebookLoginFailure";
 import { updateState } from "../castleRisk/updateState";
 import { Dictionary } from "lodash";
+import { onDisplayHomeSnackbar } from "../homePage/onDisplayHomeSnackbar";
 import { orgCallbacks } from "../organizations/reducers/orgCallbacks";
 
 type StateUpdatingCallback = (state:any, ...args:any[]) => any
@@ -26,5 +27,6 @@ export const stateUpdatingCallbacks:Dictionary<StateUpdatingCallback> = {
     onVolSearchBarValueChange,
     onSideNavCollapseRequested,
     onSideNavExpandRequested,
+    onDisplayHomeSnackbar,
     updateState,
 };
