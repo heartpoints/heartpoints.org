@@ -31,7 +31,8 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
             </div>
     }
 
-    const userIsCreator = facebookUserSession.email == creatorEmail;
+    const userEmail = facebookUserSession ? facebookUserSession.email : "";
+    const userIsCreator = userEmail == creatorEmail;
 
     const [shouldShowDialog, toggleDialog] = useState(false);
 
