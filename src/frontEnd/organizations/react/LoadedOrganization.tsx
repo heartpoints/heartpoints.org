@@ -12,6 +12,7 @@ import { jobTitleMatches } from '../../volunteering/jobTitleMatches';
 import { previewContainerStyle } from "../../volunteering/VolunteeringPreview";
 
 import { YesOrNoDialog } from '../../modals/YesOrNoDialog';
+import { inDevMode } from '../../developers/inDevMode';
 
 //todo: should these also use fields? maybe not "settable" fields but field readers (whether something is loaded / valid / etc)?
 //todo: can we have fields that toggle between edit vs display mode over a field?\
@@ -32,7 +33,7 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
     }
 
     const userEmail = facebookUserSession ? facebookUserSession.email : "";
-    const userIsCreator = userEmail == creatorEmail;
+    const userIsCreator = userEmail == creatorEmail || inDevMode();
 
     const [shouldShowDialog, toggleDialog] = useState(false);
 
