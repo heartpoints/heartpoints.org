@@ -58,7 +58,7 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
               <ListItemIcon><PanTool /></ListItemIcon>
               <ListItemText primary="Volunteering" />
             </ListItem>
-            <ListItem button onClick={() => navTo("/") }>
+            <ListItem button onClick={() => navTo("/myProfile") }>
               <ListItemIcon><Favorite /></ListItemIcon>
               <ListItemText primary="My Heart Collection" />
             </ListItem>
