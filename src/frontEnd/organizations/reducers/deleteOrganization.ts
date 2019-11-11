@@ -7,7 +7,8 @@ export const deleteOrganization = (state, organizationToDelete) => {
     const stateWithoutDeletedOrg = {
         ...state,
         organizations: orgsWithSpecifiedOrgDeleted,
-        shouldShowSnackbar: true
+        shouldShowSnackbar: true,
+        snackbarText: "Organization Deleted"
     };
 
     return navTo(stateWithoutDeletedOrg, "/");

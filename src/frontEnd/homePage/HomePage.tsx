@@ -9,7 +9,7 @@ const containerStyle = {
     alignItems: "center"
 }
 
-export const HomePage = ({shouldShowSnackbar}) => { 
+export const HomePage = ({shouldShowSnackbar, snackbarText}) => { 
     return <Container style={containerStyle}>
         <Card style={{textAlign: "center", verticalAlign: "middle"}}>
             <img width="100%" src="/images/logo.png" />
@@ -20,6 +20,6 @@ export const HomePage = ({shouldShowSnackbar}) => {
             </Typography>
             <Space />
         </Card>
-        {shouldShowSnackbar && <MiscSnackBar msg="Organization Deleted" />}
+        {shouldShowSnackbar && <MiscSnackBar msg={snackbarText} />}
     </Container>
 }
