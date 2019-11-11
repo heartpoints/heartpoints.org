@@ -54,10 +54,27 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
              </ListItem>
             </List>
             </Collapse>
-            <ListItem button onClick={() => navTo("/volunteering/search")}>
+            <ListItem button onClick={onSideNavExpandRequested}>
               <ListItemIcon><PanTool /></ListItemIcon>
               <ListItemText primary="Volunteering" />
+              {isSideNavExpanded ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
+            <Collapse in={isSideNavExpanded} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+             <ListItem button className={classes.nested} onClick={() => navTo("/volunteering/new")}>
+              <ListItemIcon>
+                <AddCircleOutline />
+              </ListItemIcon>
+              <ListItemText primary="Create New" />
+             </ListItem>
+             <ListItem button className={classes.nested} onClick={() => navTo("/volunteering/search")}>
+              <ListItemIcon>
+                <Search />
+              </ListItemIcon>
+              <ListItemText primary="Search" />
+             </ListItem>
+            </List>
+            </Collapse>
             <ListItem button onClick={() => navTo("/") }>
               <ListItemIcon><Favorite /></ListItemIcon>
               <ListItemText primary="My Heart Collection" />
