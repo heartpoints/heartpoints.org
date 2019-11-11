@@ -38,7 +38,7 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
     const [shouldShowDialog, toggleDialog] = useState(false);
 
     const confirmOrgDelete = () => {
-        deleteOrganization(href);
+        deleteOrganization(href, title);
     }
 
     const cancelOrgDelete = () => {

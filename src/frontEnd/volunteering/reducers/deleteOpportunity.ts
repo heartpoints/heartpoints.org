@@ -10,7 +10,7 @@ export const deleteOpportunity = (state, jobTitle, jobID) => {
             volOpportunities: o.volOpportunities.filter(v => v.jobID != jobID)
         })),
         shouldShowSnackbar: true,
-        snackbarText: `Opportunity ${jobTitle} Deleted`,
+        snackbarText: `${jobTitle} Deleted`,
     }
 
     return navTo(updatedState, "/");
