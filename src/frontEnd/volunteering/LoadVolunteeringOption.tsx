@@ -9,8 +9,12 @@ import { Page } from '../page/Page';
 import { HPButton } from '../forms/HPButton';
 import { DeleteButton } from '../buttons/DeleteButton';
 import { YesOrNoDialog } from '../modals/YesOrNoDialog';
+import { inDevMode } from '../developers/inDevMode';
 
-export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, href, jobTitle, jobDescription, navTo, deleteOpportunity}) => {
+export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, href, jobTitle, jobDescription, navTo, deleteOpportunity, facebookUserSession}) => {
+
+    const userEmail = facebookUserSession ? facebookUserSession.email : "";
+    const userIsCreator = userEmail == creatorEmail || inDevMode();
 
     const [shouldShowDialog, toggleDialog] = useState(false);
 
@@ -33,9 +37,11 @@ export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, 
                     <Image field={{value: imageThumbnailURL || defaultOrgLogoSrc}} isEditMode={false} />
                 </Grid>
                 <Grid item>
-                    <PageTitle>{jobTitle} 
-                        <EditButton {...{navTo, onClick: () => alert(href)}} />
-                        <DeleteButton onClick={deleteCurrentOpportunityRequested} />
+                    <PageTitle>{jobTitle}
+                        {userIsCreator && <React.Fragment>
+                            <EditButton {...{navTo, onClick: () => alert(href)}} />
+                            <DeleteButton onClick={deleteCurrentOpportunityRequested} />
+                        </React.Fragment>}
                     </PageTitle>
                     <Space />
                     <Typography variant="h6">
@@ -51,7 +57,7 @@ export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, 
             { shouldShowDialog && 
                 <YesOrNoDialog 
                     isOpen={shouldShowDialog}
-                    titleText="Delete Volunteering Opportunity?"
+                    titleText={`Delete ${jobTitle}?`}
                     onYesClicked={confirmOppDelete}
                     onNoClicked={cancelOppDelete} />}
         </Page>

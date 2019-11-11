@@ -72,7 +72,7 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
         {shouldShowDialog && 
             <YesOrNoDialog 
                 isOpen={shouldShowDialog} 
-                titleText="Delete This Organization?" 
+                titleText={`Delete ${title}?`} 
                 onYesClicked={confirmOrgDelete} 
                 onNoClicked={cancelOrgDelete} />
         }
