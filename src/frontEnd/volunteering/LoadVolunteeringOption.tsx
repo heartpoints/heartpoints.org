@@ -11,7 +11,7 @@ import { DeleteButton } from '../buttons/DeleteButton';
 import { YesOrNoDialog } from '../modals/YesOrNoDialog';
 import { inDevMode } from '../developers/inDevMode';
 
-export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, href, jobTitle, jobDescription, navTo, deleteOpportunity, facebookUserSession}) => {
+export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, href, jobTitle, jobDescription, navTo, deleteOpportunity, facebookUserSession, jobID}) => {
 
     const userEmail = facebookUserSession ? facebookUserSession.email : "";
     const userIsCreator = userEmail == creatorEmail || inDevMode();
@@ -19,7 +19,7 @@ export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, 
     const [shouldShowDialog, toggleDialog] = useState(false);
 
     const confirmOppDelete = () => {
-        deleteOpportunity(href, jobTitle);
+        deleteOpportunity(jobTitle, jobID);
     }
 
     const cancelOppDelete = () => {
