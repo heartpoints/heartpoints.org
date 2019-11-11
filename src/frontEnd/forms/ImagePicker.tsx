@@ -7,17 +7,11 @@ const logoEditStyle = {
     ...logoStyle,
     cursor: "pointer",
     borderStyle: "dashed",
-    borderWidth: "1px",
+    borderWidth: "thin",
     borderColor: "lightgray",
 }
 
-const divStyle = {
-    marginLeft: "10px",
-    marginBottom: "0px",
-    paddingBottom: "0px",
-}
-
-export const ImagePicker = ({ field, style = {} }) => <div style={divStyle}>
+export const ImagePicker = ({ field, style = {} }) => <div>
     <FilePicker onChange={field.setValue} acceptedContentTypes="image/*">
         <Tooltip title="upload image" placement="right">
             <img style={{...logoEditStyle, ...style}} src={field.value || field.placeholder } />

@@ -4,9 +4,9 @@ export const theme = {
     },
     suggestion: {
         listStyle: 'none',
-        padding: "10px 20px",
+        padding: ".5em 1em",
         cursor: 'pointer',
-        borderTop: "1px solid #eee"
+        borderTop: "thin solid #eee"
     },
     suggestionFirst: {
         borderTop: "none"
@@ -15,8 +15,8 @@ export const theme = {
         outline: 'none'
     },
     inputOpen: {
-        borderBottomRightRadius: '0px',
-        borderBottomLeftRadius: '0px'
+        borderBottomRightRadius: '0',
+        borderBottomLeftRadius: '0'
     },
     suggestionsContainerOpen: {
         width: '100%',
@@ -24,9 +24,9 @@ export const theme = {
         margin: '0px',
         padding: '0px',
         backgroundColor: 'white',
-        borderBottomRightRadius: '10px',
-        borderBottomLeftRadius: '10px',
-        border: "1px solid #aaa"
+        borderBottomRightRadius: '0.5em',
+        borderBottomLeftRadius: '0.5em',
+        border: "thin solid #aaa"
     },
     suggestionsList: {
         margin: '0px',

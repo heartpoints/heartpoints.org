@@ -2,17 +2,6 @@ import * as React from "react";
 import { ellipsis } from "../../utils/strings/ellipsis";
 import { Typography, Grid } from "@material-ui/core";
 
-export const padLeft = {
-    "paddingLeft": "60px"
-}
-
-export const statementStyle = {
-    "fontSize": "12px",
-    "color": "#888",
-    "fontStyle": "italic",
-    ...padLeft,
-}
-
 export const imageStyle = {
     "width": "50px",
     "height": "50px",

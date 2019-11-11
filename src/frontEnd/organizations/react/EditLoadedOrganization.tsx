@@ -6,7 +6,9 @@ import { Space } from '../../page/Space';
 
 export const EditLoadedOrganization = ({ orgFields }) => <React.Fragment>
     <PageTitle>{orgFields.title.value} <small style={{color: "lightgray"}}>(editing)</small></PageTitle>
-    <OrgAddEdit {...orgFields} />
-    <HPButton label="Done Editing" onClick={() => history.back()} />
+    <OrgAddEdit {...orgFields}>
+        <HPButton label="Done Editing" shouldUseThemeSpacing={false} onClick={() => history.back()} />
+    </OrgAddEdit>
+    
     <Space />
 </React.Fragment>

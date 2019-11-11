@@ -6,7 +6,7 @@ import { Typography } from '@material-ui/core';
 export const modalStyle:React.CSSProperties = {
     "width": "50%",
     "backgroundColor": "white",
-    "borderRadius": "10px",
+    "borderRadius": "0.5em",
     "textAlign": "center",
     "padding": "10px",
     "position": "absolute",

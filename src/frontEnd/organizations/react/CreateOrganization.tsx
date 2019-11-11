@@ -13,8 +13,9 @@ export const CreateOrganization = (props) => {
     const fields = bindFields(newOrganizationFields())
     return <Page>
         <PageTitle>Create Organization</PageTitle>
-        <OrgAddEdit {...fields} />
-        <HPButton label="Create Organization" onClick={() => addNewOrganization(email)} />
+        <OrgAddEdit {...fields}>
+            <HPButton label="Create Organization" shouldUseThemeSpacing={false} onClick={() => addNewOrganization(email)} />
+        </OrgAddEdit>
         <Space />
     </Page>
 }
