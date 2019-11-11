@@ -5,6 +5,7 @@ import { SearchBar as VolunteeringSearchBar } from "../volunteering/SearchBar";
 import { FacebookLoginLogout } from "../facebook/FacebookLoginLogout";
 import { CastleRisk } from "../castleRisk/CastleRisk";
 import { Router } from "./Router";
+import { UserProfile } from "../user/UserProfile";
 import { RestGuru } from "../RestGuru/RestGuru";
 
 export const OtherRoutes = (url, props, router: Router) => router
@@ -12,4 +13,5 @@ export const OtherRoutes = (url, props, router: Router) => router
   .case("/dev", <FacebookLoginLogout {...props} />)
   .case("/castleRisk", <CastleRisk {...props.castleRisk} {...props} />)
   .case("/rest-guru", <RestGuru {...props} />)
-  .case("/volunteering/search", <VolunteeringSearchBar {...props} />);
+  .case("/volunteering/search", <VolunteeringSearchBar {...props} />)
+  .case("/myProfile", <UserProfile {...props} />);
