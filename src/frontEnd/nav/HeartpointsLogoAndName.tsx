@@ -2,9 +2,8 @@ import * as React from "react";
 import { Typography } from "@material-ui/core";
 
 const logoStyle = {
-    width: "35px",
-    height: "21px",
-    margin: "12px 10px",
+    width: "2.5em",
+    margin: ".75em",
     cursor: "pointer",
 }
 

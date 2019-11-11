@@ -21,16 +21,16 @@ export const theme = {
     suggestionsContainerOpen: {
         width: '100%',
         display: 'block',
-        margin: '0px',
-        padding: '0px',
+        margin: '0',
+        padding: '0',
         backgroundColor: 'white',
         borderBottomRightRadius: '0.5em',
         borderBottomLeftRadius: '0.5em',
         border: "thin solid #aaa"
     },
     suggestionsList: {
-        margin: '0px',
-        padding: '0px'
+        margin: '0',
+        padding: '0'
     },
     suggestionHighlighted: {
         backgroundColor: 'rgba(255,0,0,0.1)'

@@ -43,7 +43,7 @@ export const CelebrationModal = (props:ICelebrationModalProps) => {
             <HPModal
                 title="Congratulations!"
                 subtitle={
-                    <Typography variant="h3" style={{marginTop: "10px", fontSize: "1.5em"}}>
+                    <Typography variant="h3" style={{fontSize: "1.5em"}}>
                         You have been awarded &nbsp;  
                         <FavoriteIconTwoTone />
                         {props.numHeartpointsAwarded}
