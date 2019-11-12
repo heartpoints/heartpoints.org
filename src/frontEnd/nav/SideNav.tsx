@@ -11,8 +11,10 @@ import PanTool from '@material-ui/icons/PanTool';
 import Favorite from '@material-ui/icons/Favorite';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import { isMobile } from '../site/isMobile';
 
-export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSideNavExpandRequested, classes, onSideNavCollapseRequested}) => {
+export const SideNavUnstyled = ({isSideNavOpen, isSideNavExpanded, onSideNavExpandRequested, classes, onSideNavCollapseRequested}) => {
+
     return <Drawer
           className={classes.drawer}
           variant="persistent"
@@ -23,13 +25,13 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
           }}
         >
           <div className={classes.drawerHeader}>
-            <IconButton onClick={onSideNavCollapseRequested}>
+            <IconButton onClick={() => onSideNavCollapseRequested()}>
               <ChevronLeftIcon />
             </IconButton>
           </div>
           <Divider />
           <List>
-            <ListItem button onClick={() => navTo("/") }>
+            <ListItem button onClick={() => onSideNavCollapseRequested("/") }>
               <ListItemIcon><InboxIcon /></ListItemIcon>
               <ListItemText primary="Home" />
             </ListItem>
@@ -40,13 +42,13 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
             </ListItem>
             <Collapse in={isSideNavExpanded} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-             <ListItem button className={classes.nested} onClick={() => navTo("/organizations/new")}>
+             <ListItem button className={classes.nested} onClick={() => onSideNavCollapseRequested("/organizations/new")}>
               <ListItemIcon>
                 <AddCircleOutline />
               </ListItemIcon>
               <ListItemText primary="Create New" />
              </ListItem>
-             <ListItem button className={classes.nested} onClick={() => navTo("/organizations/search")}>
+             <ListItem button className={classes.nested} onClick={() => onSideNavCollapseRequested("/organizations/search")}>
               <ListItemIcon>
                 <Search />
               </ListItemIcon>
@@ -54,19 +56,19 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
              </ListItem>
             </List>
             </Collapse>
-            <ListItem button onClick={() => navTo("/volunteering/search")}>
+            <ListItem button onClick={() => onSideNavCollapseRequested("/volunteering/search")}>
               <ListItemIcon><PanTool /></ListItemIcon>
               <ListItemText primary="Volunteering" />
             </ListItem>
-            <ListItem button onClick={() => navTo("/") }>
+            <ListItem button onClick={() => onSideNavCollapseRequested("/") }>
               <ListItemIcon><Favorite /></ListItemIcon>
               <ListItemText primary="My Heart Collection" />
             </ListItem>
-            <ListItem button onClick={() => navTo("/castleRisk") }>
+            <ListItem button onClick={() => onSideNavCollapseRequested("/castleRisk") }>
               <ListItemIcon><DonutSmallIcon /></ListItemIcon>
               <ListItemText primary="Castle Risk" />
             </ListItem>
-            <ListItem button onClick={() => navTo("/rest-guru") }>
+            <ListItem button onClick={() => onSideNavCollapseRequested("/rest-guru") }>
               <ListItemIcon><DonutSmallIcon /></ListItemIcon>
               <ListItemText primary="rest.guru" />
             </ListItem>
@@ -74,7 +76,9 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
     </Drawer>
 }
 
-const drawerWidth = 240;
+const drawerWidth = () => isMobile()
+  ? window.innerWidth
+  : 240;
 
 const styles = theme => ({
   drawer: {
