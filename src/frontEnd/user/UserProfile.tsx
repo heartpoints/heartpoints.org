@@ -5,10 +5,9 @@ import { Typography, Grid } from '@material-ui/core';
 import { Space } from '../page/Space';
 
 export const UserProfile = ({facebookUserSession}) => {
-    const {name, email, picture} = facebookUserSession;
 
     const loggedInContent = () => {
-        console.log(facebookUserSession);
+        const {name, email, picture} = facebookUserSession;
         return <React.Fragment>
             <Grid container direction="row" justify="flex-start" alignItems="center" spacing={2}>
                 <Grid item>
@@ -33,6 +32,6 @@ export const UserProfile = ({facebookUserSession}) => {
     }
 
     return <Page>
-        {renderUserProfile()}
+        {renderUserProfile}
     </Page>
 }
