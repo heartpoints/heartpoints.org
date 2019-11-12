@@ -67,6 +67,7 @@ hp_git() { local args="${@:-}"
 hp_g() { local message="$@"
     hp_git add -A
     hp_git commit -m "${message}"
+    hp_git push origin head
 }
 
 git_currentShaOrTempShaIfDirty() {

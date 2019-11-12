@@ -38,7 +38,7 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
     const [shouldShowDialog, toggleDialog] = useState(false);
 
     const confirmOrgDelete = () => {
-        deleteOrganization(href);
+        deleteOrganization(href, title);
     }
 
     const cancelOrgDelete = () => {
@@ -72,7 +72,7 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
         {shouldShowDialog && 
             <YesOrNoDialog 
                 isOpen={shouldShowDialog} 
-                titleText="Delete This Organization?" 
+                titleText={`Delete ${title}?`} 
                 onYesClicked={confirmOrgDelete} 
                 onNoClicked={cancelOrgDelete} />
         }
