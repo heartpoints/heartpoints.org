@@ -1,10 +1,10 @@
 import { navTo } from "./navTo"
+import { isMobile } from "../site/isMobile";
 
 export const onSideNavCollapseRequested = (state, destination) => {
-    console.log(destination);
     const newState =  {
         ...state,
-        isSideNavOpen: false
+        isSideNavOpen: isMobile() || !destination ? false : true
     }
 
     const action = destination

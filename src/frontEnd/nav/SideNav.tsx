@@ -11,6 +11,7 @@ import PanTool from '@material-ui/icons/PanTool';
 import Favorite from '@material-ui/icons/Favorite';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import { isMobile } from '../site/isMobile';
 
 export const SideNavUnstyled = ({isSideNavOpen, isSideNavExpanded, onSideNavExpandRequested, classes, onSideNavCollapseRequested}) => {
 
@@ -74,9 +75,8 @@ export const SideNavUnstyled = ({isSideNavOpen, isSideNavExpanded, onSideNavExpa
           </List>
     </Drawer>
 }
-const largestPhoneWidth = 480;
 
-const drawerWidth = window.innerWidth <= largestPhoneWidth
+const drawerWidth = () => isMobile()
   ? window.innerWidth
   : 240;
 
