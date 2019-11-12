@@ -1,13 +1,15 @@
 import Cookies from "js-cookie";
 import { facebookUserSessionCookieKey } from "./facebookUserSessionCookieKey";
 import { inDevMode } from "../developers/inDevMode";
+import { navTo } from "../nav/navTo";
 
 export const onFacebookLoginComplete = (state, facebookUserSession) => {
     Cookies.set(facebookUserSessionCookieKey, facebookUserSession);
-    return { 
+    const postLoginState = { 
         ...state,
         inDevMode: inDevMode(),
         facebookUserSession,
         shouldShowCelebration: true 
-    };
+    }
+    return navTo(postLoginState, "/")
 };
