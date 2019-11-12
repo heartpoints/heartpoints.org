@@ -73,8 +73,11 @@ export const SideNavUnstyled = ({navTo, isSideNavOpen, isSideNavExpanded, onSide
           </List>
     </Drawer>
 }
+const iPhone3GScreenWidth = 480;
 
-const drawerWidth = 240;
+const drawerWidth = window.innerWidth <= iPhone3GScreenWidth
+  ? window.innerWidth
+  : 240;
 
 const styles = theme => ({
   drawer: {
