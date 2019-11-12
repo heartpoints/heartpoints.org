@@ -3,11 +3,15 @@ import { textChangeHandler } from "./textChangeHandler";
 import { TextField, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+const textFieldStyle = window.innerWidth <= 480
+  ? {width: "100%", space: 0}
+  : {width: "300px", space: 1}
+
 const classes = makeStyles((theme:Theme) => ({
     textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: "300px"
+      marginLeft: theme.spacing(textFieldStyle.space),
+      marginRight: theme.spacing(textFieldStyle.space),
+      width: textFieldStyle.width
     },
 }))
 
