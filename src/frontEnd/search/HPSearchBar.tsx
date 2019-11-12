@@ -25,7 +25,7 @@ export const HPSearchBar = ({searchBarValue: value = "", placeholder, suggestion
 
     const renderInputComponent = (inputProps) => {
         const { ref, onFocus, ...rest } = inputProps;
-        return <TextField 
+        return <TextField
             fullWidth
             InputProps={{
                 startAdornment: (

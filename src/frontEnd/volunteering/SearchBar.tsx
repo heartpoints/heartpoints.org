@@ -31,7 +31,7 @@ export const SearchBar = (props) => {
     }
 
     const hpSearchBarProps = {
-        placeholder: "Search by organization name or job title...",
+        placeholder: "Organization Name or Job Title...",
         suggestions: findVolunteeringOpportunities(searchBarValue, organizations),
         onSuggestionSelected,
         renderSuggestion,

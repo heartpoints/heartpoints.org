@@ -21,7 +21,7 @@ export const SearchBar = (props) => {
             )
     }
 
-    const placeholder = "Search by organization name..."
+    const placeholder = "Organization name..."
     const suggestions = getSuggestions(searchBarValue);
 
     const [shouldShowOverlay, toggleOverlay] = useState(false);
