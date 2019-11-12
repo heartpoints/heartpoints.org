@@ -27,3 +27,33 @@ Welcome to the Heartpoints.org website repository!
     - [Heartpoints Google Drive](https://docs.google.com/document/d/1BZXYQGlBMvy1x8UQ5b8Bco7hyasknCCjdy6DxbKI03Q) 
       contains shared company documents, spreadsheets, presentations that are not in github
     - [Credentials](https://github.com/heartpoints/credentials) Limited Access repository containing org credentials / private keys
+    
+# Mobile Styling Concerns
+
+## HPSearchBar
+
+Autosuggest component wider than viewport on most mobile devices
+
+Suggestion container should be a scrollbar
+
+## CreateOrganization + EditLoadedOrganization
+
+Text inputs wider than viewport on most mobile devices
+
+## SideNav
+
+Should encompass entire screen on mobile
+
+## LoadedOrganization + LoadVolunteeringOption
+
+Page titles wrap with longer names (text is too big)
+
+This causes the EditButton and DeleteButton for that opp/org to be displayed poorly
+
+## HomePage
+
+"help us build something amazing" text too large, and wraps to 3 lines, on most mobile devices
+
+## /volunteering/SearchBar + /organizations/SearchBar
+
+Page titles wrap with longer names (text is too big)
