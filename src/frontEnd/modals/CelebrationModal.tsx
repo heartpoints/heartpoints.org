@@ -15,17 +15,10 @@ export const confettiStyle:React.CSSProperties = {
     "left": "0"
 }
 
-export const actionContainerStyle = {
-    "background-color": "#E9E9E9",
-    "border-radius": "25px",
-    "padding": "10px",
-    "margin": "0 auto",
-}
-
 export const actionIconContainerStyle = {
     "width": "100%",
     "display": "inline-block",
-    "marginBottom": "24px"
+    "marginBottom": "1em"
 }
 
 export interface ICelebrationModalProps {
@@ -50,7 +43,7 @@ export const CelebrationModal = (props:ICelebrationModalProps) => {
             <HPModal
                 title="Congratulations!"
                 subtitle={
-                    <Typography variant="h3" style={{marginTop: "10px", fontSize: "1.5vw"}}>
+                    <Typography variant="h3" style={{fontSize: "1.5em"}}>
                         You have been awarded &nbsp;  
                         <FavoriteIconTwoTone />
                         {props.numHeartpointsAwarded}

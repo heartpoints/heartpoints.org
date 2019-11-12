@@ -5,8 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const classes = makeStyles((theme:Theme) => ({
     textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
       width: "300px"
     },
 }))

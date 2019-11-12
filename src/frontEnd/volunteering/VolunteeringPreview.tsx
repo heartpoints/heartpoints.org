@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Typography } from '@material-ui/core';
 
 export const previewContainerStyle = {
-    "marginTop": "10px",
-    "padding": "10px",
+    "marginTop": "2vh",
+    "padding": "1.2vw",
     "backgroundColor": "#E9E9E9",
-    "borderRadius": "5px",
+    "borderRadius": "0.5em",
     "cursor": "pointer",
 }
 

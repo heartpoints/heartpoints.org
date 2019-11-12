@@ -10,8 +10,6 @@ export interface IComponentWithOverlayProps {
 export const contentToBeHighlightedStyle:React.CSSProperties = {
     "display": "inline-block",
     "position": "relative",
-    "left": "0px",
-    "top": "0px",
     "zIndex": 1202,
 }
 

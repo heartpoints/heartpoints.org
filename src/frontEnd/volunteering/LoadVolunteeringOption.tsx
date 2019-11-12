@@ -47,6 +47,7 @@ export const LoadVolunteeringOption = ({creatorEmail, imageThumbnailURL, title, 
                     <Typography variant="h6">
                         {title} 
                     </Typography>
+                    <Space />
                     <HPButton label="View Organization" shouldUseThemeSpacing={false} onClick={() => navTo(href)} />
                 </Grid>
             </Grid>
