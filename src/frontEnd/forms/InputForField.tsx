@@ -2,23 +2,23 @@ import * as React from 'react';
 import { textChangeHandler } from "./textChangeHandler";
 import { TextField, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { isMobile } from '../site/isMobile';
 
-const textFieldStyle = window.innerWidth <= 480
-  ? {width: "100%", space: 0}
-  : {width: "300px", space: 1}
+export const InputForField = ({ value, setValue, placeholder, multiline = false, rows = 1 }) => {
+    const {width, space} = isMobile()
+      ? {width: "100%", space: 0}
+      : {width: "300px", space: 1}
 
-const classes = makeStyles((theme:Theme) => ({
-    textField: {
-      marginLeft: theme.spacing(textFieldStyle.space),
-      marginRight: theme.spacing(textFieldStyle.space),
-      width: textFieldStyle.width
-    },
-}))
+    const classes = makeStyles((theme:Theme) => ({
+      textField: {
+        marginLeft: theme.spacing(space),
+        marginRight: theme.spacing(space),
+        width
+       },
+    }))
 
-export const InputForField = 
-    ({ value, setValue, placeholder, multiline = false, rows = 1 }) => 
-    <TextField
-        label={placeholder}
+    return <TextField
+       label={placeholder}
         multiline={multiline}
         value={value === undefined || value === null ? "" : value}
         onChange={textChangeHandler(setValue)}
@@ -27,3 +27,5 @@ export const InputForField =
         variant="filled"
         rows={rows}
       />
+    }
+    
