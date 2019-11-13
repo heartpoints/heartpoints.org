@@ -32,27 +32,15 @@ Welcome to the Heartpoints.org website repository!
 
 ## HPSearchBar
 
-Autosuggest component wider than viewport on most mobile devices
+Autosuggest component wider than viewport on most mobile devices (temporary fix implemented; still need to figure out how to set the `container` of the `Autosuggest` component to a percentage value [currently only accepts vw/vh/px/em])
 
 Suggestion container should be a scrollbar
-
-## CreateOrganization + EditLoadedOrganization
-
-Text inputs wider than viewport on most mobile devices
-
-## SideNav
-
-Should encompass entire screen on mobile
 
 ## LoadedOrganization + LoadVolunteeringOption
 
 Page titles wrap with longer names (text is too big)
 
 This causes the EditButton and DeleteButton for that opp/org to be displayed poorly
-
-## HomePage
-
-"help us build something amazing" text too large, and wraps to 3 lines, on most mobile devices
 
 ## /volunteering/SearchBar + /organizations/SearchBar
 
