@@ -1,4 +1,4 @@
 export const logoStyle = {
-    maxWidth: "300px",
+    maxWidth: "100%",
     maxHeight: "200px",
 };

@@ -43,7 +43,7 @@ export const SearchBar = (props) => {
     } 
     
     return <Page>
-        <PageTitle>Volunteering Opportunity Search...</PageTitle>
+        <PageTitle>Volunteering Opportunity Search</PageTitle>
         <Space />
         <ComponentWithOverlay bgColor={"#FFF"} showOverlay={shouldShowOverlay}>
             <HPSearchBar {...hpSearchBarProps} />

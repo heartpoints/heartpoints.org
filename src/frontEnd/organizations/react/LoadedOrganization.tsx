@@ -13,6 +13,7 @@ import { previewContainerStyle } from "../../volunteering/VolunteeringPreview";
 
 import { YesOrNoDialog } from '../../modals/YesOrNoDialog';
 import { inDevMode } from '../../developers/inDevMode';
+import { isMobile } from '../../site/isMobile';
 
 //todo: should these also use fields? maybe not "settable" fields but field readers (whether something is loaded / valid / etc)?
 //todo: can we have fields that toggle between edit vs display mode over a field?\
@@ -33,7 +34,7 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
     }
 
     const userEmail = facebookUserSession ? facebookUserSession.email : "";
-    const userIsCreator = userEmail == creatorEmail || inDevMode();
+    const userIsCreator = userEmail == creatorEmail;
 
     const [shouldShowDialog, toggleDialog] = useState(false);
 
@@ -49,19 +50,30 @@ export const LoadedOrganization = ({ creatorEmail, title, mission, imageThumbnai
         toggleDialog(true);
     }
 
+    const renderOrgEditButtons = () => {
+        return userIsCreator && <React.Fragment>
+            <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} />
+            <DeleteButton onClick={deleteCurrentOrganizationRequested} />
+        </React.Fragment>
+    }
+
     return <div>
         <Grid container direction="row" justify="flex-start" alignItems="center" spacing={2}>
+            <div style={{width: "100%", textAlign: "right"}}>
+                {isMobile() && renderOrgEditButtons()}
+            </div>
             <Grid item>
                 <Image field={{value: imageThumbnailURL || defaultOrgLogoSrc}} isEditMode={false} />
             </Grid>
             <Grid item>
-                <PageTitle>{title}
-                    {userIsCreator && <React.Fragment>
-                        <EditButton {...{navTo, onClick: () => navTo(`${href}/edit`)}} />
-                        <DeleteButton onClick={deleteCurrentOrganizationRequested} />
-                    </React.Fragment>}
+                <PageTitle>
+                    {title}
+                    {!isMobile() && renderOrgEditButtons()}
                 </PageTitle>
-                {homepage && <Typography variant="caption"><strong>Homepage:</strong> <a href={homepage}>{homepage}</a></Typography>}
+                {homepage && <Typography variant="caption">
+                    {!isMobile() && <strong>Homepage: </strong> }
+                    <a href={homepage}>{homepage}</a>
+                </Typography>}
             </Grid>
         </Grid>
         <Space />

@@ -12,7 +12,11 @@ const containerStyle = {
 
 const subtitleSize = () => isMobile() ? "subtitle1" : "h4";
 
-export const HomePage = ({shouldShowSnackbar, snackbarText}) => { 
+export const HomePage = ({shouldShowSnackbar, snackbarText, onDisplayHomeSnackbar}) => { 
+    const snackbarProps = {
+        snackbarText,
+        onDisplayHomeSnackbar
+    }
     return <Container style={containerStyle}>
         <Card style={{textAlign: "center", verticalAlign: "middle"}}>
             <img width="100%" src="/images/logo.png" />
@@ -23,6 +27,6 @@ export const HomePage = ({shouldShowSnackbar, snackbarText}) => {
             </Typography>
             <Space />
         </Card>
-        {shouldShowSnackbar && <MiscSnackBar msg={snackbarText} />}
+        {shouldShowSnackbar && <MiscSnackBar {...snackbarProps} />}
     </Container>
 }
