@@ -79,6 +79,6 @@ git_currentSha() {
 }
 
 git_shaForDirtyDirectory() {
-    local shaWithDash="$(echo "$(git_currentSha)$(hp_git diff head)" | shasum)"
+    local shaWithDash="$(echo "$(git_currentSha)$(hp_git diff head)" | sha1sum)"
     string_everythingBeforeChar "${shaWithDash}" " "
 }
