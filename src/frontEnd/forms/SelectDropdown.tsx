@@ -8,12 +8,12 @@ import {Select, Theme, FormControlLabel} from '@material-ui/core';
 
   const classes = makeStyles((theme:Theme) => ({
     formControl: {
-        margin: theme.spacing(1),
-        width: "50%",
-      },
-      selectEmpty: {
-        marginTop: theme.spacing(2),
-      },
+      margin: theme.spacing(1),
+      width: "50%",
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    }
 }))
 
   export const SelectDropdown = (props) => {
@@ -29,9 +29,10 @@ import {Select, Theme, FormControlLabel} from '@material-ui/core';
 
     return (
         <FormControl className={classes().formControl}>
-            <Select value={title} onChange={changeHandler} displayEmpty={true} className={classes().selectEmpty}>
-                {menuItems}
-            </Select>
+          <InputLabel >Organization</InputLabel>
+          <Select value={title} onChange={changeHandler} className={classes().selectEmpty}>
+              {menuItems}
+          </Select>
       </FormControl>
     )
 

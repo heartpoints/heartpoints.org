@@ -14,9 +14,11 @@ import { fakeFacebookUserSession } from '../developers/fakeFacebookUserSession';
 export const LoadFullVolOpportunityForm = (props) => {
     const {title,imageThumbnailURL, creatorEmail, volOpportunities, facebookUserSession = fakeFacebookUserSession, navTo} = props; 
     const {email} = facebookUserSession;
-    console.log('email: '+ email);
-    return <React.Fragment>
+
+return <React.Fragment>
         <Space />
+        <p>InputForField</p>
+        <p>TextAreaForField</p>
         {/* <InputForField {} />
         <TextAreaForField {} /> */}
         <HPButton label='Create Job' onClick = {() => addNewVolOpportunity(email, creatorEmail)} />

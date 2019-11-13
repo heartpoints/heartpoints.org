@@ -19,15 +19,17 @@ export const CreateVolOpportunity = ({organizations, navTo} : CreateVolOpportuni
     const updateSelectedOrg = (orgTitle) => {
         setselectedOrg(orgTitle);
     }
-    const selectedOrgDetails = List(organizations).first(o => o.title == selectedOrg);
-    
+    //const selectedOrgDetails = List(organizations).first(o => o.title == selectedOrg);
+    const data = organizations.map(org => org.title === selectedOrg ? org : undefined);
+    const selectedOrgDetails = data.filter(item => item !== undefined);
     console.log(selectedOrgDetails);
-    return <Page>
+
+return <Page>
             <PageTitle> Create Volunteering Opportunity </PageTitle>      
             <Space />          
             <SelectDropdown optionsToBeDisplayed={ListOfOrganizationTitles} selectedData={updateSelectedOrg} />
             {
-                selectedOrg !== '' ? <LoadFullVolOpportunityForm {...selectedOrgDetails}{...navTo}/> : null
+                selectedOrg !== '' ? <LoadFullVolOpportunityForm {...selectedOrgDetails[0]}{...navTo}/> : null
             }
         </Page>
 }
